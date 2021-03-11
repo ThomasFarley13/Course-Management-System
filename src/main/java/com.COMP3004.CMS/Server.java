@@ -1,7 +1,9 @@
 package com.COMP3004.CMS;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 
 @SpringBootApplication
@@ -11,6 +13,12 @@ public class Server {
         SpringApplication.run(Server.class, args);
     }
 
-
-
 }
+
+
+
+
+
+
+
+

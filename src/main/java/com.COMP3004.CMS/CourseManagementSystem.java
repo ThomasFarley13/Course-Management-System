@@ -8,20 +8,29 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
-public class CourseManagementSystem  {
+public class CourseManagementSystem {
 
     boolean logged_in = false;
     String userHash;
 
 
+    @Autowired
+    private Database repository;
+
     @GetMapping("/")
-    public String home () {
+    public String home() {
         if (!logged_in) {
             return "forward:/login.html";
-        }
-        else {
+        } else {
             return "you are logged in";
         }
     }
@@ -46,32 +55,32 @@ public class CourseManagementSystem  {
     }*/
 
     @PostMapping("/login")
-    public @ResponseBody ModelAndView loginhandler (@RequestBody LoginForm loginForm, ModelMap m) {
+    public @ResponseBody
+    String loginhandler(@ModelAttribute User user, Model model) {
 
         // fake authenitcation
-        if (loginForm.getUsername().equals("Seppy") && loginForm.getPassword().equals( "IH83004")) {
-            return  new ModelAndView("redirect:/hello",m);
-        }
-        else {
+        if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
+            return "loggedin";
+        } else {
             // figure out message to send on fail and how to send it to the html
-
+            return "/login";
         }
-        return new ModelAndView("redirect:/login.html",m);
     }
 
+
     @GetMapping(value = "/hello")
-    public ModelAndView hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+    public ModelAndView hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         System.out.println("We are in the Hello mapping function");
         System.out.println(new ModelAndView("hello").toString());
         return new ModelAndView("hello");
     }
 
-    @GetMapping(value="/dashboardTest")
+    @GetMapping(value = "/dashboardTest")
     public String dashboardTest(Model model) {
         System.out.println("We are in the DashboardTest mapping function");
-        String [] coursenames = {"Comp3000","Comp3001","Comp3002","Comp3003","Comp3004"};
-        String [] courselinks = {"courses/Comp3000","courses/Comp3001","courses/Comp3002","courses/Comp3003","courses/Comp3004"};
+        String[] coursenames = {"Comp3000", "Comp3001", "Comp3002", "Comp3003", "Comp3004"};
+        String[] courselinks = {"courses/Comp3000", "courses/Comp3001", "courses/Comp3002", "courses/Comp3003", "courses/Comp3004"};
 
         model.addAttribute("courses", coursenames);
         model.addAttribute("links", courselinks);
@@ -79,24 +88,11 @@ public class CourseManagementSystem  {
         return "dashboard";
     }
 
-
-
-    static class LoginForm {
-        private String username;
-        private String password;
-
-        public String getUsername() {
-            return username;
-        }
-
-        public LoginForm(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        public String getPassword() {
-            return password;
-        }
+    @GetMapping("/loggedin")
+    public String loginForm(@ModelAttribute User user, Model model) {
+        model.addAttribute("user", new User(null, null));
+        return "loggedin";
     }
+
 
 }

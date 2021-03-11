@@ -9,7 +9,18 @@
 </head>
 <body>
 
+
 <div class ="container-fluid" style="padding-bottom:3%;">
+
+    <div>
+        <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
+            <input type="submit" value="Logout" style="float:right; right: 5;"/>
+        </form>
+        <p th:text=" 'You are currently logged in as ' + ${user.username}">
+        </p>
+    </div>
+
+
     <nav class="navbar navbar-expanded-sm navbar-light" style="background-color: #e3f2fd;">
         <!-- Brand -->
         <a class="navbar-brand" href="#">Dashboard</a>

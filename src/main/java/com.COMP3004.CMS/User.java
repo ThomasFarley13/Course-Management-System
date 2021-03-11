@@ -2,11 +2,15 @@ package com.COMP3004.CMS;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.data.annotation.Id;
+import java.util.*;
 
 public class User{
     @Id
     private String username;
     private String password;
+    private String role;
+
+   List<String> roles = Arrays.asList("Admin", "Professor", "Student");
 
     public String getUsername() {
         return username;
@@ -24,9 +28,18 @@ public class User{
         this.password = password;
     }
 
-    public User(String username, String password) {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     @Override

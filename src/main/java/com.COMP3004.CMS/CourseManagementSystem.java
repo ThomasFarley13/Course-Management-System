@@ -27,12 +27,17 @@ public class CourseManagementSystem {
     private Database repository;
 
     @GetMapping("/")
-    public String home() {
+    public String home(@ModelAttribute User user, Model model) {
         if (!logged_in) {
-            return "forward:/login.html";
+            return "forward:/login";
         } else {
             return "you are logged in";
         }
+    }
+    @GetMapping("/login")
+    public String login(@ModelAttribute User user, Model model) {
+        model.addAttribute("user", new User(null, null,null));
+        return "loggedin";
     }
 
     /*@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -55,17 +60,28 @@ public class CourseManagementSystem {
     }*/
 
     @PostMapping("/login")
-    public @ResponseBody
-    String loginhandler(@ModelAttribute User user, Model model) {
-
+    public String loginhandler(@ModelAttribute User user, Model model) {
+        model.addAttribute(user);
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
         // fake authenitcation
         if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-            return "loggedin";
+            System.out.println("Hello2");
+            return "dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html
-            return "/login";
+            return "loggedin";
         }
     }
+
+    @PostMapping("/logout")
+    public String logouthandler(@ModelAttribute User user, Model model) {
+        model.addAttribute("user", new User(null, null,null));
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        return "loggedin";
+    }
+
 
 
     @GetMapping(value = "/hello")
@@ -86,12 +102,6 @@ public class CourseManagementSystem {
         model.addAttribute("links", courselinks);
 
         return "dashboard";
-    }
-
-    @GetMapping("/loggedin")
-    public String loginForm(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User(null, null));
-        return "loggedin";
     }
 
 

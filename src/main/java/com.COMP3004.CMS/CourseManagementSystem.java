@@ -74,6 +74,26 @@ public class CourseManagementSystem {
         }
     }
 
+    /*
+    This is a function to test Login using jmeter.
+    It exists because ajax does not send json in a way that @requestBody will parse
+    and jmeter cannot send Json in a way that @modelattribute can parse
+     */
+    @PostMapping("/loginTest")
+    public String logintesthandler(@RequestBody User user, Model model) {
+        model.addAttribute(user);
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        // fake authenitcation
+        if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
+            System.out.println("Hello2");
+            return "dashboard";
+        } else {
+            // figure out message to send on fail and how to send it to the html
+            return "loggedin";
+        }
+    }
+
     @PostMapping("/logout")
     public String logouthandler(@ModelAttribute User user, Model model) {
         model.addAttribute("user", new User(null, null,null));
@@ -100,6 +120,7 @@ public class CourseManagementSystem {
 
         model.addAttribute("courses", coursenames);
         model.addAttribute("links", courselinks);
+        model.addAttribute("user",new User("Sepehr","Password423","Student"));
 
         return "dashboard";
     }

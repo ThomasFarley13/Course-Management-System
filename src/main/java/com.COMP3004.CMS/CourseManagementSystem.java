@@ -27,7 +27,7 @@ public class CourseManagementSystem {
     private Database repository;
 
     @GetMapping("/")
-    public String home(@ModelAttribute User user, Model model) {
+    public String home() {
         if (!logged_in) {
             return "forward:/login";
         } else {
@@ -36,8 +36,8 @@ public class CourseManagementSystem {
     }
     @GetMapping("/login")
     public String login(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User(null, null,null));
-        return "loggedin";
+        model.addAttribute("user", new User(null, null,null,0));
+        return "login";
     }
 
     /*@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -70,7 +70,7 @@ public class CourseManagementSystem {
             return "dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html
-            return "loggedin";
+            return "login";
         }
     }
 
@@ -90,27 +90,20 @@ public class CourseManagementSystem {
             return "dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html
-            return "loggedin";
+            return "login";
         }
     }
 
     @PostMapping("/logout")
     public String logouthandler(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User(null, null,null));
+        model.addAttribute("user", new User(null, null,null,0));
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
-        return "loggedin";
+        return "login";
     }
 
 
 
-    @GetMapping(value = "/hello")
-    public ModelAndView hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        System.out.println("We are in the Hello mapping function");
-        System.out.println(new ModelAndView("hello").toString());
-        return new ModelAndView("hello");
-    }
 
     @GetMapping(value = "/dashboardTest")
     public String dashboardTest(Model model) {
@@ -120,7 +113,7 @@ public class CourseManagementSystem {
 
         model.addAttribute("courses", coursenames);
         model.addAttribute("links", courselinks);
-        model.addAttribute("user",new User("Sepehr","Password423","Student"));
+        model.addAttribute("user",new User("Sepehr","Password423","Student", 4));
 
         return "dashboard";
     }

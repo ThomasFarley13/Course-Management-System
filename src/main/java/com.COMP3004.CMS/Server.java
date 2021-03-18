@@ -24,12 +24,12 @@ public class Server implements CommandLineRunner {
         repository.deleteAll();
 
         // user test data
-        repository.save(new User("Admin", "Password123", "Admin"));
-        repository.save(new User("Abdul", "Password223", "Student"));
-        repository.save(new User("Anita", "Password323", "Student"));
-        repository.save(new User("Sepehr", "Password423","Student"));
-        repository.save(new User("Thomas", "Password523","Student"));
-        repository.save(new User("Professor1", "Password623","Professor"));
+        repository.save(new User("Admin", "Password123", "Admin", 1));
+        repository.save(new User("Abdul", "Password223", "Student", 2));
+        repository.save(new User("Anita", "Password323", "Student", 3));
+        repository.save(new User("Sepehr", "Password423","Student", 4));
+        repository.save(new User("Thomas", "Password523","Student", 5));
+        repository.save(new User("Professor1", "Password623","Professor", 6));
 
         // fetch all users
         System.out.println("Users found with findAll():");

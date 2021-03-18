@@ -66,8 +66,18 @@ public class CourseManagementSystem {
         System.out.println(user.getPassword());
         // fake authenitcation
         if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-            System.out.println("Hello2");
-            return "dashboard";
+            if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null) {
+                return "admin-home";
+            }
+            else if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null ){
+                return "professor-home";
+            }
+            else if(repository.findByUsernameAndRole(user.getUsername(), "Student") != null){
+                return "student-home";
+            }
+            else{
+                return "error";
+                }
         } else {
             // figure out message to send on fail and how to send it to the html
             return "login";
@@ -86,7 +96,6 @@ public class CourseManagementSystem {
         System.out.println(user.getPassword());
         // fake authenitcation
         if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-            System.out.println("Hello2");
             return "dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html

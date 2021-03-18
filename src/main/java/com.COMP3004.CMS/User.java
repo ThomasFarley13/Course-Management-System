@@ -68,8 +68,8 @@ public class User{
     @Override
     public String toString() {
         return String.format(
-                "User[username='%s', password='%s']",
-                username, password);
+                "User[username='%s', password='%s', role= '%s']",
+                username, password, role);
     }
 
     public class Student extends User{

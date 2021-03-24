@@ -1,13 +1,13 @@
 # COMP3004_CMS_GROUP
 COMP3004 Repository for the Group Project
 
-###Dependencies
+### Dependencies
 
 -----------------------
 - Java 1.8 or greater `install from https://www.oracle.com/ca-en/java/technologies/javase-downloads.html`
 - MongoDB `brew install mongodb` or `https://docs.mongodb.com/manual/installation/`
 - JMeter for testing only `https://jmeter.apache.org/`
-###how to run locally 
+### how to run locally 
 
 --------------------
 1.Run the Mongo daemon run the command `mongod` from the terminal. If MongoDB is not part of your path, navigate to the bin folder of mongo and run `mongod`
@@ -15,7 +15,7 @@ COMP3004 Repository for the Group Project
 3.Build 
 4.Run the `server.java` class
 
-###How to Run JMeterTests
+### How to Run JMeterTests
 
 ---------------------
 

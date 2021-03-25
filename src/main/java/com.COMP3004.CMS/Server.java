@@ -25,7 +25,7 @@ public class Server implements CommandLineRunner {
 
         UserCreateFactory factory = new User();
 
-        //repository.deleteAll();
+        repository.deleteAll();
 
         User admin = factory.createUser("Admin", "Password123", "Admin", 1,"null", "Admin", "User");
         User abdul = factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30", "Abdul", "Kazal");
@@ -34,6 +34,10 @@ public class Server implements CommandLineRunner {
         User thomas = factory.createUser("Thomas", "Password523","Student", 5,"2000-09-30", "Thomas", "Farley");
         User professor1 = factory.createUser("Professor1", "Password623","Professor", 6,"null", "Big", "Sean");
         // user test data
+        abdul.setActive(true);
+        thomas.setActive(true);
+        professor1.setActive(true);
+
         repository.save(admin);
         repository.save(abdul);
         repository.save(anita);

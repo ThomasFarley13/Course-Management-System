@@ -1,26 +1,11 @@
 package com.COMP3004.CMS;
 
-public class UserCreateFactory {
-    protected User createUser() {
-        return null;
-    }
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-    public class StudentCreate extends UserCreateFactory {
-        protected User createUser() {
-            return null;
-        }
-    }
+public abstract class UserCreateFactory {
 
-    public class ProfessorCreate extends UserCreateFactory {
-        protected User createUser() {
-            return null;
-        }
-    }
+    public abstract User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname);
 
-    public class AdminCreate extends UserCreateFactory {
-        protected User createUser() {
-            return null;
-        }
-    }
 
 }

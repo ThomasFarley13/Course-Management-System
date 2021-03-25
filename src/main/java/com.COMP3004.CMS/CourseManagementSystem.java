@@ -1,30 +1,31 @@
 package com.COMP3004.CMS;
 
-import org.springframework.http.MediaType;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.Collections;
+import java.util.List;
 
 
 @Controller
+@ComponentScan("com")
 public class CourseManagementSystem {
 
+    User userLoggedIn;
     boolean logged_in = false;
     String userHash;
 
+    UserCreateFactory factory = new User();
 
     @Autowired
     private Database repository;
+
 
     @GetMapping("/")
     public String home() {
@@ -36,35 +37,98 @@ public class CourseManagementSystem {
     }
     @GetMapping("/login")
     public String login(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User(null, null,null,0));
+        model.addAttribute("user", new User());
         return "login";
     }
 
-    /*@RequestMapping(value = "/login", method = RequestMethod.POST)
-    public  ModelAndView login_handler(@RequestBody LoginForm loginForm, ModelMap model) {
+    @GetMapping("/createAccount")
+    public String createAccount() {
+        return "create-account";
+    }
 
-        //your code
 
-        // fake authenitcation
-        if (loginForm.getUsername().equals("Seppy") && loginForm.getPassword().equals( "IH83004")) {
-            System.out.println("Recived Valid Usernaame and password");
 
-            return new ModelAndView("redirect:/hello", model);
+    @PostMapping("/createAccount")
+    public String createAccountHandler(@RequestParam String userType) {
+        if(userType.equals("professor")){
+            return "professor-create";
+        }
+        else if(userType.equals("student")){
+            return "student-create";
         }
         else {
-            // figure out message to send on fail and how to send it to the html
-
+            System.out.println(userType);
+            return "error";
         }
-        return null;
+    }
 
-    }*/
+    @GetMapping("/approveUser")
+    public String approveUser(Model model) {
+        List<User> users = repository.findByActiveIsFalse();
+        model.addAttribute("users",users);
+        return "user-approve";
+
+    }
+    @PostMapping("/approveUser")
+    public String approveUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+        if(users!=null) {
+            for (String user : users) {
+                User x = repository.findByUsername(user);
+                x.setActive(true);
+                repository.save(x);
+            }
+        }
+        return "redirect:/approveUser";
+    }
+
+    @PostMapping("/createUserRequest")
+    public String createUserRequest(@RequestParam String username,
+                                    @RequestParam String password,
+                                    @RequestParam String firstname,
+                                    @RequestParam String lastname,
+                                    @RequestParam(required = false) String date ){
+        if(repository.findByUsername(username) != null && date == null){
+            return "professor-create-taken";
+        }
+        else if(repository.findByUsername(username) != null){
+            return "student-create-taken";
+        }
+
+        if(date == null){
+            repository.save(factory.createUser(username, password, "Professor", repository.findTopByOrderByIdDesc().getId() +1, date, firstname, lastname));
+        }
+        else{
+            repository.save(factory.createUser(username, password, "Student", repository.findTopByOrderByIdDesc().getId() +1, date, firstname, lastname));
+        }
+        return "create-successful";
+    }
+
 
     @PostMapping("/login")
-    public String loginhandler(@ModelAttribute User user, Model model) {
+    public Object loginhandler(@ModelAttribute User user, Model model, final RedirectAttributes redirectAttributes ) {
         model.addAttribute(user);
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
+        //
+        //This is a temp user instance until we get mongosessions working
+        userLoggedIn = user; //
+        //
         // fake authenitcation
+        User loginUser = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        if (loginUser != null && loginUser.getActive()) {
+            redirectAttributes.addFlashAttribute("User",user);
+            return "redirect:/dashboard";
+        } else {
+            // figure out message to send on fail and how to send it to the html
+            return "login";
+        }
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
         if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
             if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null) {
                 return "admin-home";
@@ -77,11 +141,12 @@ public class CourseManagementSystem {
             }
             else{
                 return "error";
-                }
+            }
         } else {
             // figure out message to send on fail and how to send it to the html
             return "login";
         }
+
     }
 
     /*
@@ -105,7 +170,7 @@ public class CourseManagementSystem {
 
     @PostMapping("/logout")
     public String logouthandler(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User(null, null,null,0));
+        model.addAttribute("user", new User());
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
         return "login";
@@ -122,7 +187,7 @@ public class CourseManagementSystem {
 
         model.addAttribute("courses", coursenames);
         model.addAttribute("links", courselinks);
-        model.addAttribute("user",new User("Sepehr","Password423","Student", 4));
+        model.addAttribute("user",factory.createUser("Sepehr","Password423","Student", 7,"null","Dave","Ian"));
 
         return "dashboard";
     }

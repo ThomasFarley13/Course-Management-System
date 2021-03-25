@@ -1,11 +1,14 @@
 package com.COMP3004.CMS;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.util.BsonUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.data.annotation.Id;
 import java.util.*;
 
-public class User{
+@Component
+public class User extends UserCreateFactory{
     @Id
     protected String username;
     protected String password;
@@ -13,6 +16,8 @@ public class User{
     protected int id;
     protected String firstname;
     protected String lastname;
+    protected boolean active;
+    protected String birthdate;
 
    List<String> roles = Arrays.asList("Admin", "Professor", "Student");
 
@@ -27,6 +32,10 @@ public class User{
     public void setUsername(String username) { this.username = username; }
 
     public String getPassword() { return password; }
+
+    public boolean getActive() { return active; }
+
+    public void setActive(boolean active) { this.active = active; }
 
     public void setPassword(String password) { this.password = password; }
 
@@ -56,24 +65,41 @@ public class User{
         this.password = null;
         this.role = null;
         this.id = 0;
+        this.active = false;
     }
 
-    public User(String username, String password, String role, int id) {
+    public User(String username, String password, String role, int id, String firstname, String lastname) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.id = id;
+        this.active = false;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "User[username='%s', password='%s', role= '%s']",
-                username, password, role);
+                "User[username='%s', password='%s', role= '%s', id = '%s', active = '%s']",
+                username, password, role, id, active);
+    }
+
+    @Override
+    public User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname){
+        switch (role) {
+            case ("Student"):
+                return new Student(username, password, role, id, birthdate, firstname, lastname);
+            case ("Professor"):
+                return new Professor(username, password, role, id, firstname, lastname);
+            case ("Admin"):
+                return new Admin(username, password, role, id, "Admin", "User");
+            default:
+                throw new IllegalStateException("Unexpected value: " + role);
+        }
     }
 
     public class Student extends User{
-        private String birthdate;
         private ArrayList<Course> courseList;
 
         public String getBirthdate() {
@@ -84,8 +110,9 @@ public class User{
             this.birthdate = birthdate;
         }
 
-        public Student(String username, String password, String role, int id) {
-            super(username, password, role, id);
+        public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
+            super(username, password, role, id, firstname, lastname);
+            setBirthdate(birthdate);
         }
 
         public ArrayList<Course> retrieveCourses() {
@@ -117,14 +144,15 @@ public class User{
         public void submitGradesDeliverable(String deliverableID, int grade, Student student) {};
         public void submitFinalGrade(int grade, Student student) {};
 
-        public Professor(String username, String password, String role, int id) {
-            super(username, password, role, id);
+        public Professor(String username, String password, String role, int id, String firstname, String lastname) {
+            super(username, password, role, id, firstname, lastname);
         }
     }
 
     public class Admin extends User{
-        public Admin(String username, String password, String role, int id) {
-            super(username, password, role, id);
+        public Admin(String username, String password, String role, int id, String firstname, String lastname) {
+            super(username, password, role, id, firstname, lastname);
+            setActive(true);
         }
 
         public Course createCourse(String courseName, String courseCode) {
@@ -132,19 +160,6 @@ public class User{
         }
 
         public void delCourse(Course course) {}
-
-        public User createUser(String username, String password, String role, int id){
-            switch (role) {
-                case ("Student"):
-                    return new Student(username, password, role, id);
-                case ("Professor"):
-                    return new Professor(username, password, role, id);
-                case ("Admin"):
-                    return new Admin(username, password, role, id);
-                default:
-                    throw new IllegalStateException("Unexpected value: " + role);
-            }
-        }
 
         //return true on successful registration
         public boolean processRegistration(User user, Course course) {

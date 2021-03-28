@@ -202,7 +202,52 @@ public class CourseManagementSystem {
         }
         model.addAttribute(user);
 
-        return "course-info";
+        return "student-course-info";
+    }
+
+    @GetMapping("/createDeliverable")
+    public String createDeliverable(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
+            return "create-deliverable";
+        }
+        else{
+            return "error";
+        }
+    }
+
+    @GetMapping("/deleteDeliverable")
+    public String deleteDeliverable(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
+            return "delete-deliverable";
+        }
+        else{
+            return "error";
+        }
+    }
+
+    @GetMapping("/modifyDeliverable")
+    public String modifyDeliverable(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
+            return "modify-deliverable";
+        }
+        else{
+            return "error";
+        }
     }
 
 

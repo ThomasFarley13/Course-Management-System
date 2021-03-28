@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Student-Home</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body style="background: rgb(200,200,200);">
+<form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
+    <input type="submit" class="btn btn-primary" value="Logout" style="float:right; right: 5;"/>
+</form>
+<div>
+    <h1>Welcome Student&nbsp;</h1>
+    <p th:text=" 'You are currently logged in as ' + ${user.username}"><br></p>
+</div>
+<div>
+    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Submit Deliverable______________________________</span></h1>
+</div>
+
+<!--
+TODO: Grab course (and deliverable?) name
+-->
+
+<!--
+For Submit Deliverable -
+GET: The respective course's posted deliverables that were POSTed from the professors' actions. (Whatever the information of the deliverable is. Such as name, deadline, weighting, etc.)
+
+POST: The deliverable submission whatever format it may be. (Whether we accept .txt or .pdfs etc... But submission option unavailable if the deliverable is beyong the deadline. )
+-->
+
+<div>
+    <form action="#">
+        <h5 class="text-dark">&nbsp;Submit deliverable for the course &nbsp;</h5><br>
+        <label for="submit-box">Enter the URL link below: </label><br>
+        <input type="text" id="submit-box" name="submit-box" value="URL here"><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<br><br>
+
+<div>
+    <form action="/dashboard" th:action="@{/dashboard}" th:object="${user}" method="post" >
+        <input type="submit" class="btn btn-primary" value="Return to Home"/>
+    </form>
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

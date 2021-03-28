@@ -122,6 +122,7 @@ public class CourseManagementSystem {
         }
     }
 
+
     @GetMapping("/dashboard")
     public String dashboard(@ModelAttribute("User") User user, Model model) {
         if(userLoggedIn != null){
@@ -148,6 +149,62 @@ public class CourseManagementSystem {
         }
 
     }
+
+
+
+    @PostMapping("/dashboard")
+    public String dashboardhandler(@ModelAttribute User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+
+        if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
+            if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null) {
+                return "admin-home";
+            }
+            else if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null ){
+                return "professor-home";
+            }
+            else if(repository.findByUsernameAndRole(user.getUsername(), "Student") != null){
+                return "student-home";
+            }
+            else{
+                return "error";
+            }
+        } else {
+            // figure out message to send on fail and how to send it to the html
+            return "login";
+        }
+    }
+
+
+    @GetMapping("/submitDeliverables")
+    public String submitDeliverables(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        return "submit-deliverable";
+    }
+
+
+
+
+    @GetMapping("/courseInformation")
+    public String courseInformation(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        return "course-info";
+    }
+
 
     /*
     This is a function to test Login using jmeter.

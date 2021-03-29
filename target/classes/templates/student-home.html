@@ -25,11 +25,11 @@
         <ul>
             <li><!--GET: Available courses from CMS-->
 <!--POST: A course in the respective student.courses attribute (if successful) -->
-<a href="#">Register in a course</a></li>
+        <a th:href="@{/Cregister(username=${user.username})}">Register in a course</a></li>
             <li><!--GET: Student.enrolledCourses to display options-->
 <!--DELETE: The respective course from student's attribute-->
 <a href="#">Drop a Course (WDN)</a></li>
-            <li><a href="#">Drop a Course (Non-WDN)</a></li>
+            <li><a href="/Cdrop">Drop a Course (Non-WDN)</a></li>
         </ul>
     </div>
     <div><!--GET: Student.enrolledCourses to courses as headers-->

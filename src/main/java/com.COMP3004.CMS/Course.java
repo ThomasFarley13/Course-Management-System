@@ -1,11 +1,17 @@
 package com.COMP3004.CMS;
 
 import com.COMP3004.CMS.User.*;
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 
 public class Course {
     protected String courseName;
+    @Id
     protected String courseCode;
+    protected int courselevel;
+    protected int coursenumber;
+    protected String courseDept;
     protected User.Professor professor;
     protected ArrayList<Student> students;
 
@@ -43,4 +49,14 @@ public class Course {
         this.courseName = courseName;
         this.courseCode = courseCode;
     }
+
+
+    public Course(String courseName, String courseCode, int courselevel, int coursenumber, String courseDept) {
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+        this.courselevel = courselevel;
+        this.coursenumber = coursenumber;
+        this.courseDept = courseDept;
+    }
+
 }

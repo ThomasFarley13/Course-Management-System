@@ -1,6 +1,10 @@
 package com.COMP3004.CMS;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -11,6 +15,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collections;
 import java.util.List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -24,7 +33,13 @@ public class CourseManagementSystem {
     UserCreateFactory factory = new User();
 
     @Autowired
-    private Database repository;
+    private UserDatabase repository;
+
+    @Autowired
+    private CourseDatabase Courserepository;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
 
     @GetMapping("/")
@@ -292,6 +307,38 @@ public class CourseManagementSystem {
         model.addAttribute("user",factory.createUser("Sepehr","Password423","Student", 7,"null","Dave","Ian"));
 
         return "dashboard";
+    }
+
+    @GetMapping("/Cregister")
+    public String CourseRegisterPage (@RequestParam String username, Model model) {
+
+        List<String> Depts = mongoTemplate.findDistinct("courseDept", Course.class, String.class);
+        List<Integer> levels = mongoTemplate.findDistinct("courselevel", Course.class, Integer.class);
+
+        System.out.println("Depts: " + Depts.toString());
+        System.out.println("levels: " + levels.toString());
+
+        model.addAttribute("Depts", Depts);
+        model.addAttribute("levels", levels);
+
+        model.addAttribute(repository.findByUsername(username));
+
+        return "CourseReg";
+
+    }
+
+    @GetMapping("/getCourses")
+    @ResponseBody
+    public List<Course> FindCourses(@RequestParam Map<String,String> allParams)
+    {
+        System.out.println("Parameters are " + allParams.entrySet());
+        System.out.println("We are in the get course function");
+
+
+        List<Course> courses = new ArrayList<Course>();
+        courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
+
+        return courses;
     }
 
 

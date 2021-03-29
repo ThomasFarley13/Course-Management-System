@@ -14,7 +14,9 @@ import java.util.List;
 public class Server implements CommandLineRunner {
 
     @Autowired
-    private Database repository;
+    private UserDatabase repository;
+    @Autowired
+    private CourseDatabase Courserepository;
 
     public static void main(String[] args) {
         SpringApplication.run(Server.class, args);
@@ -34,6 +36,7 @@ public class Server implements CommandLineRunner {
         User thomas = factory.createUser("Thomas", "Password523","Student", 5,"2000-09-30", "Thomas", "Farley");
         User professor1 = factory.createUser("Professor1", "Password623","Professor", 6,"null", "Big", "Sean");
         // user test data
+
         abdul.setActive(true);
         thomas.setActive(true);
         professor1.setActive(true);
@@ -44,6 +47,14 @@ public class Server implements CommandLineRunner {
         repository.save(sepehr);
         repository.save(thomas);
         repository.save(professor1);
+
+
+
+        //course test Data
+
+        Courserepository.save(new Course("Object Oriented Software Programming","3004B",3000,3004,"Computer Science"));
+        Courserepository.save(new Course("The origin of Planets","2419B",2000,2419,"Earth Science"));
+
         // fetch all users
         System.out.println("Users found with findAll():");
         System.out.println("-------------------------------");

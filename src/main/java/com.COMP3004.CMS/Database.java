@@ -30,3 +30,7 @@ interface CourseDatabase extends MongoRepository<Course,String> {
 
 }
 
+interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
+
+}
+

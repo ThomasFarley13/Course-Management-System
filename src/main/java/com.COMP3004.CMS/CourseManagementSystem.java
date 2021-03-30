@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,11 +44,13 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/")
-    public String home() {
-        if (!logged_in) {
-            return "forward:/login";
+    public String home(HttpSession session) {
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in"))) {
+            //redirectAttributes.addFlashAttribute("User",(User)session.getAttribute("user"));
+            return "forward:/dashboard";
+
         } else {
-            return "you are logged in";
+            return "forward:/login";
         }
     }
     @GetMapping("/login")
@@ -120,16 +123,15 @@ public class CourseManagementSystem {
 
 
     @PostMapping("/login")
-    public Object loginhandler(@ModelAttribute User user, Model model, final RedirectAttributes redirectAttributes ) {
+    public Object loginhandler(@ModelAttribute User user, Model model,HttpSession session) {
         model.addAttribute(user);
-        //
-        //This is a temp user instance until we get mongosessions working
-        userLoggedIn = user; //
-        //
-        // fake authenitcation
+
+        // authenitcation
         User loginUser = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
         if (loginUser != null && loginUser.getActive()) {
-            redirectAttributes.addFlashAttribute("User",user);
+            session.setAttribute("username",loginUser.getUsername());
+            session.setAttribute("role",loginUser.getRole());
+            session.setAttribute("logged_in", true);
             return "redirect:/dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html
@@ -139,20 +141,24 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/dashboard")
-    public String dashboard(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String dashboard(Model model, HttpSession session) {
+        System.out.println("We got to the dashboard Function");
 
-        if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-            if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
+            System.out.println("We got to the dashboard Function Login 4");
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+            System.out.println("We got to the dashboard Function Login 3");
+            model.addAttribute("user",user);
+            System.out.println("We got to the dashboard Function Login 1");
+            System.out.println(user.getRole());
+            if(user.getRole().equals("Admin")) {
                 return "admin-home";
             }
-            else if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null ){
+            else if(user.getRole().equals("Professor")){
                 return "professor-home";
             }
-            else if(repository.findByUsernameAndRole(user.getUsername(), "Student") != null){
+            else if(user.getRole().equals("Student")){
+                System.out.println("We got to the dashboard Function loggin 2");
                 return "student-home";
             }
             else{
@@ -160,6 +166,7 @@ public class CourseManagementSystem {
             }
         } else {
             // figure out message to send on fail and how to send it to the html
+            System.out.println("Why are we here");
             return "login";
         }
 
@@ -168,11 +175,9 @@ public class CourseManagementSystem {
 
 
     @PostMapping("/dashboard")
-    public String dashboardhandler(@ModelAttribute User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String dashboardhandler(@ModelAttribute User user, Model model,HttpSession session) {
+
+        user = (User) session.getAttribute("user");
 
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
@@ -286,10 +291,11 @@ public class CourseManagementSystem {
     }
 
     @PostMapping("/logout")
-    public String logouthandler(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", new User());
+    public String logouthandler(@ModelAttribute User user, Model model,HttpSession session) {
+        /*model.addAttribute("user", new User());
         System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
+        System.out.println(user.getPassword());*/
+        session.setAttribute("logged_in",false);
         return "login";
     }
 
@@ -310,7 +316,7 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/Cregister")
-    public String CourseRegisterPage (@RequestParam String username, Model model) {
+    public String CourseRegisterPage (Model model,HttpSession session) {
 
         List<String> Depts = mongoTemplate.findDistinct("courseDept", Course.class, String.class);
         List<Integer> levels = mongoTemplate.findDistinct("courselevel", Course.class, Integer.class);
@@ -321,7 +327,7 @@ public class CourseManagementSystem {
         model.addAttribute("Depts", Depts);
         model.addAttribute("levels", levels);
 
-        model.addAttribute(repository.findByUsername(username));
+        model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
 
         return "CourseReg";
 

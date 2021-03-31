@@ -131,17 +131,20 @@ public class User extends UserCreateFactory{
         private ArrayList<Course> assignedCourses;
 
         public ArrayList<Course> retrieveCourses() {
-            ArrayList<Course> retrieved = new ArrayList<Course>();
-            System.out.println("retrieving courses from Mongo");
+//            ArrayList<Course> retrieved = new ArrayList<Course>();
+//            System.out.println("retrieving courses from Mongo");
 
-            return retrieved;
+            return assignedCourses;
         }
+
+        public void assignCourse(Course course){ assignedCourses.add(course); }
 
         public String createDeliverable(){
             return "<link to deliverable here>";
         }
 
         public void submitGradesDeliverable(String deliverableID, int grade, Student student) {};
+
         public void submitFinalGrade(int grade, Student student) {};
 
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {

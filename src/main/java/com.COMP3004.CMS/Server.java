@@ -41,6 +41,7 @@ public class Server implements CommandLineRunner {
         thomas.setActive(true);
         professor1.setActive(true);
 
+
         repository.save(admin);
         repository.save(abdul);
         repository.save(anita);
@@ -54,14 +55,28 @@ public class Server implements CommandLineRunner {
 
         Courserepository.save(new Course("Object Oriented Software Programming","3004B",3000,3004,"Computer Science"));
         Courserepository.save(new Course("The origin of Planets","2419B",2000,2419,"Earth Science"));
+        Courserepository.save(new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts"));
 
-        // fetch all users
+//        //Assigning course(s) to test prof
+
+//        System.out.println(Courserepository.findCourseByCourseCode("3004B"));
+
+//        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("3004B"));
+//        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("1002D"));
+//
+
+//        // fetch all users
         System.out.println("Users found with findAll():");
         System.out.println("-------------------------------");
         for (User user : repository.findAll()) {
             System.out.println(user);
         }
         System.out.println();
+//
+//        System.out.println("Professor1 Courses: ");
+//        for(int index = 0; index > ((User.Professor) professor1).retrieveCourses().size()-1; index++){
+//            System.out.println(((User.Professor) professor1).retrieveCourses().get(index).getCourseCode());
+//        }
     }
 }
 

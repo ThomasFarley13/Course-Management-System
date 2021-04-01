@@ -99,6 +99,22 @@ public class CourseManagementSystem {
         }
         return "redirect:/approveUser";
     }
+    @GetMapping("/deleteUser")
+    public String deleteUser(Model model) {
+        List<User> users = repository.findAll();
+        model.addAttribute("users",users);
+        return "user-delete";
+    }
+
+    @PostMapping("/deleteUser")
+    public String deleteUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+        if(users!=null) {
+            for (String user : users) {
+                User x = repository.deleteByUsername(user);
+            }
+        }
+        return "redirect:/deleteUser";
+    }
 
     @PostMapping("/createUserRequest")
     public String createUserRequest(@RequestParam String username,
@@ -120,6 +136,25 @@ public class CourseManagementSystem {
             repository.save(factory.createUser(username, password, "Student", repository.findTopByOrderByIdDesc().getId() +1, date, firstname, lastname));
         }
         return "create-successful";
+    }
+
+    @GetMapping("/changePassword")
+    public String changePassword() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam String username,
+                                    @RequestParam String password){
+        if(repository.findByUsername(username) == null){
+            return "forgot-password-error";
+        }
+        else{
+            User x = repository.findByUsername(username);
+            x.setPassword(password);
+            repository.save(x);
+            return "change-successful";
+        }
     }
 
     @PostMapping("/login")

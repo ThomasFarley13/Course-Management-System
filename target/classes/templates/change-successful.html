@@ -8,14 +8,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ERROR 403</title>
+    <title>Password Change Successful</title>
 </head>
 <body>
 <div class="wrapper fadeInDown">
-    <h1> You are forbidden from using this action due to your permissions.</h1>
-    <form action="/" th:action="@{/}"  method="get">
-        <input type="submit" value="Return to home" />
-    </form>
+    <div id="formContent">
+
+        <p>Your password has been successfully changed! </p>
+        <!-- Login Form -->
+        <form action="/" th:action="@{/}"  method="get">
+            <input type="submit" class="fadeIn fourth" value="Return to login">
+        </form>
+
+
+    </div>
 </div>
 </body>
 

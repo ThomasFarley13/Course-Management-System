@@ -59,8 +59,6 @@ public class Server implements CommandLineRunner {
 
 //        Assigning course(s) to test prof
 
-        String course1 = "3004B";
-        System.out.println(Courserepository.findCourseByCourseCode(course1));
 
 
 //        // fetch all users
@@ -68,6 +66,13 @@ public class Server implements CommandLineRunner {
         System.out.println("-------------------------------");
         for (User user : repository.findAll()) {
             System.out.println(user);
+        }
+        System.out.println();
+
+        System.out.println("Courses found with findAll():");
+        System.out.println("-------------------------------");
+        for (Course course : Courserepository.findAll()) {
+            System.out.println(course);
         }
         System.out.println();
 //

@@ -1,13 +1,8 @@
 package com.COMP3004.CMS;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.util.BsonUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.data.annotation.Id;
 import java.util.*;
 
@@ -86,7 +81,7 @@ public class User extends UserCreateFactory{
 
         public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
-            courseList = new ArrayList<String>();
+            courseList = new ArrayList<>();
             setBirthdate(birthdate);
         }
 
@@ -103,7 +98,7 @@ public class User extends UserCreateFactory{
     }
 
     public class Professor extends User{
-        private ArrayList<String> assignedCourses;
+        private ArrayList<Course> assignedCourses;
 
 
         public ArrayList<Course> retrieveCourses() {
@@ -125,7 +120,7 @@ public class User extends UserCreateFactory{
 
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
-            assignedCourses = new ArrayList<String>();
+            assignedCourses = new ArrayList<>();
         }
     }
 

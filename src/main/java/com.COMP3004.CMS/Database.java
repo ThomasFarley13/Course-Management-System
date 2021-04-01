@@ -9,6 +9,7 @@ import java.util.List;
 
 import java.util.List;
 
+
 interface UserDatabase extends MongoRepository<User,String> {
 
     public User findByUsername(String username);
@@ -22,7 +23,7 @@ interface UserDatabase extends MongoRepository<User,String> {
 
 
 interface CourseDatabase extends MongoRepository<Course,String> {
-    public Course findCourseByCourseCode (String courseCode);
+    public Course findByCourseCode (String courseCode);
     public List<Course> findBycoursenumber (int coursenum);
     public List<Course> findByCoursenumberAndCourseDept (int coursenum,String courseDept);
     public List<Course> findByCourselevelAndCourseDept (int courselevel,String courseDept);
@@ -34,6 +35,6 @@ interface CourseDatabase extends MongoRepository<Course,String> {
 
 
 interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
-
+    //public Deliverable findDeliverableByDeliverableID (String DeliverableID);
 }
 

@@ -1,27 +1,21 @@
 package com.COMP3004.CMS;
 
 import lombok.Data;
+
+
+import org.json.simple.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -34,6 +28,7 @@ public class CourseManagementSystem {
 
     UserCreateFactory factory = new User();
 
+
     @Autowired
     private UserDatabase repository;
 
@@ -42,6 +37,9 @@ public class CourseManagementSystem {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    DatabaseHandler handler ;
 
 
     @GetMapping("/")
@@ -382,12 +380,47 @@ public class CourseManagementSystem {
     {
         System.out.println("Parameters are " + allParams.entrySet());
         System.out.println("We are in the get course function");
-
-
         List<Course> courses = new ArrayList<Course>();
-        courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
+        if (allParams.containsKey("CourseID")) {
+            courses.add(Courserepository.findByCourseCode(allParams.get("CourseID")));
+        }
+        else if (allParams.containsKey("CourseLevel") && allParams.containsKey("Subject")) {
+            courses.addAll(Courserepository.findByCourselevelAndCourseDept(Integer.parseInt(allParams.get("CourseLevel")),allParams.get("Subject")));
+        }
+        else if (allParams.containsKey("CourseNum") && allParams.containsKey("Subject")){
+            courses.addAll(Courserepository.findByCoursenumberAndCourseDept(Integer.parseInt(allParams.get("CourseNum")),allParams.get("Subject")));
+        }
+        else if (allParams.containsKey("CourseNum")) {
+            courses.addAll(Courserepository.findBycoursenumber(Integer.parseInt(allParams.get("CourseNum"))));
+        }
+        else if (allParams.containsKey("Subject")){
+            courses.addAll(Courserepository.findByCourseDept(allParams.get("Subject")));
+        }
+        else if (allParams.containsKey("CourseLevel")){
+            courses.addAll(Courserepository.findByCourselevel(Integer.parseInt(allParams.get("CourseLevel"))));
+        }
+        else {
+            courses.addAll(Courserepository.findAll());
+        }
+        //handler.register_student("Abdul","3004B");
+        //courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
 
         return courses;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
+    @ResponseBody
+    public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) {
+        System.out.println("We are registering the student");
+        Object [] keys = courses.keySet().toArray();
+        List<String> temp = new ArrayList<String>();
+        for (int i = 0; i < keys.length; ++i) {
+            String courseID = (String)courses.get(keys[i]);
+            temp.add(courseID);
+            handler.register_student((String) session.getAttribute("username"),courseID);
+        }
+
+        return "Registered in courses: " + temp.toString();
     }
 
 

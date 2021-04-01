@@ -18,6 +18,10 @@ public class Server implements CommandLineRunner {
     @Autowired
     private CourseDatabase Courserepository;
 
+
+
+
+
     public static void main(String[] args) {
         SpringApplication.run(Server.class, args);
     }
@@ -26,6 +30,8 @@ public class Server implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         UserCreateFactory factory = new User();
+
+
 
         repository.deleteAll();
 
@@ -61,7 +67,11 @@ public class Server implements CommandLineRunner {
 
 
 
+
 //        // fetch all users
+
+        //stu.updateRecords("Register","Course","Abdul","2419B",null);
+        // fetch all users
         System.out.println("Users found with findAll():");
         System.out.println("-------------------------------");
         for (User user : repository.findAll()) {

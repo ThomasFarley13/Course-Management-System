@@ -62,6 +62,9 @@ $.postJSON = function(url, data, callback) {
     'type': 'POST',
     'url': url,
     'data': JSON.stringify(data),
+    'async': false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+    'cache': false,    //This will force requested pages not to be cached by the browser  
+    'processData':false,
     'dataType': 'json',
     'success': callback
     });
@@ -91,6 +94,9 @@ function search() {
     jQuery.get(url, function(data, status){
       console.log("Data: " + data + "\nStatus: " + status);
       courseSearchRes = data;
+      if (data == '') {
+        alert("There are no courses that matched your search")
+      }
       displayOptions(data)
     });
 
@@ -131,5 +137,13 @@ function displayOptions(courseArray) {
 }
 
 function register () {
-    confirm("Are you sure you want to reister for these courses");
+    let confirmation = confirm("Are you sure you want to reister for these courses");
+    if (confirmation) {
+        $.postJSON("http://localhost:8080/Courseregistration",selectedCourseIDs,callback);
+    }
+}
+
+function callback (data,status) {
+    console.log(data);
+    alert(data);
 }

@@ -76,12 +76,12 @@ public class User extends UserCreateFactory{
     public class Student extends User{
 
         @Getter @Setter protected String birthdate;
-        private ArrayList<Course> courseList;
+        private ArrayList<String> courseList;
 
 
         public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
-            courseList = new ArrayList<>();
+            courseList = new ArrayList<String>();
             setBirthdate(birthdate);
         }
 
@@ -92,23 +92,29 @@ public class User extends UserCreateFactory{
                 return retrieved;
         }
 
+        public void register (String CourseID) {
+            courseList.add(CourseID);
+        }
+        public void deregister (String CourseID) {
+            courseList.remove(CourseID);
+        }
         public Course createRegistrationRequest(){
             return new Course(null, null);
         }
     }
 
     public class Professor extends User{
-        private ArrayList<Course> assignedCourses;
+        private ArrayList<String> assignedCourses;
 
 
-        public ArrayList<Course> retrieveCourses() {
+        public ArrayList<String> retrieveCourses() {
            ArrayList<Course> retrieved = new ArrayList<Course>();
            System.out.println("retrieving courses from Mongo");
           
            return assignedCourses;
         }
 
-        public void assignCourse(Course course){ assignedCourses.add(course); }
+        public void assignCourse(String course){ assignedCourses.add(course); }
 
         public String createDeliverable(){
             return "<link to deliverable here>";
@@ -118,6 +124,12 @@ public class User extends UserCreateFactory{
 
         public void submitFinalGrade(int grade, Student student) {};
 
+        public void assign (String courseID) {
+            assignedCourses.add(courseID);
+        }
+        public void deassign (String courseID) {
+            assignedCourses.remove(courseID);
+        }
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
             assignedCourses = new ArrayList<>();

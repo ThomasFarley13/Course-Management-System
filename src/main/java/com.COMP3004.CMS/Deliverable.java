@@ -1,4 +1,4 @@
-/*package com.COMP3004.CMS;
+package com.COMP3004.CMS;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -12,7 +12,7 @@ public class Deliverable {
     @Id
     String DeliverableID;
     ArrayList<JSONObject> studentsubmissions; // this will be of form {username:{sbmission:submissionlink,grade:grade}}
-
+    String Details;
 
     public Deliverable () {
 
@@ -27,4 +27,3 @@ public class Deliverable {
 
 
 }
-*/

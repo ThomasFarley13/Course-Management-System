@@ -205,7 +205,6 @@ public class CourseManagementSystem {
             System.out.println("Why are we here");
             return "login";
         }
-
     }
 
 

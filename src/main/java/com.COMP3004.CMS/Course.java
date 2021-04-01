@@ -14,7 +14,7 @@ public class Course {
 
 
     @Getter @Setter protected String courseName;
-    @Getter @Setter protected ArrayList<Deliverable> deliverables;
+    @Getter @Setter protected ArrayList<Deliverable> deliverables; //Need to change as array of string IDs
 
     @Id
     @Getter @Setter protected String courseCode;
@@ -26,7 +26,7 @@ public class Course {
 
 
 
-    //Deliverable methods
+    //Deliverable methods -- NEED TO BE READJUSTED AS SEPHER'S METHOD
     public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
         deliverables.add(new Deliverable(assignmentName,description,daysUntilDue,weighting));
     }
@@ -92,26 +92,4 @@ public class Course {
 
 }
 
-     class Deliverable {
-         @Getter @Setter  protected String assignmentName;
-         @Getter @Setter private String description;
-         @Getter  final Calendar dueDate = Calendar.getInstance();
-         @Getter @Setter private int weighting;
 
-        //public String getAssignmentName() { return assignmentName; } Assignment name should not be changeable imo
-        public void setDueDate (int daysFromNow) { dueDate.add(Calendar.DATE, daysFromNow); }
-
-
-         public Deliverable(){
-             this.assignmentName = null;
-             this.description = null;
-             this.weighting = 0;
-         }
-
-        public Deliverable(String assignmentName, String description, int daysUntilDue, int weighting){
-            this.assignmentName = assignmentName;
-            this.description = description;
-            dueDate.add(Calendar.DATE, daysUntilDue);
-            this.weighting = weighting;
-        }
-    }

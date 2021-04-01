@@ -79,16 +79,19 @@ public class User extends UserCreateFactory{
     }
 
     public class Student extends User{
+
         @Getter @Setter protected String birthdate;
         private ArrayList<Course> courseList;
 
+
         public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
+            courseList = new ArrayList<String>();
             setBirthdate(birthdate);
         }
 
-        public ArrayList<Course> retrieveCourses() {
-                ArrayList<Course> retrieved = new ArrayList<Course>();
+        public ArrayList<String> retrieveCourses() {
+                ArrayList<String> retrieved = new ArrayList<String>();
                 System.out.println("retrieving courses from Mongo");
 
                 return retrieved;
@@ -100,13 +103,14 @@ public class User extends UserCreateFactory{
     }
 
     public class Professor extends User{
-        private ArrayList<Course> assignedCourses;
+        private ArrayList<String> assignedCourses;
+
 
         public ArrayList<Course> retrieveCourses() {
-//            ArrayList<Course> retrieved = new ArrayList<Course>();
-//            System.out.println("retrieving courses from Mongo");
-
-            return assignedCourses;
+           ArrayList<Course> retrieved = new ArrayList<Course>();
+           System.out.println("retrieving courses from Mongo");
+          
+           return assignedCourses;
         }
 
         public void assignCourse(Course course){ assignedCourses.add(course); }
@@ -121,6 +125,7 @@ public class User extends UserCreateFactory{
 
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
+            assignedCourses = new ArrayList<String>();
         }
     }
 

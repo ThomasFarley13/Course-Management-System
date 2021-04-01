@@ -14,7 +14,9 @@ public class Course {
 
 
     @Getter @Setter protected String courseName;
+
     @Getter @Setter protected ArrayList<String> deliverables;
+
 
     @Id
     @Getter @Setter protected String courseCode;
@@ -28,8 +30,13 @@ public class Course {
 
 
 
+
     //Deliverable methods
     /*public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
+=======
+    //Deliverable methods -- NEED TO BE READJUSTED AS SEPHER'S METHOD
+    public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
+>>>>>>> c3606ad00acc3f9e30b9a828e113556b0076e1d8
         deliverables.add(new Deliverable(assignmentName,description,daysUntilDue,weighting));
     }
 
@@ -122,6 +129,7 @@ public class Course {
 
 }
 
+
      /*class Deliverable {
          @Getter @Setter  protected String assignmentName;
          @Getter @Setter private String description;
@@ -145,3 +153,4 @@ public class Course {
             this.weighting = weighting;
         }
     }*/
+

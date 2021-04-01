@@ -118,6 +118,12 @@ public class Course {
         public void setDueDate (int daysFromNow) { dueDate.add(Calendar.DATE, daysFromNow); }
         public void setWeighting (int newWeight) { this.weighting = newWeight; }
 
+         public Deliverable(){
+             this.assignmentName = null;
+             this.description = null;
+             this.weighting = 0;
+         }
+
         public Deliverable(String assignmentName, String description, int daysUntilDue, int weighting){
             this.assignmentName = assignmentName;
             this.description = description;

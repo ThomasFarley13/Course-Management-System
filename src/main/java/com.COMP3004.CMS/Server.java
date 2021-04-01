@@ -62,9 +62,6 @@ public class Server implements CommandLineRunner {
         String course1 = "3004B";
         System.out.println(Courserepository.findCourseByCourseCode(course1));
 
-//        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("3004B"));
-//        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("1002D"));
-//
 
 //        // fetch all users
         System.out.println("Users found with findAll():");

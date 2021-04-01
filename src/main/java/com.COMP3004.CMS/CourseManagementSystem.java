@@ -1,5 +1,6 @@
 package com.COMP3004.CMS;
 
+import lombok.Data;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -120,7 +121,6 @@ public class CourseManagementSystem {
         }
         return "create-successful";
     }
-
 
     @PostMapping("/login")
     public Object loginhandler(@ModelAttribute User user, Model model,HttpSession session) {

@@ -1,5 +1,9 @@
 package com.COMP3004.CMS;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.util.BsonUtils;
 import org.springframework.stereotype.Component;
@@ -8,48 +12,23 @@ import org.springframework.data.annotation.Id;
 import java.util.*;
 
 @Component
+@Getter @Setter
+
 public class User extends UserCreateFactory{
+
     @Id
-    protected String username;
-    protected String password;
-    protected String role;
-    protected int id;
-    protected String firstname;
-    protected String lastname;
-    protected boolean active;
-    protected String birthdate;
-
-   List<String> roles = Arrays.asList("Admin", "Professor", "Student");
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
+    @Getter @Setter protected String username;
+    @Getter @Setter  protected String password;
+    @Getter @Setter protected String role;
+    @Getter @Setter protected int id;
+    @Getter @Setter protected String firstname;
+    @Getter @Setter protected String lastname;
+    @Setter protected boolean active;
 
     public boolean getActive() { return active; }
 
-    public void setActive(boolean active) { this.active = active; }
+   List<String> roles = Arrays.asList("Admin", "Professor", "Student");
 
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRole() { return role; }
-
-    public void setRole(String role) { this.role = role; }
-
-    public String getFirstname() { return firstname; }
-
-    public void setFirstname(String firstname) { this.firstname = firstname; }
-
-    public String getLastname() { return lastname; }
-
-    public void setLastname(String lastname) { this.lastname = lastname; }
 
     protected void createUsername(String newUsername ) {
         System.out.println("Old username is <" + this.username
@@ -100,15 +79,8 @@ public class User extends UserCreateFactory{
     }
 
     public class Student extends User{
+        @Getter @Setter protected String birthdate;
         private ArrayList<Course> courseList;
-
-        public String getBirthdate() {
-            return birthdate;
-        }
-
-        public void setBirthdate(String birthdate) {
-            this.birthdate = birthdate;
-        }
 
         public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);

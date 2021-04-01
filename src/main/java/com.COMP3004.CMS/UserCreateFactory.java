@@ -8,5 +8,4 @@ public abstract class UserCreateFactory {
     public abstract User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname);
 
 
-
 }

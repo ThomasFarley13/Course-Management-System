@@ -1,40 +1,30 @@
 package com.COMP3004.CMS;
 
 import com.COMP3004.CMS.User.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+@Getter @Setter
 public class Course {
-    protected String courseName;
-    protected ArrayList<Deliverable> deliverables;
+
+
+
+    @Getter @Setter protected String courseName;
+    @Getter @Setter protected ArrayList<Deliverable> deliverables;
 
     @Id
-    protected String courseCode;
-    protected int courselevel;
-    protected int coursenumber;
-    protected String courseDept;
-    protected User.Professor professor;
-    protected ArrayList<Student> students;
+    @Getter @Setter protected String courseCode;
+    @Getter @Setter  protected int courselevel;
+    @Getter @Setter protected int coursenumber;
+    @Getter @Setter protected String courseDept;
+    @Getter @Setter protected User.Professor professor;
+    @Getter @Setter  protected ArrayList<Student> students;
 
 
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
-    }
 
     //Deliverable methods
     public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
@@ -103,20 +93,14 @@ public class Course {
 }
 
      class Deliverable {
-        protected String assignmentName;
-        private String description;
-        final Calendar dueDate = Calendar.getInstance();
-        private int weighting;
+         @Getter @Setter  protected String assignmentName;
+         @Getter @Setter private String description;
+         @Getter  final Calendar dueDate = Calendar.getInstance();
+         @Getter @Setter private int weighting;
 
         //public String getAssignmentName() { return assignmentName; } Assignment name should not be changeable imo
-        public String getDescription() { return description; }
-        public Date getDueDate() { return dueDate.getTime(); }
-        public int getWeighting() { return weighting; }
-
-        public void setAssignmentName(String newName) { this.assignmentName = newName; }
-        public void setDescription (String newDesc) { this.description = newDesc; }
         public void setDueDate (int daysFromNow) { dueDate.add(Calendar.DATE, daysFromNow); }
-        public void setWeighting (int newWeight) { this.weighting = newWeight; }
+
 
          public Deliverable(){
              this.assignmentName = null;

@@ -334,6 +334,32 @@ public class CourseManagementSystem {
         }
     }
 
+    @GetMapping("/createCourse")
+    public String createCourse(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+
+        if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null){
+            return "create-course";
+        }
+        else{
+            return "error";
+        }
+    }
+
+    @PostMapping("/createCourseRequest")
+    public String createCourseRequest(@RequestParam String courseName,
+                                    @RequestParam String courseCode){
+        if(Courserepository.findCourseByCourseCode(courseCode) != null){
+            return "create-course-exists";
+        }
+
+        Courserepository.save(new Course(courseName, courseCode));
+        return "course-create-successful";
+    }
+
 
     /*
     This is a function to test Login using jmeter.

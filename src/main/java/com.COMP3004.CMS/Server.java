@@ -70,6 +70,36 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("Object Oriented Software Programming","3004B",3000,3004,"Computer Science"));
         Courserepository.save(new Course("The origin of Planets","2419B",2000,2419,"Earth Science"));
         Courserepository.save(new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts"));
+        Courserepository.save(new Course("Programming Paradigms","COMP3007B",3000,3007,"Computer Science"));
+        Courserepository.save(new Course("Applied Cryptography","COMP4109A",4000,4109,"Computer Science"));
+        Courserepository.save(new Course("Fundamentals Web Applications","COMP2406A",2000,2406,"Computer Science"));
+        Courserepository.save(new Course("Operating Systems","COMP3000B",3000,3000,"Computer Science"));
+        Courserepository.save(new Course("Design & Analysis of Algorithms","COMP3804A",3000,3804,"Computer Science"));
+        Courserepository.save(new Course("Intro to Systems Programming","COMP2401A",2000,2401,"Computer Science"));
+        Courserepository.save(new Course("Intro to Software Engineering","COMP2404A",2000,2404,"Computer Science"));
+        Courserepository.save(new Course("Abstract Data Types/Algorithms","COMP2402B",2000,2402,"Computer Science"));
+        Courserepository.save(new Course("Linear Algebra II","MATH2107A",2000,2107,"Math"));
+        Courserepository.save(new Course("Intro to Computer Science II","COMP1406B",1000,1406,"Computer Science"));
+        Courserepository.save(new Course("Intro to Computer Science I","COMP1405B",1000,1405,"Computer Science"));
+        Courserepository.save(new Course("Linear Algebra I","MATH1107A",1000,1107,"Math"));
+        Courserepository.save(new Course("Discrete Structures I","COMP1805A",1000,1805,"Computer Science"));
+        Courserepository.save(new Course("Discrete Structures II","COMP2804A",2000,2804,"Computer Science"));
+        Courserepository.save(new Course("Introduction to Ecology","BIOL2600A",2000,2600,"Biology"));
+        Courserepository.save(new Course("Mysteries of the Mind","CGSC1001B",1000,1001,"Cognitive Science"));
+        Courserepository.save(new Course("Co-op","COOP1000D",1000,1000,"Co-op"));
+        Courserepository.save(new Course("Introduction to Ecology","BIOL2600A",2000,2600,"Biology"));
+        Courserepository.save(new Course("Evolutionary Concepts","BIOL3609A",3000,3609,"Biology"));
+        Courserepository.save(new Course("General Biochemistry I","BIOC3101A",3000,3101,"Biochemistry"));
+        Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
+
+
+
+
+
+
+
+
+
 
 //        Assigning course(s) to test prof
 

@@ -1,34 +1,57 @@
 package com.COMP3004.CMS;
 
 import com.COMP3004.CMS.User.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import java.util.Calendar;
 
 import java.util.ArrayList;
-
+import java.util.Date;
+@Getter @Setter
 public class Course {
-    protected String courseName;
+
+
+
+    @Getter @Setter protected String courseName;
+    @Getter @Setter protected ArrayList<Deliverable> deliverables;
+
     @Id
-    protected String courseCode;
-    protected int courselevel;
-    protected int coursenumber;
-    protected String courseDept;
-    protected User.Professor professor;
-    protected ArrayList<Student> students;
+    @Getter @Setter protected String courseCode;
+    @Getter @Setter  protected int courselevel;
+    @Getter @Setter protected int coursenumber;
+    @Getter @Setter protected String courseDept;
+    @Getter @Setter protected User.Professor professor;
+    @Getter @Setter  protected ArrayList<Student> students;
 
-    public String getCourseName() {
-        return courseName;
+
+
+    //Deliverable methods
+    public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
+        deliverables.add(new Deliverable(assignmentName,description,daysUntilDue,weighting));
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void editDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
+        int targetIndex = 0;
+
+        for (int index = 0; index < deliverables.size()-1; index++){
+            if (deliverables.get(index).assignmentName.equals(assignmentName)){
+                targetIndex = index;
+            }
+        }
+
+        deliverables.get(targetIndex).setDescription(description);
+        deliverables.get(targetIndex).setDueDate(daysUntilDue);
+        deliverables.get(targetIndex).setWeighting(weighting);
     }
 
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public void deleteDeliverable(String targetName){
+        for (int index = 0; index < deliverables.size()-1; index++){
+            if (deliverables.get(index).assignmentName.equals(targetName)){
+                deliverables.remove(index);
+                break;
+            }
+        }
     }
 
     public ArrayList<Student> retrieveStudents() {
@@ -43,6 +66,14 @@ public class Course {
         return String.format(
                 "User[Course='%s', Course Code='%s']",
                 courseName, courseCode);
+    }
+
+    public Course() {
+        this.courseName = null;
+        this.courseCode = null;
+        this.courselevel = 0;
+        this.coursenumber = 0;
+        this.courseDept = null;
     }
 
     public Course(String courseName, String courseCode) {
@@ -60,3 +91,27 @@ public class Course {
     }
 
 }
+
+     class Deliverable {
+         @Getter @Setter  protected String assignmentName;
+         @Getter @Setter private String description;
+         @Getter  final Calendar dueDate = Calendar.getInstance();
+         @Getter @Setter private int weighting;
+
+        //public String getAssignmentName() { return assignmentName; } Assignment name should not be changeable imo
+        public void setDueDate (int daysFromNow) { dueDate.add(Calendar.DATE, daysFromNow); }
+
+
+         public Deliverable(){
+             this.assignmentName = null;
+             this.description = null;
+             this.weighting = 0;
+         }
+
+        public Deliverable(String assignmentName, String description, int daysUntilDue, int weighting){
+            this.assignmentName = assignmentName;
+            this.description = description;
+            dueDate.add(Calendar.DATE, daysUntilDue);
+            this.weighting = weighting;
+        }
+    }

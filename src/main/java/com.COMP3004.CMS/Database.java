@@ -12,10 +12,12 @@ import java.util.List;
 interface UserDatabase extends MongoRepository<User,String> {
 
     public User findByUsername(String username);
+    public User deleteByUsername(String username);
     public User findByUsernameAndRole(String username, String role);
     public User findByUsernameAndPassword(String username, String password);
     public User findTopByOrderByIdDesc();
     public List<User> findByActiveIsFalse();
+    public List<User> findAll();
 }
 
 
@@ -29,6 +31,7 @@ interface CourseDatabase extends MongoRepository<Course,String> {
     public List<Course> findByCourseDept (String CourseDept);
 
 }
+
 
 interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
 

@@ -25,6 +25,16 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.27" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-sync:4.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:4.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.1.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.5" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-json:2.4.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.4" level="project" />
@@ -35,16 +45,13 @@
     <orderEntry type="library" name="Maven: org.glassfish:jakarta.el:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.43" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:5.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf-spring5:3.0.12.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:3.0.12.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:2.4.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:2.4.3" level="project" />
@@ -74,13 +81,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.3.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.7.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-sync:4.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:bson:4.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.1.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-rest:2.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-rest-webmvc:3.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-rest-core:3.4.5" level="project" />
@@ -93,6 +93,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.4.5" level="project" />
-    <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.18" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.18" level="project" />
   </component>
 </module>

@@ -1,5 +1,6 @@
 package com.COMP3004.CMS;
 
+import lombok.Data;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -98,6 +99,22 @@ public class CourseManagementSystem {
         }
         return "redirect:/approveUser";
     }
+    @GetMapping("/deleteUser")
+    public String deleteUser(Model model) {
+        List<User> users = repository.findAll();
+        model.addAttribute("users",users);
+        return "user-delete";
+    }
+
+    @PostMapping("/deleteUser")
+    public String deleteUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+        if(users!=null) {
+            for (String user : users) {
+                User x = repository.deleteByUsername(user);
+            }
+        }
+        return "redirect:/deleteUser";
+    }
 
     @PostMapping("/createUserRequest")
     public String createUserRequest(@RequestParam String username,
@@ -121,6 +138,24 @@ public class CourseManagementSystem {
         return "create-successful";
     }
 
+    @GetMapping("/changePassword")
+    public String changePassword() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam String username,
+                                    @RequestParam String password){
+        if(repository.findByUsername(username) == null){
+            return "forgot-password-error";
+        }
+        else{
+            User x = repository.findByUsername(username);
+            x.setPassword(password);
+            repository.save(x);
+            return "change-successful";
+        }
+    }
 
     @PostMapping("/login")
     public Object loginhandler(@ModelAttribute User user, Model model,HttpSession session) {
@@ -155,6 +190,7 @@ public class CourseManagementSystem {
                 return "admin-home";
             }
             else if(user.getRole().equals("Professor")){
+                System.out.println("The prof object: " + user);
                 return "professor-home";
             }
             else if(user.getRole().equals("Student")){
@@ -207,7 +243,9 @@ public class CourseManagementSystem {
         if(userLoggedIn != null){
             user = userLoggedIn;
         }
+
         model.addAttribute(user);
+        System.out.println("The student here is: " + user.getUsername());
 
         return "submit-deliverable";
     }
@@ -226,18 +264,21 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/createDeliverable")
-    public String createDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String createDeliverable(Model model, HttpSession session) {
 
-        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
-            return "create-deliverable";
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+
+            if(user.getUsername() != null){
+                //Get required info here?
+                return "create-deliverable";
+            }
+            else{
+                return "error";
+            }
         }
-        else{
-            return "error";
-        }
+        return "error";
     }
 
     @GetMapping("/deleteDeliverable")
@@ -317,6 +358,8 @@ public class CourseManagementSystem {
 
     @GetMapping("/Cregister")
     public String CourseRegisterPage (Model model,HttpSession session) {
+
+        System.out.println("REACHED COURSE REGISTER PAGE");
 
         List<String> Depts = mongoTemplate.findDistinct("courseDept", Course.class, String.class);
         List<Integer> levels = mongoTemplate.findDistinct("courselevel", Course.class, Integer.class);

@@ -57,9 +57,10 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("The origin of Planets","2419B",2000,2419,"Earth Science"));
         Courserepository.save(new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts"));
 
-//        //Assigning course(s) to test prof
+//        Assigning course(s) to test prof
 
-//        System.out.println(Courserepository.findCourseByCourseCode("3004B"));
+        String course1 = "3004B";
+        System.out.println(Courserepository.findCourseByCourseCode(course1));
 
 //        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("3004B"));
 //        ((User.Professor) professor1).assignCourse(Courserepository.findCourseByCourseCode("1002D"));

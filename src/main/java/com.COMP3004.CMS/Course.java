@@ -78,6 +78,13 @@ public class Course {
                 courseName, courseCode);
     }
 
+    public Course() {
+        this.courseName = null;
+        this.courseCode = null;
+        this.courselevel = 0;
+        this.coursenumber = 0;
+        this.courseDept = null;
+    }
 
     public Course(String courseName, String courseCode) {
         this.courseName = courseName;

@@ -341,21 +341,19 @@ public class CourseManagementSystem {
         }
         model.addAttribute(user);
 
-        if(repository.findByUsernameAndRole(user.getUsername(), "Admin") != null){
-            return "create-course";
-        }
-        else{
-            return "error";
-        }
+        return "create-course";
     }
 
     @PostMapping("/createCourseRequest")
     public String createCourseRequest(@RequestParam String courseName,
                                     @RequestParam String courseCode){
+        System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
         if(Courserepository.findCourseByCourseCode(courseCode) != null){
+            System.out.println("Submitted course code exists");
             return "create-course-exists";
         }
 
+        System.out.println("Saving new course " + courseName);
         Courserepository.save(new Course(courseName, courseCode));
         return "course-create-successful";
     }

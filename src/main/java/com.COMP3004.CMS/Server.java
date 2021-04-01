@@ -36,6 +36,7 @@ public class Server implements CommandLineRunner {
 
 
         //repository.deleteAll();
+        Courserepository.deleteAll();
 
         User.Admin admin = (User.Admin) factory.createUser("Admin", "Password123", "Admin", 1,"null","null", "Admin", "User");
         User.Student abdul = (User.Student) factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30","male", "Abdul", "Kazal");

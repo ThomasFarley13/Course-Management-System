@@ -16,8 +16,8 @@
 
         <p>Course create successful</p>
         <div>
-            <form action="/dashboard" th:action="@{/dashboard}" th:object="${user}" method="post" >
-                <input type="submit" class="btn btn-primary" value="Return to Home"/>
+            <form action="/dashboard" th:action="@{/dashboard}" method="get">
+                <input type="submit" value="Return to home"/>
             </form>
         </div>
 

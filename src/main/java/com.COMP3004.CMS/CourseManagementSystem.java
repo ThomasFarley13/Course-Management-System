@@ -348,7 +348,7 @@ public class CourseManagementSystem {
     public String createCourseRequest(@RequestParam String courseName,
                                     @RequestParam String courseCode){
         System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
-        if(Courserepository.findCourseByCourseCode(courseCode) != null){
+        if(Courserepository.findByCourseCode(courseCode) != null){
             System.out.println("Submitted course code exists");
             return "create-course-exists";
         }

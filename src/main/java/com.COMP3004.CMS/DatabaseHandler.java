@@ -192,7 +192,7 @@ class courseDetails extends observer {
             Courserepository.save(c);
         } else if (action.equals("Add") && ObjChanged.equals("Course")) {
             if (Agent.equals("Admin")) {
-                Course temp = new Course("", CourseID);
+                Course temp = new Course(Extra, CourseID);
                 Courserepository.save(temp);
                 //the other classes will have to populate the data further
             }

@@ -354,7 +354,7 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Saving new course " + courseName);
-        Courserepository.save(new Course(courseName, courseCode));
+        handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);
         return "course-create-successful";
     }
 

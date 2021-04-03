@@ -119,7 +119,8 @@ public class CourseManagementSystem {
                                     @RequestParam String password,
                                     @RequestParam String firstname,
                                     @RequestParam String lastname,
-                                    @RequestParam(required = false) String date ){
+                                    @RequestParam(required = false) String date,
+                                    @RequestParam(required = false) String gender){
         if(repository.findByUsername(username) != null && date == null){
             return "professor-create-taken";
         }
@@ -128,10 +129,10 @@ public class CourseManagementSystem {
         }
 
         if(date == null){
-            repository.save(factory.createUser(username, password, "Professor", repository.findTopByOrderByIdDesc().getId() +1, date, firstname, lastname));
+            repository.save(factory.createUser(username, password, "Professor", repository.findTopByOrderByIdDesc().getId() +1, date, gender, firstname, lastname));
         }
         else{
-            repository.save(factory.createUser(username, password, "Student", repository.findTopByOrderByIdDesc().getId() +1, date, firstname, lastname));
+            repository.save(factory.createUser(username, password, "Student", repository.findTopByOrderByIdDesc().getId() +1, date, gender, firstname, lastname));
         }
         return "create-successful";
     }
@@ -348,7 +349,7 @@ public class CourseManagementSystem {
 
         model.addAttribute("courses", coursenames);
         model.addAttribute("links", courselinks);
-        model.addAttribute("user",factory.createUser("Sepehr","Password423","Student", 7,"null","Dave","Ian"));
+        model.addAttribute("user",factory.createUser("Sepehr","Password423","Student", 7,"null", "null","Dave","Ian"));
 
         return "dashboard";
     }

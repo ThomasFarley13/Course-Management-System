@@ -135,7 +135,12 @@ class studentDetails extends observer {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.deregister(CourseID);
             Userrepository.save(temp);
+        } else if (action.equals("Grade")){
+            User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
+            temp.grading(CourseID,Extra);
+            Userrepository.save(temp);
         }
+
     }
 }
 

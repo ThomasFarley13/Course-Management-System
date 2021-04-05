@@ -5,13 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="278ac57d-c745-44c5-89a8-9e3b8cf15966" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_15.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_8.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_ooxml_schemas_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_openxml4j_1_0_beta.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_scratchpad_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_3_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Export.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaBooks.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Stats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CMS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/UserCreateFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/UserCreateFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/student-create-taken.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/student-create-taken.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/student-create.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/student-create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin-home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin-home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserCreateFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserCreateFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin-home.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin-home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/student-create-taken.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/student-create-taken.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/student-create.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/student-create.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +45,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="AnnotationType" />
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -56,6 +79,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -278,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617258896293</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas">
+      <created>1617481983711</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1617481983711</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -306,6 +337,7 @@
     <MESSAGE value="Added lombok support, error message handling, and error message HTMLs - Thomas" />
     <MESSAGE value="Updated some error message htmls, added the forgot password feature, added the delete user feature - Thomas" />
     <MESSAGE value="Commented our deliverable.java to help with testing - Thomas, Anita" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commented our deliverable.java to help with testing - Thomas, Anita" />
+    <MESSAGE value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
   </component>
 </project>

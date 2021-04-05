@@ -73,8 +73,8 @@ public class Course {
     @Override
     public String toString() {
         return String.format(
-                "User[Course='%s', Course Code='%s']",
-                courseName, courseCode);
+                "User[Course='%s', Course Code='%s', Students = '%s']",
+                courseName, courseCode, students);
     }
 
     public Course() {

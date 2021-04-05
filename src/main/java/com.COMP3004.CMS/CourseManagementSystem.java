@@ -1,8 +1,7 @@
 package com.COMP3004.CMS;
 
-import lombok.Data;
 
-
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -12,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 import java.util.List;
@@ -97,6 +98,22 @@ public class CourseManagementSystem {
         }
         return "redirect:/approveUser";
     }
+
+    @GetMapping(value ="/getStats")
+    //@ResponseBody
+    public String getStats(HttpServletResponse response) throws IOException {
+        Stats s = new Stats(repository);
+        XSSFWorkbook file = s.getStats();
+        String filename = "Export.xlsx";
+        String filetype = "xlsx";
+
+        response.addHeader("Content-disposition", "attachment;filename=" + filename);
+        response.setContentType(filetype);
+        file.write(response.getOutputStream());
+        response.flushBuffer();
+        return null;
+    }
+
     @GetMapping("/deleteUser")
     public String deleteUser(Model model) {
         List<User> users = repository.findAll();
@@ -108,7 +125,14 @@ public class CourseManagementSystem {
     public String deleteUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
         if(users!=null) {
             for (String user : users) {
-                User x = repository.deleteByUsername(user);
+                User x = repository.findByUsername(user);
+                ArrayList<String> courses = x.getCourseList();
+                for (String courseID : courses) {
+                    if(courseID != null) {
+                        handler.deregister_student(user, courseID);
+                    }
+                }
+                repository.deleteByUsername(user);
             }
         }
         return "redirect:/deleteUser";
@@ -177,7 +201,8 @@ public class CourseManagementSystem {
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         System.out.println("We got to the dashboard Function");
-
+        System.out.println(Courserepository.findByCourseCode("3004B"));
+        System.out.println(repository.findByUsername("Abdul"));
         if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
             System.out.println("We got to the dashboard Function Login 4");
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));

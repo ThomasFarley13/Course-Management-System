@@ -59,8 +59,8 @@ public class User extends UserCreateFactory{
     @Override
     public String toString() {
         return String.format(
-                "User[username='%s', password='%s', role= '%s', id = '%s', active = '%s', grades = '%s']",
-                username, password, role, id, active, grades);
+                "User[username='%s', password='%s', role= '%s', id = '%s', active = '%s', birthdate = '%s', grades = '%s']",
+                username, password, role, id, active, birthdate, grades);
     }
 
     @Override
@@ -100,6 +100,7 @@ public class User extends UserCreateFactory{
             courseList.add(CourseID);
         }
         public void deregister (String CourseID) {
+            grading(CourseID, "WDN");
             courseList.remove(CourseID);
         }
         public void grading(String CourseID,String grade) {
@@ -111,17 +112,16 @@ public class User extends UserCreateFactory{
     }
 
     public class Professor extends User{
-        private ArrayList<String> assignedCourses;
 
 
         public ArrayList<String> retrieveCourses() {
            ArrayList<Course> retrieved = new ArrayList<Course>();
            System.out.println("retrieving courses from Mongo");
           
-           return assignedCourses;
+           return courseList;
         }
 
-        public void assignCourse(String course){ assignedCourses.add(course); }
+        public void assignCourse(String course){ courseList.add(course); }
 
         public String createDeliverable(){
             return "<link to deliverable here>";
@@ -132,14 +132,14 @@ public class User extends UserCreateFactory{
         public void submitFinalGrade(int grade, Student student) {};
 
         public void assign (String courseID) {
-            assignedCourses.add(courseID);
+            courseList.add(courseID);
         }
         public void deassign (String courseID) {
-            assignedCourses.remove(courseID);
+            courseList.remove(courseID);
         }
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
-            assignedCourses = new ArrayList<>();
+            courseList = new ArrayList<>();
         }
     }
 

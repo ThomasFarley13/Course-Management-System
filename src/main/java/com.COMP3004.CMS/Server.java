@@ -17,6 +17,8 @@ public class Server implements CommandLineRunner {
     private UserDatabase repository;
     @Autowired
     private CourseDatabase Courserepository;
+    @Autowired
+    DatabaseHandler handler ;
 
 
 
@@ -33,15 +35,21 @@ public class Server implements CommandLineRunner {
 
 
 
-        repository.deleteAll();
+        //repository.deleteAll();
 
-        User admin = factory.createUser("Admin", "Password123", "Admin", 1,"null", "Admin", "User");
-        User abdul = factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30", "Abdul", "Kazal");
-        User anita = factory.createUser("Anita", "Password323", "Student", 3, "2000-03-20","Anita", "Chau");
-        User sepehr = factory.createUser("Sepehr", "Password423","Student", 4, "1994-12-25","Sepehr", "Eslami Amirabadi");
-        User thomas = factory.createUser("Thomas", "Password523","Student", 5,"2000-09-30", "Thomas", "Farley");
-        User professor1 = factory.createUser("Professor1", "Password623","Professor", 6,"null", "Big", "Sean");
+        User.Admin admin = (User.Admin) factory.createUser("Admin", "Password123", "Admin", 1,"null","null", "Admin", "User");
+        User.Student abdul = (User.Student) factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30","male", "Abdul", "Kazal");
+        User.Student anita = (User.Student) factory.createUser("Anita", "Password323", "Student", 3, "2000-03-20","female","Anita", "Chau");
+        User.Student sepehr = (User.Student) factory.createUser("Sepehr", "Password423","Student", 4, "1994-12-25","male","Sepehr", "Eslami Amirabadi");
+        User.Student thomas = (User.Student) factory.createUser("Thomas", "Password523","Student", 5,"2000-09-30", "other","Thomas", "Farley");
+        User.Professor professor1 = (User.Professor) factory.createUser("Professor1", "Password623","Professor", 6,"null","null", "Big", "Sean");
         // user test data
+
+        thomas.grading("3004B","B");
+        thomas.grading("3007A","A-");
+        thomas.grading("2003C","D-");
+        anita.grading("2003C","B+");
+
 
         abdul.setActive(true);
         thomas.setActive(true);
@@ -76,6 +84,7 @@ public class Server implements CommandLineRunner {
         System.out.println("-------------------------------");
         for (User user : repository.findAll()) {
             System.out.println(user);
+
         }
         System.out.println();
 

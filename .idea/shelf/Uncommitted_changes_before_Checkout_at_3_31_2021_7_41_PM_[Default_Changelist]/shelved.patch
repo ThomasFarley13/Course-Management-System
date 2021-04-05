@@ -1,0 +1,19 @@
+Index: src/main/java/com.COMP3004.CMS/UserCreateFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.COMP3004.CMS;\r\n\r\nimport org.springframework.stereotype.Repository;\r\nimport org.springframework.stereotype.Service;\r\n\r\npublic abstract class UserCreateFactory {\r\n\r\n    public abstract User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname);\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com.COMP3004.CMS/UserCreateFactory.java b/src/main/java/com.COMP3004.CMS/UserCreateFactory.java
+--- a/src/main/java/com.COMP3004.CMS/UserCreateFactory.java	(revision ea7d9ad26c7687cc7f732300b2ebb433842ebac1)
++++ b/src/main/java/com.COMP3004.CMS/UserCreateFactory.java	(date 1616959495396)
+@@ -1,8 +1,5 @@
+ package com.COMP3004.CMS;
+ 
+-import org.springframework.stereotype.Repository;
+-import org.springframework.stereotype.Service;
+-
+ public abstract class UserCreateFactory {
+ 
+     public abstract User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname);

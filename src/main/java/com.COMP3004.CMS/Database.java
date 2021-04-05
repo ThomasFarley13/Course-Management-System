@@ -1,13 +1,9 @@
 package com.COMP3004.CMS;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-import java.util.List;
 
 
 interface UserDatabase extends MongoRepository<User,String> {
@@ -19,6 +15,8 @@ interface UserDatabase extends MongoRepository<User,String> {
     public User findTopByOrderByIdDesc();
     public List<User> findByActiveIsFalse();
     public List<User> findAll();
+    public List<User> findByGender(String gender);
+    public List<User> findByBirthdateIsNotNull();
 }
 
 

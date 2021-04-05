@@ -19,10 +19,14 @@ public class User extends UserCreateFactory{
     @Getter @Setter protected String firstname;
     @Getter @Setter protected String lastname;
     @Setter protected boolean active;
+    @Getter @Setter protected String birthdate;
+    @Getter @Setter protected String gender;
+    @Getter protected ArrayList<String> courseList;
+    @Getter protected Hashtable<String, String> grades;
 
     public boolean getActive() { return active; }
 
-   List<String> roles = Arrays.asList("Admin", "Professor", "Student");
+
 
 
     protected void createUsername(String newUsername ) {
@@ -55,15 +59,15 @@ public class User extends UserCreateFactory{
     @Override
     public String toString() {
         return String.format(
-                "User[username='%s', password='%s', role= '%s', id = '%s', active = '%s']",
-                username, password, role, id, active);
+                "User[username='%s', password='%s', role= '%s', id = '%s', active = '%s', birthdate = '%s', grades = '%s']",
+                username, password, role, id, active, birthdate, grades);
     }
 
     @Override
-    public User createUser(String username, String password, String role, int id, String birthdate, String firstname, String lastname){
+    public User createUser(String username, String password, String role, int id, String birthdate, String gender, String firstname, String lastname){
         switch (role) {
             case ("Student"):
-                return new Student(username, password, role, id, birthdate, firstname, lastname);
+                return new Student(username, password, role, id, birthdate, gender, firstname, lastname);
             case ("Professor"):
                 return new Professor(username, password, role, id, firstname, lastname);
             case ("Admin"):
@@ -75,14 +79,14 @@ public class User extends UserCreateFactory{
 
     public class Student extends User{
 
-        @Getter @Setter protected String birthdate;
-        private ArrayList<String> courseList;
 
 
-        public Student(String username, String password, String role, int id, String birthdate, String firstname, String lastname) {
+        public Student(String username, String password, String role, int id, String birthdate, String gender, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
             courseList = new ArrayList<String>();
+            grades = new Hashtable<String, String>();
             setBirthdate(birthdate);
+            setGender(gender);
         }
 
         public ArrayList<String> retrieveCourses() {
@@ -96,7 +100,11 @@ public class User extends UserCreateFactory{
             courseList.add(CourseID);
         }
         public void deregister (String CourseID) {
+            grading(CourseID, "WDN");
             courseList.remove(CourseID);
+        }
+        public void grading(String CourseID,String grade) {
+            grades.put(CourseID,grade);
         }
         public Course createRegistrationRequest(){
             return new Course(null, null);
@@ -104,17 +112,16 @@ public class User extends UserCreateFactory{
     }
 
     public class Professor extends User{
-        private ArrayList<String> assignedCourses;
 
 
         public ArrayList<String> retrieveCourses() {
            ArrayList<Course> retrieved = new ArrayList<Course>();
            System.out.println("retrieving courses from Mongo");
           
-           return assignedCourses;
+           return courseList;
         }
 
-        public void assignCourse(String course){ assignedCourses.add(course); }
+        public void assignCourse(String course){ courseList.add(course); }
 
         public String createDeliverable(){
             return "<link to deliverable here>";
@@ -125,14 +132,14 @@ public class User extends UserCreateFactory{
         public void submitFinalGrade(int grade, Student student) {};
 
         public void assign (String courseID) {
-            assignedCourses.add(courseID);
+            courseList.add(courseID);
         }
         public void deassign (String courseID) {
-            assignedCourses.remove(courseID);
+            courseList.remove(courseID);
         }
         public Professor(String username, String password, String role, int id, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
-            assignedCourses = new ArrayList<>();
+            courseList = new ArrayList<>();
         }
     }
 

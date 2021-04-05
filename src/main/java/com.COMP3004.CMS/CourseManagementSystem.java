@@ -367,6 +367,32 @@ public class CourseManagementSystem {
     }
 
 
+    @GetMapping("/deleteCourse")
+    public String deleteCourse(@ModelAttribute("User") User user, Model model) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        model.addAttribute(user);
+        List<Course> courses = Courserepository.findAll();
+        model.addAttribute("courses", courses);
+
+        return "delete-course";
+    }
+
+    @PostMapping("/deleteCourseRequest")
+    public String deleteCourseRequest(@RequestParam String courseCode){
+        if(Courserepository.findByCourseCode(courseCode) == null){
+            System.out.println("Trying to delete course that does not exist");
+            return "delete-course-error";
+        }
+
+        System.out.println("Deleting " + courseCode);
+        handler.cou.updateRecords("Delete", "Course", "Admin", courseCode, null);
+
+        return "course-delete-successful";
+    }
+
+
     /*
     This is a function to test Login using jmeter.
     It exists because ajax does not send json in a way that @requestBody will parse

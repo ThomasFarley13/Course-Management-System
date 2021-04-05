@@ -346,7 +346,10 @@ public class CourseManagementSystem {
 
     @PostMapping("/createCourseRequest")
     public String createCourseRequest(@RequestParam String courseName,
-                                    @RequestParam String courseCode){
+                                      @RequestParam String courseCode,
+                                      @RequestParam int courseLevel,
+                                      @RequestParam int courseNumber,
+                                      @RequestParam String courseDept){
         System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
         if(Courserepository.findByCourseCode(courseCode) != null){
             System.out.println("Submitted course code exists");
@@ -354,7 +357,12 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Saving new course " + courseName);
-        handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);
+        if (courseLevel != 0 || courseNumber != 0 || courseDept != null) {
+            Courserepository.save(new Course(courseName, courseCode, courseLevel, courseNumber, courseDept));
+        }
+        else
+            handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);
+
         return "course-create-successful";
     }
 

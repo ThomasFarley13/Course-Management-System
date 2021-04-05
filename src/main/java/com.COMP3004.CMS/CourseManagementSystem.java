@@ -26,8 +26,14 @@ public class CourseManagementSystem {
     User userLoggedIn;
     boolean logged_in = false;
     String userHash;
-
     UserCreateFactory factory = new User();
+
+    static String registrationTerm1 = "2021-09-10";
+    static String registrationTerm2 = "2022-01-10";
+    static String registrationTerm3 = "2022-05-10";
+    static String withdrawByDateTerm1 = "2021-12-10";
+    static String withdrawByDateTerm2 = "2022-04-10";
+    static String withdrawByDateTerm3 = "2022-08-10";
 
 
     @Autowired
@@ -349,7 +355,9 @@ public class CourseManagementSystem {
                                       @RequestParam String courseCode,
                                       @RequestParam int courseLevel,
                                       @RequestParam int courseNumber,
-                                      @RequestParam String courseDept){
+                                      @RequestParam String courseDept,
+                                      @RequestParam int startTerm,
+                                      @RequestParam int endTerm){
         System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
         if(Courserepository.findByCourseCode(courseCode) != null){
             System.out.println("Submitted course code exists");
@@ -358,7 +366,26 @@ public class CourseManagementSystem {
 
         System.out.println("Saving new course " + courseName);
         if (courseLevel != 0 || courseNumber != 0 || courseDept != null) {
-            Courserepository.save(new Course(courseName, courseCode, courseLevel, courseNumber, courseDept));
+            String registerBy, withdrawBy;
+            if(startTerm == 1)
+                registerBy = registrationTerm1;
+            else if(startTerm == 2)
+                registerBy = registrationTerm2;
+            else
+                registerBy = registrationTerm3;
+
+            if(endTerm == 1)
+                withdrawBy = withdrawByDateTerm1;
+            else if(endTerm == 2)
+                withdrawBy = withdrawByDateTerm2;
+            else
+                withdrawBy = withdrawByDateTerm3;
+
+            Course tempCourse = new Course(courseName, courseCode, courseLevel, courseNumber, courseDept);
+            tempCourse.setRegisterByDate(registerBy);
+            tempCourse.setWithdrawByDate(withdrawBy);
+            Courserepository.save(tempCourse);
+
         }
         else
             handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);

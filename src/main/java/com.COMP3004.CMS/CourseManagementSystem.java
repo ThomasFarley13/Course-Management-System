@@ -299,14 +299,27 @@ public class CourseManagementSystem {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
 
+
+            //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
+            //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
+            //dObject.set(xxx);
+            //deliverableRepository.save(dObject);
+
             if(user.getUsername() != null){
-                //Get required info here?
+                System.out.println("REACHED DELIVERABLE CREATION PAGE");
+                //Getting required info here
+                List<String> assignedCourses = ((User.Professor) user).retrieveCourses();
+                System.out.println("Assigned Courses: " + assignedCourses.toString());
+                model.addAttribute("assignedCourses", assignedCourses);
+                model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
                 return "create-deliverable";
             }
             else{
+                System.out.println("Reached getUsername = null error");
                 return "error";
             }
         }
+        System.out.println("Reached not logged in error page");
         return "error";
     }
 

@@ -124,6 +124,9 @@ public class Course {
     public void addstudent(String StuUName) {
         students.add(StuUName);
     }
+
+    public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID); }
+
     public void removestudent(String StuUName) {
         students.remove(StuUName);
     }

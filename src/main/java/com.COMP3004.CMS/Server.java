@@ -93,18 +93,11 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
 
         ((User.Professor) professor1).assignCourse("3004B");
-        ((User.Professor) professor1).assignCourse("COMP1405B");
+        ((User.Professor) professor1).assignCourse("1405B");
 
         repository.save(professor1);
 
-
-
-
-
-
-
-
-
+        System.out.println("Server now up..");
 //        Assigning course(s) to test prof
 
 
@@ -114,20 +107,20 @@ public class Server implements CommandLineRunner {
 
         //stu.updateRecords("Register","Course","Abdul","2419B",null);
         // fetch all users
-        System.out.println("Users found with findAll():");
-        System.out.println("-------------------------------");
-        for (User user : repository.findAll()) {
-            System.out.println(user);
-
-        }
-        System.out.println();
-
-        System.out.println("Courses found with findAll():");
-        System.out.println("-------------------------------");
-        for (Course course : Courserepository.findAll()) {
-            System.out.println(course);
-        }
-        System.out.println();
+//        System.out.println("Users found with findAll():");
+//        System.out.println("-------------------------------");
+//        for (User user : repository.findAll()) {
+//            System.out.println(user);
+//
+//        }
+//        System.out.println();
+//
+//        System.out.println("Courses found with findAll():");
+//        System.out.println("-------------------------------");
+//        for (Course course : Courserepository.findAll()) {
+//            System.out.println(course);
+//        }
+//        System.out.println();
 //
 //        System.out.println("Professor1 Courses: ");
 //        for(int index = 0; index > ((User.Professor) professor1).retrieveCourses().size()-1; index++){

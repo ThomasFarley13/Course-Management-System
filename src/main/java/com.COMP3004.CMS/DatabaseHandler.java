@@ -163,8 +163,7 @@ class profDetails extends observer {
             temp.deassign(CourseID);
             Userrepository.save(temp);
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
-            UUID uuid = UUID.randomUUID();
-            Deliverable d = new Deliverable(CourseID, uuid.toString());
+            Deliverable d = new Deliverable(CourseID, Extra); //Need to make a constructor?
             Deliverablerepository.save(d);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
             //Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
@@ -214,9 +213,10 @@ class courseDetails extends observer {
             Course c = Courserepository.findByCourseCode(CourseID);
             Courserepository.delete(c);
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
-
+            Course c = Courserepository.findByCourseCode(CourseID);
+            c.addDeliverable(Extra);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
-
+            //Same as above but for deletion
         }
     }
 }

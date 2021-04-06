@@ -21,13 +21,14 @@ interface UserDatabase extends MongoRepository<User,String> {
 
 
 interface CourseDatabase extends MongoRepository<Course,String> {
-    public Course findByCourseCode (String courseCode);
+    public Course findByCourseCode(String courseCode);
     public List<Course> findBycoursenumber (int coursenum);
     public List<Course> findByCoursenumberAndCourseDept (int coursenum,String courseDept);
     public List<Course> findByCourselevelAndCourseDept (int courselevel,String courseDept);
     public List<Course> findByCoursenumberAndCourselevelAndCourseDept (int coursenum, int courselevel,String courseDept);
     public List<Course> findByCourselevel (int Courselevel);
     public List<Course> findByCourseDept (String CourseDept);
+    public List<Course> findAll();
 
 }
 

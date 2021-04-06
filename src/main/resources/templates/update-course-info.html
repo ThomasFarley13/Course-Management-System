@@ -4,35 +4,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Student-Home</title>
+    <title>Professor-Home</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body style="background: rgb(200,200,200);">
 <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
-    <input type="submit" class="btn btn-primary" value="Logout" style="float:right; right: 5;"/>
+    <input type="submit" value="Logout" style="float:right; right: 5;"/>
 </form>
 <div>
-    <h1>Welcome Student&nbsp;</h1>
+    <h1>Welcome Professor</h1>
     <p th:text=" 'You are currently logged in as ' + ${user.username}"><br></p>
 </div>
 <div>
-    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Info______________________________</span></h1>
+    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Information Update______________________________</span></h1>
 </div>
+
 <div>
-    <h2>&nbsp;Course Information: </h2>
-    <p style="margin-left:5%;"> Grab course information </p>
-<!--    For Course Info - GET: Course description and any other relevant and public information-->
-</div>
-<div>
-    <h2> Course Deliverables: </h2></div>
-<div>
-    <ul>
-        <li><a href="/submitDeliverables">Assignment 1</a></li>
-        <li><a href="/submitDeliverables">Assignment 2</a></li>
-        <li><a href="/submitDeliverables">Assignment 3</a></li>
-    </ul>
+    <form action="updateCourseInfo" method="post">
+        <h2 class="text-dark">&nbsp;Update your course:&nbsp;</h2><br>
+        <label for="courses">Choose your course:</label>
+        <select name="courseCode" id="courses">
+            <option th:each="course: ${courses}" th:text="${course.courseCode}"></option>
+        </select>
+        <br><br>
+        <label for="course-info">Enter course description below: </label><br>
+        <textarea id="course-info" name="courseInfo" rows="10" cols="50"></textarea>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 <br><br>

@@ -93,7 +93,7 @@ public class User extends UserCreateFactory{
                 ArrayList<String> retrieved = new ArrayList<String>();
                 System.out.println("retrieving courses from Mongo");
 
-                return retrieved;
+                return courseList;
         }
 
         public void register (String CourseID) {

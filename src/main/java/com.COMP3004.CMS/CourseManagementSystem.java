@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class CourseManagementSystem {
     String userHash;
     UserCreateFactory factory = new User();
 
-    static String registrationstartDate = "2021-08-31";
+    static String registrationstartDate = "2021-03-31";
     static String registrationTerm1 = "2021-09-20";
     static String registrationTerm2 = "2022-01-20";
     static String registrationTerm3 = "2022-05-20";
@@ -556,17 +558,41 @@ public class CourseManagementSystem {
 
     @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
     @ResponseBody
-    public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) {
+    public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) throws ParseException {
         System.out.println("We are registering the student");
         Object [] keys = courses.keySet().toArray();
-        List<String> temp = new ArrayList<String>();
+
+        Date courseRegisterStart = new SimpleDateFormat("yyyy-MM-dd").parse(registrationstartDate);
+        Date courseRegisterEnd;
+        Date now = new Date();
+        String currentUsername = (String) session.getAttribute("username");
+        User tempUser = repository.findByUsername(currentUsername);
+        //empty course list for tempUser to keep track of denied registrations
+        tempUser.setCourseList(new ArrayList<>());
+
+        List<String> tempList = new ArrayList<String>();
         for (int i = 0; i < keys.length; ++i) {
             String courseID = (String)courses.get(keys[i]);
-            temp.add(courseID);
-            handler.register_student((String) session.getAttribute("username"),courseID);
+            String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
+            courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
+            if(now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
+                    !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                System.out.println(courseID + " added, valid registration");
+                tempList.add(courseID);
+                handler.register_student(currentUsername,courseID);
+            } else {
+                System.out.println(courseID + " is invalid registration");
+                tempUser.courseList.add(("test"));
+            }
+            if(tempUser.getCourseList().size() > 0) {
+                deniedRegistrations.add(tempUser);
+                return "invalid-course-registrations";
+            }
         }
 
-        return "Registered in courses: " + temp.toString();
+        System.out.println("Courses registered");
+//        return "Registered in courses: " + tempList.toString();
+        return "course-registration-successful";
     }
 
 

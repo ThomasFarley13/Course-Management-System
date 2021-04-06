@@ -62,7 +62,6 @@ public class Server implements CommandLineRunner {
         repository.save(anita);
         repository.save(sepehr);
         repository.save(thomas);
-        repository.save(professor1);
 
 
 
@@ -93,6 +92,10 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("General Biochemistry I","BIOC3101A",3000,3101,"Biochemistry"));
         Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
 
+        ((User.Professor) professor1).assignCourse("3004B");
+        ((User.Professor) professor1).assignCourse("COMP1405B");
+
+        repository.save(professor1);
 
 
 

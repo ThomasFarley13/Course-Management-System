@@ -190,6 +190,12 @@ class courseDetails extends observer {
             Course c = Courserepository.findByCourseCode(CourseID);
             c.removestudent(Agent);
             Courserepository.save(c);
+        } else if (action.equals("UpdateCourseDetails") && ObjChanged.equals("Course")) {
+            if (Agent.equals("Professor") || Agent.equals("Admin")) {
+                Course temp = Courserepository.findByCourseCode(CourseID);
+                temp.setCourseInfo(Extra);
+                Courserepository.save(temp);
+            }
         } else if (action.equals("Add") && ObjChanged.equals("Course")) {
             if (Agent.equals("Admin")) {
                 Course temp = new Course(Extra, CourseID);

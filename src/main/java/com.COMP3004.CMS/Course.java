@@ -23,6 +23,7 @@ public class Course {
     @Getter @Setter  protected int courselevel;
     @Getter @Setter protected int coursenumber;
     @Getter @Setter protected String courseDept;
+    @Getter @Setter protected String courseInfo;
     @Getter @Setter protected int capacity;
     @Getter @Setter protected String professor;
     @Getter @Setter  protected ArrayList<String> students;
@@ -101,6 +102,7 @@ public class Course {
         this.courselevel = courselevel;
         this.coursenumber = coursenumber;
         this.courseDept = courseDept;
+        this.courseInfo = "";
         capacity =80; // default capacity
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
@@ -112,6 +114,7 @@ public class Course {
         this.courselevel = courselevel;
         this.coursenumber = coursenumber;
         this.courseDept = courseDept;
+        this.courseInfo = "";
         this.capacity = capacity;
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";

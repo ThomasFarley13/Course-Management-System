@@ -137,7 +137,7 @@ function displayOptions(courseArray) {
 }
 
 function register () {
-    let confirmation = confirm("Are you sure you want to reister for these courses");
+    let confirmation = confirm("Are you sure you want to register for these courses");
     if (confirmation) {
         $.postJSON("http://localhost:8080/Courseregistration",selectedCourseIDs,callback);
     }

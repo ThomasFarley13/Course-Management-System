@@ -28,13 +28,13 @@ public class CourseManagementSystem {
     String userHash;
     UserCreateFactory factory = new User();
 
-    static String registrationTerm1 = "2021-09-10";
-    static String registrationTerm2 = "2022-01-10";
-    static String registrationTerm3 = "2022-05-10";
+    static String registrationstartDate = "2021-08-31";
+    static String registrationTerm1 = "2021-09-20";
+    static String registrationTerm2 = "2022-01-20";
+    static String registrationTerm3 = "2022-05-20";
     static String withdrawByDateTerm1 = "2021-12-10";
     static String withdrawByDateTerm2 = "2022-04-10";
     static String withdrawByDateTerm3 = "2022-08-10";
-
 
     @Autowired
     private UserDatabase repository;
@@ -48,6 +48,8 @@ public class CourseManagementSystem {
     @Autowired
     DatabaseHandler handler ;
 
+    //just need user(name) and denied courses temporarily stored
+    ArrayList<User> deniedRegistrations = new ArrayList<User>();
 
     @GetMapping("/")
     public String home(HttpSession session) {
@@ -280,8 +282,6 @@ public class CourseManagementSystem {
     }
 
 
-
-
     @GetMapping("/courseInformation")
     public String courseInformation(@ModelAttribute("User") User user, Model model) {
         if(userLoggedIn != null){
@@ -340,6 +340,41 @@ public class CourseManagementSystem {
         }
     }
 
+
+    @GetMapping("/courseDescriptionUpdate")
+    public String courseDescriptionUpdate(@ModelAttribute("User") User user, Model model, HttpSession session) {
+        if(userLoggedIn != null){
+            user = userLoggedIn;
+        }
+        user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        System.out.println("===========================> USER IS:");
+        System.out.println(user);
+        model.addAttribute(user);
+        User.Professor tempUser;
+        if(user.getRole().equals("Professor"))
+            tempUser = (User.Professor) user;
+        else
+            return "error";
+        ArrayList<String> courses = tempUser.retrieveCourses();
+        model.addAttribute("courses", courses);
+
+        return "update-course-info";
+    }
+
+    @PostMapping("/updateCourseInfo")
+    public String updateCourseInfo(@RequestParam String courseCode,
+                                   @RequestParam String courseInfo){
+        if(Courserepository.findByCourseCode(courseCode) == null){
+            System.out.println("Course Info Update: Course submitted doesn't exist");
+            return "update-course-info-error";
+        }
+
+        System.out.println("Updating course info for " + courseCode);
+        handler.cou.updateRecords("UpdateCourseDetails", "Course", "Professor", courseCode, courseInfo);
+
+        return "course-info-update-successful";
+    }
+
     @GetMapping("/createCourse")
     public String createCourse(@ModelAttribute("User") User user, Model model) {
         if(userLoggedIn != null){
@@ -356,6 +391,7 @@ public class CourseManagementSystem {
                                       @RequestParam int courseLevel,
                                       @RequestParam int courseNumber,
                                       @RequestParam String courseDept,
+                                      @RequestParam String courseInfo,
                                       @RequestParam int startTerm,
                                       @RequestParam int endTerm){
         System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
@@ -384,6 +420,7 @@ public class CourseManagementSystem {
             Course tempCourse = new Course(courseName, courseCode, courseLevel, courseNumber, courseDept);
             tempCourse.setRegisterByDate(registerBy);
             tempCourse.setWithdrawByDate(withdrawBy);
+            tempCourse.setCourseInfo(courseInfo);
             Courserepository.save(tempCourse);
 
         }
@@ -481,7 +518,6 @@ public class CourseManagementSystem {
         model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
 
         return "CourseReg";
-
     }
 
     @GetMapping("/getCourses")

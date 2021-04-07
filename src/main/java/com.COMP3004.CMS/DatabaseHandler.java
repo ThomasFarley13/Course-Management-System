@@ -82,6 +82,11 @@ public class DatabaseHandler  {
         return false;
     }
 
+    public boolean update_courseinfo(String agent, String CourseID,String DID) {
+        notifyObservers("UpdateCourseDetails","Course",agent,CourseID,DID);
+        return false;
+    }
+
     public boolean remove_deliverable (String agent, String CourseID,String DID) {
         notifyObservers("Delete","Deliverable",agent,CourseID,DID);
         return false;
@@ -131,6 +136,16 @@ class studentDetails extends observer {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.deregister(CourseID);
             Userrepository.save(temp);
+        } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
+            List<String> studentList = Courserepository.findByCourseCode(CourseID).getStudents();
+            if(studentList.size() > 0) {
+                User.Student tempUser;
+                for (String studentUsername : studentList) {
+                    tempUser = (User.Student) Userrepository.findByUsername(studentUsername);
+                    tempUser.deregister(CourseID);
+                    Userrepository.save(tempUser);
+                }
+            }
         } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.deregister(CourseID);
@@ -169,6 +184,17 @@ class profDetails extends observer {
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
             //Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
             //Deliverablerepository.delete(t);
+        } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
+            String profUser = Courserepository.findByCourseCode(CourseID).getProfessor();
+            if(profUser != null) {
+                User.Professor temp = (User.Professor) Userrepository.findByUsername(profUser);
+                temp.deregisterCourse(CourseID);
+                Userrepository.save(temp);
+            }
+        } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
+            User.Professor temp = (User.Professor) Userrepository.findByUsername(Agent);
+            temp.deregisterCourse(CourseID);
+            Userrepository.save(temp);
         }
     }
 }

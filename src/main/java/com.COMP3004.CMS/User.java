@@ -115,13 +115,13 @@ public class User extends UserCreateFactory{
 
 
         public ArrayList<String> retrieveCourses() {
-           ArrayList<Course> retrieved = new ArrayList<Course>();
-           System.out.println("retrieving courses from Mongo");
-          
            return courseList;
         }
 
         public void assignCourse(String course){ courseList.add(course); }
+        public void deregisterCourse (String CourseID) {
+            courseList.remove(CourseID);
+        }
 
         public String createDeliverable(){
             return "<link to deliverable here>";

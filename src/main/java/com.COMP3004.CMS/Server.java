@@ -95,6 +95,9 @@ public class Server implements CommandLineRunner {
         ((User.Professor) professor1).assignCourse("3004B");
         ((User.Professor) professor1).assignCourse("COMP1405B");
 
+//        handler.assign_prof("professor1", "3004B");
+//        handler.assign_prof("professor1", "COMP1405B");
+
         repository.save(professor1);
 
 

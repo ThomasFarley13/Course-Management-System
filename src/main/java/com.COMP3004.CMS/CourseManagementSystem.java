@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class CourseManagementSystem {
     String userHash;
     UserCreateFactory factory = new User();
 
-    static String registrationstartDate = "2021-08-31";
+    static String registrationstartDate = "2021-03-31";
     static String registrationTerm1 = "2021-09-20";
     static String registrationTerm2 = "2022-01-20";
     static String registrationTerm3 = "2022-05-20";
@@ -270,12 +272,9 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/submitDeliverables")
-    public String submitDeliverables(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-
-        model.addAttribute(user);
+    public String submitDeliverables(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
         System.out.println("The student here is: " + user.getUsername());
 
         return "submit-deliverable";
@@ -283,11 +282,10 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/courseInformation")
-    public String courseInformation(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String courseInformation(Model model, HttpSession session) {
+
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         return "student-course-info";
     }
@@ -311,11 +309,9 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/deleteDeliverable")
-    public String deleteDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String deleteDeliverable(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
             return "delete-deliverable";
@@ -326,11 +322,9 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/modifyDeliverable")
-    public String modifyDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String modifyDeliverable(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
             return "modify-deliverable";
@@ -349,7 +343,7 @@ public class CourseManagementSystem {
         user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
         System.out.println("===========================> USER IS:");
         System.out.println(user);
-        model.addAttribute(user);
+        model.addAttribute("user", user);
         User.Professor tempUser;
         if(user.getRole().equals("Professor"))
             tempUser = (User.Professor) user;
@@ -370,17 +364,18 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Updating course info for " + courseCode);
-        handler.cou.updateRecords("UpdateCourseDetails", "Course", "Professor", courseCode, courseInfo);
+        handler.update_courseinfo("Professor", courseCode, courseInfo);
 
         return "course-info-update-successful";
     }
 
     @GetMapping("/createCourse")
-    public String createCourse(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String createCourse(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
+
+        List<User> professors = repository.findByRole("Professor");
+        model.addAttribute("professors", professors);
 
         return "create-course";
     }
@@ -390,6 +385,7 @@ public class CourseManagementSystem {
                                       @RequestParam String courseCode,
                                       @RequestParam int courseLevel,
                                       @RequestParam int courseNumber,
+                                      @RequestParam String professor,
                                       @RequestParam String courseDept,
                                       @RequestParam String courseInfo,
                                       @RequestParam int startTerm,
@@ -423,20 +419,20 @@ public class CourseManagementSystem {
             tempCourse.setCourseInfo(courseInfo);
             Courserepository.save(tempCourse);
 
+            System.out.println("Assigning professor with username " + professor);
+            handler.assign_prof(professor, courseCode);
         }
         else
-            handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);
+            handler.add_course("Admin", courseCode);
 
         return "course-create-successful";
     }
 
 
     @GetMapping("/deleteCourse")
-    public String deleteCourse(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String deleteCourse(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
         List<Course> courses = Courserepository.findAll();
         model.addAttribute("courses", courses);
 
@@ -451,7 +447,7 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Deleting " + courseCode);
-        handler.cou.updateRecords("Delete", "Course", "Admin", courseCode, null);
+        handler.delete_course("Admin", courseCode);
 
         return "course-delete-successful";
     }
@@ -556,18 +552,75 @@ public class CourseManagementSystem {
 
     @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
     @ResponseBody
-    public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) {
+    public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) throws ParseException {
         System.out.println("We are registering the student");
         Object [] keys = courses.keySet().toArray();
-        List<String> temp = new ArrayList<String>();
+
+        Date courseRegisterStart = new SimpleDateFormat("yyyy-MM-dd").parse(registrationstartDate);
+        Date courseRegisterEnd;
+        Date now = new Date();
+        String currentUsername = (String) session.getAttribute("username");
+        User tempUser = repository.findByUsername(currentUsername);
+        //empty course list for tempUser to keep track of denied registrations
+        tempUser.setCourseList(new ArrayList<>());
+
+        List<String> tempList = new ArrayList<String>();
         for (int i = 0; i < keys.length; ++i) {
             String courseID = (String)courses.get(keys[i]);
-            temp.add(courseID);
-            handler.register_student((String) session.getAttribute("username"),courseID);
+            String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
+            courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
+            if(now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
+                    !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                System.out.println(courseID + " added, valid registration");
+                tempList.add(courseID);
+                handler.register_student(currentUsername,courseID);
+            } else {
+                System.out.println(courseID + " is invalid registration");
+                tempUser.courseList.add(("test"));
+            }
+            if(tempUser.getCourseList().size() > 0) {
+                deniedRegistrations.add(tempUser);
+                return "invalid-course-registrations";
+            }
         }
 
-        return "Registered in courses: " + temp.toString();
+        System.out.println("Courses registered");
+//        return "Registered in courses: " + tempList.toString();
+        return "course-registration-successful";
     }
 
+    @GetMapping("/dropCourse")
+    public String dropCourse (Model model,HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
+        User.Student tempUser;
+        if(user.getRole().equals("Student"))
+            tempUser = (User.Student) user;
+        else
+            return "error";
+
+        List<String> courses = tempUser.retrieveCourses();
+        model.addAttribute("courses", courses);
+
+        return "student-drop-course";
+    }
+
+    @PostMapping("/dropCourseRequest")
+    public String dropCourseRequest(HttpSession session, @RequestParam String courseCode) throws ParseException {
+        String currentUsername = (String) session.getAttribute("username");
+        String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
+        Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
+        Date now = new Date();
+
+        if(now.after(withdrawByDate)){
+            System.out.println("Past withdrawal period");
+            return "invalid-withdraw-request";
+        }
+
+        System.out.println("Dropping " + courseCode + " for student");
+
+        handler.deregister_student(currentUsername, courseCode);
+        return "course-withdraw-successful";
+    }
 }

@@ -91,15 +91,13 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("Evolutionary Concepts","BIOL3609A",3000,3609,"Biology"));
         Courserepository.save(new Course("General Biochemistry I","BIOC3101A",3000,3101,"Biochemistry"));
         Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
-
+//        Assigning course(s) to test prof
         ((User.Professor) professor1).assignCourse("3004B");
         ((User.Professor) professor1).assignCourse("1405B");
 
         repository.save(professor1);
 
         System.out.println("Server now up..");
-//        Assigning course(s) to test prof
-
 
 
 

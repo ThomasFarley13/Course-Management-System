@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
+<script src="http://localhost:8080/DeliverableSubmit.js"></script>
+
 <body style="background: rgb(200,200,200);">
 <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
     <input type="submit" value="Logout" style="float:right; right: 5;"/>
@@ -24,14 +26,8 @@
     <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Create Deliverable______________________________</span></h1>
 </div>
 
-<!--
-TODO: Grab course (and deliverable?) name
--->
-
 <div>
-    <form action="#">
         <h2 class="text-dark">&nbsp;Create a deliverable:&nbsp;</h2><br>
-        <!--        TODO: Grab courses prof is teaching-->
         <label for="courses">Choose your course:</label>
         <select name="courses" id="courses">
             <option th:each="assignedCourse : ${assignedCourses}" th:value="${assignedCourse}" th:text="${assignedCourse}">
@@ -44,11 +40,14 @@ TODO: Grab course (and deliverable?) name
         <label for="deliverable-name">Enter deliverable weighting below: </label><br>
         <input type="number" id="weighting" name="weighting" min="0" max="100">
         <br><br>
+        <label for="deliverable-name">Enter number of days until due date: </label><br>
+        <input type="number" id="daysDue" name="Days until due" min="0" max="120">
+        <br><br>
         <label for="deliverable-description">Enter deliverable description below: </label><br>
         <textarea id="deliverable-description" name="deliverable-description" rows="10" cols="50"></textarea>
         <br>
-        <input type="submit" value="Submit">
-    </form>
+        <input type="Submit" onclick="submitDeliverable()" value="Submit" ></input>
+
 </div>
 
 <br><br>

@@ -299,12 +299,6 @@ public class CourseManagementSystem {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
 
-
-            //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
-            //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
-            //dObject.set(xxx);
-            //deliverableRepository.save(dObject);
-
             if(user.getUsername() != null){
                 System.out.println("REACHED DELIVERABLE CREATION PAGE");
                 //Getting required info here
@@ -578,9 +572,23 @@ public class CourseManagementSystem {
             temp.add(courseID);
             handler.register_student((String) session.getAttribute("username"),courseID);
         }
-
         return "Registered in courses: " + temp.toString();
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/deliverableSubmission")
+    @ResponseBody
+    public void deliverableSubmit(@RequestBody JSONObject dObject, Model model, HttpSession session){
+        System.out.println("Adding the new deliverable entry...");
+        System.out.println(dObject.toString());
+        System.out.println(dObject.get("name"));
 
+        //Creating
+
+
+        //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
+        //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
+        //dObject.set(xxx);
+        //deliverableRepository.save(dObject);
+
+    }
 }

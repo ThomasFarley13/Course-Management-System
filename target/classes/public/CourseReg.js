@@ -143,6 +143,8 @@ function register () {
     }
 }
 
+
+
 function callback (data,status) {
     console.log(data);
     alert(data);

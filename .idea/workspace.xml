@@ -4,44 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_session_spring_session_core_2_1_4_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_session_spring_session_data_mongodb_2_1_1_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM__Default_Changelist_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_3_2021_2_50_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_3_2021_2_50_PM__Default_Changelist_.xml" afterDir="false" />
+    <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Refactors and recovery">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/public/DeliverableSubmit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CMS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/CourseReg.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/CourseReg.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Course.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Course.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseDatabase.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DatabaseHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DatabaseHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Deliverable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Deliverable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DeliverableDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DeliverableDatabase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/ErrorMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/ErrorMessage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/HttpSessionConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/HttpSessionConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Stats.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Stats.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Admin.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Professor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Professor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Student.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserCreateFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserCreateFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/UserDatabase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/courseDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/courseDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/observer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/observer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/profDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/profDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/studentDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/studentDetails.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/public/CourseReg.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/public/CourseReg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/create-course-exists.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/create-course-exists.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/create-course.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/create-course.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/professor-home.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/professor-home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/student-course-info.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/student-course-info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,8 +293,18 @@
       <option name="project" value="LOCAL" />
       <updated>1617481983711</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Refactors and recovery">
+      <created>1617737022944</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1617737022944</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -345,6 +332,7 @@
     <MESSAGE value="Updated some error message htmls, added the forgot password feature, added the delete user feature - Thomas" />
     <MESSAGE value="Commented our deliverable.java to help with testing - Thomas, Anita" />
     <MESSAGE value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
+    <MESSAGE value="Refactors and recovery" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactors and recovery" />
   </component>
 </project>

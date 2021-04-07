@@ -43,7 +43,7 @@ public class DatabaseHandler  {
         /*for (int i = 0; i<Observers.size();i++){
             Observers.get(i).updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra );
         }*/
-        stu.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra );
+        stu.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
         prof.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
         cou.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
     }
@@ -133,8 +133,10 @@ class studentDetails extends observer {
             Userrepository.save(temp);
         } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
-            temp.deregister(CourseID);
-            Userrepository.save(temp);
+            if (temp != null){
+                temp.deregister(CourseID);
+                Userrepository.save(temp);
+            }
         } else if (action.equals("Grade")){
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.grading(CourseID,Extra);
@@ -151,7 +153,6 @@ class profDetails extends observer {
         super("Professor");
     }
 
-
     @Override
     public void updateRecords(String action, String ObjChanged, String Agent, String CourseID, String Extra) {
         if (action.equals("Assign")) {
@@ -166,8 +167,8 @@ class profDetails extends observer {
             Deliverable d = new Deliverable(CourseID, Extra); //Need to make a constructor?
             Deliverablerepository.save(d);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
-            //Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
-            //Deliverablerepository.delete(t);
+            Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
+            Deliverablerepository.delete(t);
         }
     }
 }
@@ -215,6 +216,7 @@ class courseDetails extends observer {
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
             Course c = Courserepository.findByCourseCode(CourseID);
             c.addDeliverable(Extra);
+            Courserepository.save(c);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
             //Same as above but for deletion
         }

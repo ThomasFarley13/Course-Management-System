@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 @SpringBootApplication
 @ComponentScan("com")
@@ -17,6 +18,8 @@ public class Server implements CommandLineRunner {
     private UserDatabase repository;
     @Autowired
     private CourseDatabase Courserepository;
+    @Autowired
+    private DeliverableDatabase dRepository;
     @Autowired
     DatabaseHandler handler ;
 
@@ -37,6 +40,7 @@ public class Server implements CommandLineRunner {
 
         //repository.deleteAll();
         Courserepository.deleteAll();
+        //dRepository.deleteAll();
 
         User.Admin admin = (User.Admin) factory.createUser("Admin", "Password123", "Admin", 1,"null","null", "Admin", "User");
         User.Student abdul = (User.Student) factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30","male", "Abdul", "Kazal");
@@ -44,7 +48,7 @@ public class Server implements CommandLineRunner {
         User.Student sepehr = (User.Student) factory.createUser("Sepehr", "Password423","Student", 4, "1994-12-25","male","Sepehr", "Eslami Amirabadi");
         User.Student thomas = (User.Student) factory.createUser("Thomas", "Password523","Student", 5,"2000-09-30", "other","Thomas", "Farley");
         User.Professor professor1 = (User.Professor) factory.createUser("Professor1", "Password623","Professor", 6,"null","null", "Big", "Sean");
-        // user test data
+        //user test data
 
         thomas.grading("3004B","B");
         thomas.grading("3007A","A-");
@@ -91,15 +95,30 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("Evolutionary Concepts","BIOL3609A",3000,3609,"Biology"));
         Courserepository.save(new Course("General Biochemistry I","BIOC3101A",3000,3101,"Biochemistry"));
         Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
-//        Assigning course(s) to test prof
+
+        //Assigning course(s) to test prof
         ((User.Professor) professor1).assignCourse("3004B");
         ((User.Professor) professor1).assignCourse("1405B");
 
         repository.save(professor1);
 
+        //Creating a couple of deliverables
+        handler.Add_deliverable("Professor1", "3004B", "95");
+        Deliverable testD = dRepository.findDeliverableByDeliverableID("95");
+        testD.setDueDate(10);
+        testD.setDetails("What's 1+1 (100 marks): ");
+        testD.setName("The Syllabus Test");
+        testD.setWeighting(30);
+        dRepository.save(testD);
+
+//        dRepository.findDeliverableByDeliverableID("95").setDueDate(10);
+//        dRepository.findDeliverableByDeliverableID("95").setWeighting(30);
+//        dRepository.findDeliverableByDeliverableID("95").setDetails("Syllabus test: What's 1+1 (100 marks): ");
+
+        //handler.delete_course("", "3004B");
+
         System.out.println("Server now up..");
-
-
+        //System.out.println(dRepository.findDeliverableByDeliverableID("95").details);
 
 //        // fetch all users
 

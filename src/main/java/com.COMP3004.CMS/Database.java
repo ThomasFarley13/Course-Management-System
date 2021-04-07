@@ -34,8 +34,7 @@ interface CourseDatabase extends MongoRepository<Course,String> {
 
 
 interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
-
-    //public Deliverable findDeliverableByDeliverableID (String DeliverableID);
-
+    public Deliverable findDeliverableByDeliverableID (String deliverableID);
+    public List<Deliverable> findByCourseCode (String courseCode);
 }
 

@@ -43,6 +43,9 @@ public class CourseManagementSystem {
     private CourseDatabase Courserepository;
 
     @Autowired
+    private DeliverableDatabase dRepository;
+
+    @Autowired
     MongoTemplate mongoTemplate;
 
     @Autowired
@@ -579,16 +582,46 @@ public class CourseManagementSystem {
     @ResponseBody
     public void deliverableSubmit(@RequestBody JSONObject dObject, Model model, HttpSession session){
         System.out.println("Adding the new deliverable entry...");
-        System.out.println(dObject.toString());
-        System.out.println(dObject.get("name"));
 
-        //Creating
+        //Creating new deliverable
+        //Getting required parameters
+        String dID = UUID.randomUUID().toString().replace("-", "");
+        String course =  dObject.get("course").toString();
+        String name =  dObject.get("name").toString();
+        String description = dObject.get("desc").toString();
+        int weight = Integer.parseInt(dObject.get("weighting").toString());
+        int daysDue = Integer.parseInt(dObject.get("daysDue").toString());
 
+        System.out.println("Deliverable details: ");
+        System.out.println("DID: " + dID);
+        System.out.println("Course: " + course);
+        System.out.println("Name: " + name);
+        System.out.println("Description: " + description);
+        System.out.println("Weight: " + weight);
+        System.out.println("Days due: " + daysDue);
+
+        handler.Add_deliverable("Professor", course, dID);
+
+        //Retrieving newly created deliverable then passing params
+        Deliverable d = dRepository.findDeliverableByDeliverableID(dID);
+        d.setName(name);
+        d.setDetails(description);
+        d.setWeighting(weight);
+        d.setDueDate(daysDue);
+
+        //Saving instance to server
+        dRepository.save(d);
+
+        System.out.print("Deliverable Entry Added - Name of Deliverable: ");
+        System.out.println(dRepository.findDeliverableByDeliverableID(dID).name);
 
         //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
         //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
         //dObject.set(xxx);
         //deliverableRepository.save(dObject);
 
+        //System.out.println(dObject.toString());
+        //System.out.println(dObject.get("name"));
+        //System.out.println(course);
     }
 }

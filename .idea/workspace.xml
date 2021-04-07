@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Refactors and recovery">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/public/DeliverableSubmit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Deliverable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Deliverable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/public/CourseReg.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/CourseReg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Admin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Professor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Professor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/User$Student.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/public/CourseReg.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/public/CourseReg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +197,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="278ac57d-c745-44c5-89a8-9e3b8cf15966" name="Default Changelist" comment="" />
+      <changelist id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Refactors and recovery" />
       <created>1615491766483</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -300,7 +294,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617737022944</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Refactors and recovery">
+      <created>1617773642597</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1617773642597</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnknownFeatures">

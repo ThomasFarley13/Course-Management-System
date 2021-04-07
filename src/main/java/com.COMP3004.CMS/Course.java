@@ -87,12 +87,14 @@ public class Course {
         this.coursenumber = 0;
         this.courseDept = null;
         students = new ArrayList<String>();
+        deliverables = new ArrayList<String>();
     }
 
     public Course(String courseName, String courseCode) {
         this.courseName = courseName;
         this.courseCode = courseCode;
         students = new ArrayList<String>();
+        deliverables = new ArrayList<String>();
     }
 
 
@@ -107,6 +109,7 @@ public class Course {
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
         this.withdrawByDate = "2022-08-31";
+        deliverables = new ArrayList<String>();
     }
     public Course(String courseName, String courseCode, int courselevel, int coursenumber, String courseDept, int capacity) {
         this.courseName = courseName;
@@ -119,13 +122,23 @@ public class Course {
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
         this.withdrawByDate = "2022-08-31";
+        deliverables = new ArrayList<String>();
     }
 
     public void addstudent(String StuUName) {
         students.add(StuUName);
     }
 
-    public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID); }
+    public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID);}
+
+    public String getDeliverable(String deliverableId){
+        for (int x = 0; x < deliverables.size(); x++){
+            if (deliverables.get(x).equals(deliverableId)){
+                return deliverables.get(x);
+            }
+        }
+        return null;
+    }
 
     public void removestudent(String StuUName) {
         students.remove(StuUName);

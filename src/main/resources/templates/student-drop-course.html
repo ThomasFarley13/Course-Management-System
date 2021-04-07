@@ -22,11 +22,11 @@
 </div>
 
 <div>
-    <form action="/deleteCourseRequest" th:action="@{/deleteCourseRequest}" method="post">
-        <h2 class="text-dark">&nbsp;Delete a course from the database: &nbsp;</h2><br>
-        <label for="course-code">Choose the course to delete below:</label><br>
+    <form action="/dropCourseRequest" th:action="@{/dropCourseRequest}" method="post">
+        <h2 class="text-dark">&nbsp;Choose the course you would like to drop: &nbsp;</h2><br>
+        <label for="course-code">Choose the course below:</label><br>
         <select name="courseCode" id="course-code">
-            <option th:each="course: ${courses}" th:text="${course.courseCode}"></option>
+            <option th:each="course: ${courses}" th:text="${course}"></option>
         </select><br><br>
         <input type="submit" value="Submit">
     </form>

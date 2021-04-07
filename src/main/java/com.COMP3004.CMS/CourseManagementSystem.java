@@ -589,5 +589,38 @@ public class CourseManagementSystem {
         return "course-registration-successful";
     }
 
+    @GetMapping("/dropCourse")
+    public String dropCourse (Model model,HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
+        User.Student tempUser;
+        if(user.getRole().equals("Student"))
+            tempUser = (User.Student) user;
+        else
+            return "error";
+
+        List<String> courses = tempUser.retrieveCourses();
+        model.addAttribute("courses", courses);
+
+        return "student-drop-course";
+    }
+
+    @PostMapping("/dropCourseRequest")
+    public String dropCourseRequest(HttpSession session, @RequestParam String courseCode) throws ParseException {
+        String currentUsername = (String) session.getAttribute("username");
+        String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
+        Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
+        Date now = new Date();
+
+        if(now.after(withdrawByDate)){
+            System.out.println("Past withdrawal period");
+            return "invalid-withdraw-request";
+        }
+
+        System.out.println("Dropping " + courseCode + " for student");
+
+        handler.deregister_student(currentUsername, courseCode);
+        return "course-withdraw-successful";
+    }
 }

@@ -115,9 +115,6 @@ public class User extends UserCreateFactory{
 
 
         public ArrayList<String> retrieveCourses() {
-           ArrayList<Course> retrieved = new ArrayList<Course>();
-           System.out.println("retrieving courses from Mongo");
-          
            return courseList;
         }
 

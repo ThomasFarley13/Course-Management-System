@@ -4,34 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Professor-Home</title>
+    <title>Student-Home</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body style="background: rgb(200,200,200);">
 <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
-    <input type="submit" value="Logout" style="float:right; right: 5;"/>
+    <input type="submit" class="btn btn-primary" value="Logout" style="float:right; right: 5;"/>
 </form>
 <div>
-    <h1>Welcome Professor</h1>
+    <h1>Welcome Student&nbsp;</h1>
     <p th:text=" 'You are currently logged in as ' + ${user.username}"><br></p>
 </div>
 <div>
-    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Information Update______________________________</span></h1>
+    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Deletion______________________________</span></h1>
 </div>
 
 <div>
-    <form action="updateCourseInfo" method="post">
-        <h2 class="text-dark">&nbsp;Update your course:&nbsp;</h2><br>
-        <label for="courses">Choose your course:</label>
-        <select name="courseCode" id="courses">
-            <option th:each="course: ${courses}" th:text="${course}"></option>
-        </select>
-        <br><br>
-        <label for="course-info">Enter course description below: </label><br>
-        <textarea id="course-info" name="courseInfo" rows="10" cols="50"></textarea>
-        <br>
+    <form action="/deleteCourseRequest" th:action="@{/deleteCourseRequest}" method="post">
+        <h2 class="text-dark">&nbsp;Delete a course from the database: &nbsp;</h2><br>
+        <label for="course-code">Choose the course to delete below:</label><br>
+        <select name="courseCode" id="course-code">
+            <option th:each="course: ${courses}" th:text="${course.courseCode}"></option>
+        </select><br><br>
         <input type="submit" value="Submit">
     </form>
 </div>

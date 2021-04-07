@@ -272,12 +272,9 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/submitDeliverables")
-    public String submitDeliverables(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-
-        model.addAttribute(user);
+    public String submitDeliverables(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
         System.out.println("The student here is: " + user.getUsername());
 
         return "submit-deliverable";
@@ -285,11 +282,10 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/courseInformation")
-    public String courseInformation(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String courseInformation(Model model, HttpSession session) {
+
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         return "student-course-info";
     }
@@ -313,11 +309,9 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/deleteDeliverable")
-    public String deleteDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String deleteDeliverable(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
             return "delete-deliverable";
@@ -328,11 +322,9 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/modifyDeliverable")
-    public String modifyDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String modifyDeliverable(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
 
         if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
             return "modify-deliverable";
@@ -351,7 +343,7 @@ public class CourseManagementSystem {
         user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
         System.out.println("===========================> USER IS:");
         System.out.println(user);
-        model.addAttribute(user);
+        model.addAttribute("user", user);
         User.Professor tempUser;
         if(user.getRole().equals("Professor"))
             tempUser = (User.Professor) user;
@@ -372,17 +364,18 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Updating course info for " + courseCode);
-        handler.cou.updateRecords("UpdateCourseDetails", "Course", "Professor", courseCode, courseInfo);
+        handler.update_courseinfo("Professor", courseCode, courseInfo);
 
         return "course-info-update-successful";
     }
 
     @GetMapping("/createCourse")
-    public String createCourse(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String createCourse(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
+
+        List<User> professors = repository.findByRole("Professor");
+        model.addAttribute("professors", professors);
 
         return "create-course";
     }
@@ -392,6 +385,7 @@ public class CourseManagementSystem {
                                       @RequestParam String courseCode,
                                       @RequestParam int courseLevel,
                                       @RequestParam int courseNumber,
+                                      @RequestParam String professor,
                                       @RequestParam String courseDept,
                                       @RequestParam String courseInfo,
                                       @RequestParam int startTerm,
@@ -425,20 +419,20 @@ public class CourseManagementSystem {
             tempCourse.setCourseInfo(courseInfo);
             Courserepository.save(tempCourse);
 
+            System.out.println("Assigning professor with username " + professor);
+            handler.assign_prof(professor, courseCode);
         }
         else
-            handler.cou.updateRecords("Add", "Course", "Admin", courseCode, courseName);
+            handler.add_course("Admin", courseCode);
 
         return "course-create-successful";
     }
 
 
     @GetMapping("/deleteCourse")
-    public String deleteCourse(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String deleteCourse(Model model, HttpSession session) {
+        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+        model.addAttribute("user", user);
         List<Course> courses = Courserepository.findAll();
         model.addAttribute("courses", courses);
 
@@ -453,7 +447,7 @@ public class CourseManagementSystem {
         }
 
         System.out.println("Deleting " + courseCode);
-        handler.cou.updateRecords("Delete", "Course", "Admin", courseCode, null);
+        handler.delete_course("Admin", courseCode);
 
         return "course-delete-successful";
     }

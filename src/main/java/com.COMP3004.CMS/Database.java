@@ -15,6 +15,7 @@ interface UserDatabase extends MongoRepository<User,String> {
     public User findTopByOrderByIdDesc();
     public List<User> findByActiveIsFalse();
     public List<User> findAll();
+    public List<User> findByRole(String role);
     public List<User> findByGender(String gender);
     public List<User> findByBirthdateIsNotNull();
 }

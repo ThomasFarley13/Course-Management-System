@@ -82,6 +82,11 @@ public class DatabaseHandler  {
         return false;
     }
 
+    public boolean update_courseinfo(String agent, String CourseID,String DID) {
+        notifyObservers("UpdateCourseDetails","Course",agent,CourseID,DID);
+        return false;
+    }
+
     public boolean remove_deliverable (String agent, String CourseID,String DID) {
         notifyObservers("Delete","Deliverable",agent,CourseID,DID);
         return false;

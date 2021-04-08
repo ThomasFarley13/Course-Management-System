@@ -43,7 +43,7 @@ public class DatabaseHandler  {
         /*for (int i = 0; i<Observers.size();i++){
             Observers.get(i).updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra );
         }*/
-        stu.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra );
+        stu.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
         prof.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
         cou.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
     }
@@ -79,11 +79,6 @@ public class DatabaseHandler  {
 
     public boolean Add_deliverable(String agent, String CourseID,String DID) {
         notifyObservers("Add","Deliverable",agent,CourseID,DID);
-        return false;
-    }
-
-    public boolean update_courseinfo(String agent, String CourseID,String DID) {
-        notifyObservers("UpdateCourseDetails","Course",agent,CourseID,DID);
         return false;
     }
 
@@ -136,20 +131,12 @@ class studentDetails extends observer {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.deregister(CourseID);
             Userrepository.save(temp);
-        } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
-            List<String> studentList = Courserepository.findByCourseCode(CourseID).getStudents();
-            if(studentList.size() > 0) {
-                User.Student tempUser;
-                for (String studentUsername : studentList) {
-                    tempUser = (User.Student) Userrepository.findByUsername(studentUsername);
-                    tempUser.deregister(CourseID);
-                    Userrepository.save(tempUser);
-                }
-            }
         } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
-            temp.deregister(CourseID);
-            Userrepository.save(temp);
+            if (temp != null){
+                temp.deregister(CourseID);
+                Userrepository.save(temp);
+            }
         } else if (action.equals("Grade")){
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.grading(CourseID,Extra);
@@ -166,7 +153,6 @@ class profDetails extends observer {
         super("Professor");
     }
 
-
     @Override
     public void updateRecords(String action, String ObjChanged, String Agent, String CourseID, String Extra) {
         if (action.equals("Assign")) {
@@ -178,23 +164,12 @@ class profDetails extends observer {
             temp.deassign(CourseID);
             Userrepository.save(temp);
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
-            UUID uuid = UUID.randomUUID();
-            Deliverable d = new Deliverable(CourseID, uuid.toString());
+            Deliverable d = new Deliverable(CourseID, Extra); //Need to make a constructor?
+            d.setOwner(Agent);
             Deliverablerepository.save(d);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
-            //Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
-            //Deliverablerepository.delete(t);
-        } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
-            String profUser = Courserepository.findByCourseCode(CourseID).getProfessor();
-            if(profUser != null) {
-                User.Professor temp = (User.Professor) Userrepository.findByUsername(profUser);
-                temp.deregisterCourse(CourseID);
-                Userrepository.save(temp);
-            }
-        } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
-            User.Professor temp = (User.Professor) Userrepository.findByUsername(Agent);
-            temp.deregisterCourse(CourseID);
-            Userrepository.save(temp);
+            Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
+            Deliverablerepository.delete(t);
         }
     }
 }
@@ -240,9 +215,11 @@ class courseDetails extends observer {
             Course c = Courserepository.findByCourseCode(CourseID);
             Courserepository.delete(c);
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
-
+            Course c = Courserepository.findByCourseCode(CourseID);
+            c.addDeliverable(Extra);
+            Courserepository.save(c);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
-
+            //Same as above but for deletion
         }
     }
 }

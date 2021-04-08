@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Fully completed &quot;delete deliverable&quot; functionality.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/public/DeliverableModify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM_[Default_Changelist]/Server.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM__Default_Changelist_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/modify-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/modify-deliverable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/modify-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/modify-deliverable.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="AnnotationType" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1pcoVnpfsiUFx93FbY4itZdXhbu" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.COMP3004.CMS" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Thomas\eclipse-workspace\mainBranchThing\src\main\resources\templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Thomas\eclipse-workspace\mainBranchThing\src\main\resources\templates\errors" />
+      <recent name="C:\Users\Thomas\eclipse-workspace\mainBranchThing\src\main\resources\templates" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.COMP3004.CMS.Server" />
+      <module name="CMS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.COMP3004.CMS.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Server" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Refactors and recovery" />
+      <created>1615491766483</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1615491766483</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added logout functionality, merged html worked on from current week, and added test data + user changes as suggested in weekly meeting - Thomas, Sepehr, Anita, and Abdul">
+      <created>1615496856076</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1615496856076</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed merge issue where page was no longer serving user info">
+      <created>1616102123253</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1616102123253</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixed location of where the HTML was located -Thomas">
+      <created>1616102525422</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1616102525422</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added pathing so that each &quot;type&quot; of user that logs in is met with a different HTML display. All previous functionality now works together -Thomas">
+      <created>1616106145466</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1616106145466</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added the entirety of the registration functionality + the approval process - Thomas">
+      <created>1616656955911</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1616656955911</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated test data. Abdul, admin, professor1, and thomas set to active. Others set to inactive - Thomas">
+      <created>1616657125384</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1616657125384</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added default constructor for the course object - Thomas">
+      <created>1617235827538</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1617235827538</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added default constructor for the deliverable object - Thomas">
+      <created>1617236808231</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1617236808231</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added lombok support, error message handling, and error message HTMLs - Thomas">
+      <created>1617248376279</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1617248376279</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Updated some error message htmls, added the forgot password feature, added the delete user feature - Thomas">
+      <created>1617250340089</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1617250340089</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Commented our deliverable.java to help with testing - Thomas, Anita">
+      <created>1617258896293</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1617258896293</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas">
+      <created>1617481983711</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1617481983711</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Refactors and recovery">
+      <created>1617737022944</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1617737022944</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Refactors and recovery">
+      <created>1617773642597</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1617773642597</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fully completed &quot;create deliverable&quot; functionality.">
+      <created>1617828491107</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1617828491108</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Fully completed &quot;delete deliverable&quot; functionality.">
+      <created>1617854840630</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1617854840630</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Added logout functionality, merged html worked on from current week, and added test data + user changes as suggested in weekly meeting - Thomas, Sepehr, Anita, and Abdul" />
+    <MESSAGE value="Fixed merge issue where page was no longer serving user info" />
+    <MESSAGE value="Fixed location of where the HTML was located -Thomas" />
+    <MESSAGE value="Added pathing so that each &quot;type&quot; of user that logs in is met with a different HTML display. All previous functionality now works together -Thomas" />
+    <MESSAGE value="Added the entirety of the registration functionality + the approval process - Thomas" />
+    <MESSAGE value="Updated test data. Abdul, admin, professor1, and thomas set to active. Others set to inactive - Thomas" />
+    <MESSAGE value="Added default constructor for the course object - Thomas" />
+    <MESSAGE value="Added default constructor for the deliverable object - Thomas" />
+    <MESSAGE value="Added lombok support, error message handling, and error message HTMLs - Thomas" />
+    <MESSAGE value="Updated some error message htmls, added the forgot password feature, added the delete user feature - Thomas" />
+    <MESSAGE value="Commented our deliverable.java to help with testing - Thomas, Anita" />
+    <MESSAGE value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
+    <MESSAGE value="Refactors and recovery" />
+    <MESSAGE value="Fully completed &quot;create deliverable&quot; functionality." />
+    <MESSAGE value="Fully completed &quot;delete deliverable&quot; functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fully completed &quot;delete deliverable&quot; functionality." />
+  </component>
+</project>

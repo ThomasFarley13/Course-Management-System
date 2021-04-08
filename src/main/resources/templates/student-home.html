@@ -43,27 +43,16 @@ GET: The respective course's posted deliverables that were POSTed from the profe
 POST: The deliverable submission whatever format it may be. (Whether we accept .txt or .pdfs etc... But submission option unavailable if the deliverable is beyong the deadline. ) 
 -->
 <h2> Courses</h2></div>
-    <div>
-        <h5 class="text-dark">&nbsp;COMP3004 - Object Oriented Software Programming&nbsp;</h5>
-        <ul>
-            <li><a href="/courseInformation">Course Info</a></li>
-            <li><a href="/submitDeliverables">Submit Deliverables</a></li>
-        </ul>
+    <div th:each="course,iterstat : ${courses}">
+        <div>
+            <h5 class="text-dark" th:text="${course.courseCode + '  -  ' + course.courseName}"></h5>
+            <ul>
+                <li><a th:href="@{/courseInformation?CourseID={CID}(CID=${course.courseCode})}">Course Info</a></li>
+                <li><a href="/submitDeliverables">Submit Deliverables</a></li>
+            </ul>
+        </div>
     </div>
-    <div>
-        <h5 class="text-dark">&nbsp;COMP3005 - Databases, SQL, and Relational Algebra&nbsp;</h5>
-        <ul>
-            <li><a href="/courseInformation">Course Info</a></li>
-            <li><a href="/submitDeliverables">Submit Deliverables</a></li>
-        </ul>
-    </div>
-    <div>
-        <h5 class="text-dark">&nbsp;COMP3007 - Scheme and Functional Programming</h5>
-        <ul>
-            <li><a href="/courseInformation">Course Info</a></li>
-            <li><a href="/submitDeliverables">Submit Deliverables</a></li>
-        </ul>
-    </div>
+
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

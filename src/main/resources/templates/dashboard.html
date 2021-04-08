@@ -54,9 +54,6 @@
                 <div class="card-header">
                     Current Semester
                 </div>
-                <ul th:each="continet : ${continents}">
-                    <li th:text="${continent}"></li>
-                </ul>
                 <ul class="list-group list-group-flush" th:each="course,iterstat : ${courses}">
                     <li class="list-group-item" ><a th:href="@{/{link}(link=${links[iterstat.index]})}" th:text="${course}"></a></li>
                 </ul>

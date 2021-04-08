@@ -43,6 +43,9 @@ public class CourseManagementSystem {
 
     @Autowired
     private CourseDatabase Courserepository;
+    @Autowired
+    private DeliverableDatabase Deliverablerepository;
+
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -210,25 +213,23 @@ public class CourseManagementSystem {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
-        System.out.println("We got to the dashboard Function");
-        System.out.println(Courserepository.findByCourseCode("3004B"));
-        System.out.println(repository.findByUsername("Abdul"));
         if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
-            System.out.println("We got to the dashboard Function Login 4");
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-            System.out.println("We got to the dashboard Function Login 3");
             model.addAttribute("user",user);
-            System.out.println("We got to the dashboard Function Login 1");
             System.out.println(user.getRole());
             if(user.getRole().equals("Admin")) {
                 return "admin-home";
             }
             else if(user.getRole().equals("Professor")){
-                System.out.println("The prof object: " + user);
                 return "professor-home";
             }
             else if(user.getRole().equals("Student")){
-                System.out.println("We got to the dashboard Function loggin 2");
+                ArrayList<String> coursecodes = user.getCourseList();
+                ArrayList<Course> courses = new ArrayList<Course>();
+                for (int i =0;i<coursecodes.size();i++) {
+                    courses.add(Courserepository.findByCourseCode((String)coursecodes.get(i)));
+                }
+                model.addAttribute("courses", courses);
                 return "student-home";
             }
             else{
@@ -282,11 +283,16 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/courseInformation")
-    public String courseInformation(Model model, HttpSession session) {
+    public String courseInformation(@RequestParam(name="CourseID") String CourseId, Model model, HttpSession session) {
 
         User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
         model.addAttribute("user", user);
+        Course c = Courserepository.findByCourseCode(CourseId);
+        ArrayList<String> tempDeliverables = c.getDeliverables();
 
+
+        model.addAttribute("deliverables", tempDeliverables);
+        model.addAttribute("course", c);
         return "student-course-info";
     }
 

@@ -118,8 +118,12 @@ public class Server implements CommandLineRunner {
         handler.assign_prof(testProfessor.getUsername(), "COMP4308A");
 
 
+        Course temp = Courserepository.findByCourseCode("COMP4308A");
+        temp.setCourseInfo("Course info Placeholder");
+        Courserepository.save(temp);
 
-
+        handler.register_student("Abdul","3004B");
+        handler.register_student("Abdul","COMP4308A");
 
 //        // fetch all users
 

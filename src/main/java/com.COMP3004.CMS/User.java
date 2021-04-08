@@ -120,6 +120,9 @@ public class User extends UserCreateFactory{
         }
 
         public void assignCourse(String course){ courseList.add(course); }
+        public void deregisterCourse (String CourseID) {
+            courseList.remove(CourseID);
+        }
 
         public String createDeliverable(){
             return "<link to deliverable here>";

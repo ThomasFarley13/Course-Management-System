@@ -1,9 +1,0 @@
-<changelist name="Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM_[Default_Changelist]" date="1617234112791" recycled="true" deleted="true">
-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM_[Default_Changelist]/shelved.patch" />
-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 3/31/2021 7:41 PM [Default Changelist]" />
-  <binary>
-    <option name="BEFORE_PATH" value="target/classes/com/COMP3004/CMS/Server.class" />
-    <option name="AFTER_PATH" value="target/classes/com/COMP3004/CMS/Server.class" />
-    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_3_31_2021_7_41_PM_[Default_Changelist]/Server.class" />
-  </binary>
-</changelist>

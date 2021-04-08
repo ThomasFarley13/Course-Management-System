@@ -327,7 +327,7 @@ public class CourseManagementSystem {
            model.addAttribute("user", user);
            System.out.println("REACHED DELIVERABLE DELETION PAGE");
 
-           //Getting prof's assigned courses
+           //Getting prof's deliverables
            List<Deliverable> profDeliverables = dRepository.findByowner(user.username);
            List<String> deliverableNames = new ArrayList<>();
 
@@ -347,18 +347,27 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/modifyDeliverable")
-    public String modifyDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String modifyDeliverable(Model model, HttpSession session) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))){
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+            System.out.println("REACHED DELIVERABLE MODIFICATION PAGE");
 
-        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
+            List<Deliverable> profDeliverables = dRepository.findByowner(user.username);
+            List<String> deliverableNames = new ArrayList<>();
+
+            for (Deliverable profDeliverable : profDeliverables) {
+                deliverableNames.add(profDeliverable.name);
+            }
+
+            System.out.println("Prof's deliverables: " + deliverableNames.toString());
+            model.addAttribute("deliverableNames", deliverableNames);
+            model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
+
             return "modify-deliverable";
         }
-        else{
-            return "error";
-        }
+
+        return "error";
     }
 
 
@@ -627,14 +636,7 @@ public class CourseManagementSystem {
         System.out.print("Deliverable Entry Added - \nName of Deliverable: ");
         System.out.println(dRepository.findDeliverableByDeliverableID(dID).name);
         System.out.println("Owner (Username): " + d.owner);
-        //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
-        //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
-        //dObject.set(xxx);
-        //deliverableRepository.save(dObject);
 
-        //System.out.println(dObject.toString());
-        //System.out.println(dObject.get("name"));
-        //System.out.println(course);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableDeletion")
@@ -647,5 +649,31 @@ public class CourseManagementSystem {
         dRepository.delete(dRepository.findByownerAndName(session.getAttribute("username").toString(),dName));
 
         System.out.println("Deleted.");
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/deliverableModification")
+    @ResponseBody
+    public void deliverableModify(@RequestBody JSONObject dObject, Model model, HttpSession session){
+        System.out.println("Editing the target deliverable...");
+
+        //Finding target deliverable
+        String oldName = dObject.get("oldName").toString();
+        Deliverable targetD = dRepository.findByownerAndName(session.getAttribute("username").toString(), oldName);
+
+        //Parsing post and updating deliverable
+        String newName = dObject.get("newName").toString();
+        String newDescription = dObject.get("newDescription").toString();
+        int newWeight = Integer.parseInt(dObject.get("newWeight").toString());
+        int newDueDate = Integer.parseInt(dObject.get("newDueDate").toString());
+
+        targetD.setName(newName);
+        targetD.setDetails(newDescription);
+        targetD.setWeighting(newWeight);
+        targetD.setDueDate(newDueDate);
+
+        //Saving instance to server
+        dRepository.save(targetD);
+
+        System.out.println("Target update successful");
     }
 }

@@ -213,6 +213,7 @@ public class CourseManagementSystem {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
+        System.out.println(session.getAttribute("logged_in"));
         if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
             model.addAttribute("user",user);
@@ -465,15 +466,19 @@ public class CourseManagementSystem {
     and jmeter cannot send Json in a way that @modelattribute can parse
      */
     @PostMapping("/loginTest")
-    public String logintesthandler(@RequestBody User user, Model model) {
+    public String logintesthandler(@RequestBody User user, Model model,HttpSession session) {
         model.addAttribute(user);
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
-        // fake authenitcation
-        if (repository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) != null) {
-            return "dashboard";
+
+        // authentication
+        User loginUser = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        if (loginUser != null && loginUser.getActive()) {
+            session.setAttribute("username",loginUser.getUsername());
+            session.setAttribute("role",loginUser.getRole());
+            session.setAttribute("logged_in", true);
+            return "redirect:/dashboard";
         } else {
             // figure out message to send on fail and how to send it to the html
+            System.out.println("We have failed the login test");
             return "login";
         }
     }
@@ -553,6 +558,7 @@ public class CourseManagementSystem {
         //handler.register_student("Abdul","3004B");
         //courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
 
+        System.out.println(courses);
         return courses;
     }
 

@@ -5,28 +5,51 @@ import net.minidev.json.JSONObject;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
 
 public class Deliverable {
 
-    String CourseCode;
+    protected String details;
+    protected int weighting;
+    protected String name;
+    protected Calendar dueDate = Calendar.getInstance();
     @Id
-    String DeliverableID;
+    protected String deliverableID;
+    protected String courseCode;
+    protected String owner;
+
+
     ArrayList<JSONObject> studentsubmissions; // this will be of form {username:{sbmission:submissionlink,grade:grade}}
-    String Details;
 
+    //Default Constructor
     public Deliverable () {
-
-    }
-
-    public Deliverable (String CourseCode,String DeliverableID) {
-        this.DeliverableID = DeliverableID;
-        this.CourseCode = CourseCode;
+        this.details = null;
+        this.weighting = 0;
+        this.deliverableID = null;
+        this.courseCode = null;
+        this.name = null;
+        this.owner = null;
         ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>();
     }
 
+    public void setDetails(String details) {this.details = details;}
+    public void setWeighting(int weighting) {this.weighting = weighting;}
+    public void setDueDate(int daysDue) {dueDate.add(Calendar.DATE, daysDue);}
+    public void setName(String name) {this.name = name;}
+    public void setOwner(String professor){this.owner = professor;}
 
-
+    public Deliverable(String courseID, String deliverableID) {
+        this.courseCode = courseID;
+        this.deliverableID = deliverableID;
+        this.details = null;
+        this.weighting = 0;
+        this.name = null;
+        this.owner = null;
+        ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>();
+    }
 }
+
 
 
 // i commented this to make my git commit easy, you can change it and its dependencies later abdul

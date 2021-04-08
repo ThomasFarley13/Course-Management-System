@@ -18,28 +18,26 @@
     <p th:text=" 'You are currently logged in as ' + ${user.username}"><br></p>
 </div>
 <div>
-    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Info______________________________</span></h1>
+    <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Course Deletion______________________________</span></h1>
 </div>
+
 <div>
-    <h2>&nbsp;Course Information: </h2>
-    <p style="margin-left:5%;"> Grab course information </p>
-<!--    For Course Info - GET: Course description and any other relevant and public information-->
-</div>
-<div>
-    <h2> Course Deliverables: </h2></div>
-<div>
-    <ul>
-        <li><a href="/submitDeliverables">Assignment 1</a></li>
-        <li><a href="/submitDeliverables">Assignment 2</a></li>
-        <li><a href="/submitDeliverables">Assignment 3</a></li>
-    </ul>
+
+    <form action="/dropCourseRequest" th:action="@{/dropCourseRequest}" method="post">
+        <h2 class="text-dark">&nbsp;Choose the course you would like to drop: &nbsp;</h2><br>
+        <label for="course-code">Choose the course below:</label><br>
+        <select name="courseCode" id="course-code">
+            <option th:each="course: ${courses}" th:text="${course}"></option>
+        </select><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 <br><br>
 
 <div>
-    <form action="/dashboard" th:action="@{/dashboard}" th:object="${user}" method="post" >
-        <input type="submit" class="btn btn-primary" value="Return to Home"/>
+    <form action="/dashboard" th:action="@{/dashboard}" method="get" >
+        <input type="submit" value="Return to home" />
     </form>
 </div>
 

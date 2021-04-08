@@ -22,16 +22,14 @@
 </div>
 <div>
     <h2>&nbsp;Course Information: </h2>
-    <p style="margin-left:5%;"> Grab course information </p>
+    <p style="margin-left:5%;" th:text="${course.courseInfo}"></p>
 <!--    For Course Info - GET: Course description and any other relevant and public information-->
 </div>
 <div>
     <h2> Course Deliverables: </h2></div>
 <div>
-    <ul>
-        <li><a href="/submitDeliverables">Assignment 1</a></li>
-        <li><a href="/submitDeliverables">Assignment 2</a></li>
-        <li><a href="/submitDeliverables">Assignment 3</a></li>
+    <ul th:each="deliverable : ${deliverables}">
+        <li><a th:href="@{/submitDeliverables?DID={DID}(DID=${deliverable})}" th:text="'Deliverable: '${deliverable})}">Assignment 1</a></li>
     </ul>
 </div>
 

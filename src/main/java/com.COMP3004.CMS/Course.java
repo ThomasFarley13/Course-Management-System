@@ -125,9 +125,7 @@ public class Course {
         deliverables = new ArrayList<String>();
     }
 
-    public void addstudent(String StuUName) {
-        students.add(StuUName);
-    }
+    public void addstudent(String StuUName) { students.add(StuUName); }
 
     public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID);}
 

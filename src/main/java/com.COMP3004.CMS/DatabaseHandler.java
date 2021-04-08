@@ -165,6 +165,7 @@ class profDetails extends observer {
             Userrepository.save(temp);
         } else if (action.equals("Add") && ObjChanged.equals("Deliverable")) {
             Deliverable d = new Deliverable(CourseID, Extra); //Need to make a constructor?
+            d.setOwner(Agent);
             Deliverablerepository.save(d);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
             Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);

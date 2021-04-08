@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Refactors and recovery">
+    <list default="true" id="05ee695d-d752-4598-a811-2a1f8c78c236" name="Default Changelist" comment="Fully completed &quot;create deliverable&quot; functionality.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/public/DeliverableDelete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/CourseManagementSystem.java" afterDir="false" />
@@ -12,7 +13,18 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/DatabaseHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Deliverable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Deliverable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.COMP3004.CMS/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/create-deliverable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/delete-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/delete-deliverable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Course.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Course.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/CourseManagementSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Deliverable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Deliverable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DeliverableDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/DeliverableDatabase.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/courseDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/courseDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/profDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/profDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/studentDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/COMP3004/CMS/studentDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/create-deliverable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/delete-deliverable.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/delete-deliverable.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617773642597</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Fully completed &quot;create deliverable&quot; functionality.">
+      <created>1617828491107</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1617828491108</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -334,6 +353,7 @@
     <MESSAGE value="Commented our deliverable.java to help with testing - Thomas, Anita" />
     <MESSAGE value="Added grades as hashtable and added genders for student sign up so that they can be queried in the SDC - Thomas" />
     <MESSAGE value="Refactors and recovery" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactors and recovery" />
+    <MESSAGE value="Fully completed &quot;create deliverable&quot; functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fully completed &quot;create deliverable&quot; functionality." />
   </component>
 </project>

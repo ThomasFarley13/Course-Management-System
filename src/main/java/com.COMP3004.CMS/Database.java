@@ -36,5 +36,7 @@ interface CourseDatabase extends MongoRepository<Course,String> {
 interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
     public Deliverable findDeliverableByDeliverableID (String deliverableID);
     public List<Deliverable> findByCourseCode (String courseCode);
+    public List<Deliverable> findByowner (String owner);
+    public Deliverable findByownerAndName(String owner, String Name);
 }
 

@@ -211,16 +211,16 @@ public class CourseManagementSystem {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
-        System.out.println("We got to the dashboard Function");
-        System.out.println(Courserepository.findByCourseCode("3004B"));
-        System.out.println(repository.findByUsername("Abdul"));
+        //System.out.println("We got to the dashboard Function");
+        //System.out.println(Courserepository.findByCourseCode("3004B"));
+        //System.out.println(repository.findByUsername("Abdul"));
         if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
-            System.out.println("We got to the dashboard Function Login 4");
+            //System.out.println("We got to the dashboard Function Login 4");
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-            System.out.println("We got to the dashboard Function Login 3");
+            //System.out.println("We got to the dashboard Function Login 3");
             model.addAttribute("user",user);
-            System.out.println("We got to the dashboard Function Login 1");
-            System.out.println(user.getRole());
+            //System.out.println("We got to the dashboard Function Login 1");
+            //System.out.println(user.getRole());
             if(user.getRole().equals("Admin")) {
                 return "admin-home";
             }
@@ -321,19 +321,30 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/deleteDeliverable")
-    public String deleteDeliverable(@ModelAttribute("User") User user, Model model) {
-        if(userLoggedIn != null){
-            user = userLoggedIn;
-        }
-        model.addAttribute(user);
+    public String deleteDeliverable(Model model, HttpSession session) {
+       if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))){
+           User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+           model.addAttribute("user", user);
+           System.out.println("REACHED DELIVERABLE DELETION PAGE");
 
-        if(repository.findByUsernameAndRole(user.getUsername(), "Professor") != null){
-            return "delete-deliverable";
-        }
-        else{
-            return "error";
-        }
+           //Getting prof's assigned courses
+           List<Deliverable> profDeliverables = dRepository.findByowner(user.username);
+           List<String> deliverableNames = new ArrayList<>();
+
+           for (Deliverable profDeliverable : profDeliverables) {
+               deliverableNames.add(profDeliverable.name);
+           }
+
+           System.out.println("Prof's deliverables: " + deliverableNames.toString());
+           model.addAttribute("deliverableNames", deliverableNames);
+           model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
+
+           return "delete-deliverable";
+       }
+
+       return "error";
     }
+
 
     @GetMapping("/modifyDeliverable")
     public String modifyDeliverable(@ModelAttribute("User") User user, Model model) {
@@ -600,7 +611,8 @@ public class CourseManagementSystem {
         System.out.println("Weight: " + weight);
         System.out.println("Days due: " + daysDue);
 
-        handler.Add_deliverable("Professor", course, dID);
+        handler.Add_deliverable(session.getAttribute("username").toString(), course, dID);
+
 
         //Retrieving newly created deliverable then passing params
         Deliverable d = dRepository.findDeliverableByDeliverableID(dID);
@@ -612,9 +624,9 @@ public class CourseManagementSystem {
         //Saving instance to server
         dRepository.save(d);
 
-        System.out.print("Deliverable Entry Added - Name of Deliverable: ");
+        System.out.print("Deliverable Entry Added - \nName of Deliverable: ");
         System.out.println(dRepository.findDeliverableByDeliverableID(dID).name);
-
+        System.out.println("Owner (Username): " + d.owner);
         //handler.Add_deliverable(user.username, HTML COURSE CODE, DeliverableID (through uuid.toString())
         //dObject = deliverablerepository.findDeliverableByDeliverableID("DID");
         //dObject.set(xxx);
@@ -623,5 +635,17 @@ public class CourseManagementSystem {
         //System.out.println(dObject.toString());
         //System.out.println(dObject.get("name"));
         //System.out.println(course);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/deliverableDeletion")
+    @ResponseBody
+    public void deliverableDelete(@RequestBody JSONObject dObject, Model model, HttpSession session){
+        System.out.println("Deleting the target deliverable...");
+
+        //Finding deliverable to delete
+        String dName = dObject.get("dName").toString();
+        dRepository.delete(dRepository.findByownerAndName(session.getAttribute("username").toString(),dName));
+
+        System.out.println("Deleted.");
     }
 }

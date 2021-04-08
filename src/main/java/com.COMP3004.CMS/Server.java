@@ -38,9 +38,9 @@ public class Server implements CommandLineRunner {
 
 
 
-        //repository.deleteAll();
+        repository.deleteAll();
         Courserepository.deleteAll();
-        //dRepository.deleteAll();
+        dRepository.deleteAll();
 
         User.Admin admin = (User.Admin) factory.createUser("Admin", "Password123", "Admin", 1,"null","null", "Admin", "User");
         User.Student abdul = (User.Student) factory.createUser("Abdul", "Password223", "Student", 2, "2000-07-30","male", "Abdul", "Kazal");
@@ -84,7 +84,7 @@ public class Server implements CommandLineRunner {
         Courserepository.save(new Course("Abstract Data Types/Algorithms","COMP2402B",2000,2402,"Computer Science"));
         Courserepository.save(new Course("Linear Algebra II","MATH2107A",2000,2107,"Math"));
         Courserepository.save(new Course("Intro to Computer Science II","COMP1406B",1000,1406,"Computer Science"));
-        Courserepository.save(new Course("Intro to Computer Science I","COMP1405B",1000,1405,"Computer Science"));
+        Courserepository.save(new Course("Intro to Computer Science I","1405B",1000,1405,"Computer Science"));
         Courserepository.save(new Course("Linear Algebra I","MATH1107A",1000,1107,"Math"));
         Courserepository.save(new Course("Discrete Structures I","COMP1805A",1000,1805,"Computer Science"));
         Courserepository.save(new Course("Discrete Structures II","COMP2804A",2000,2804,"Computer Science"));

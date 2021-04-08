@@ -20,7 +20,7 @@
 </form>
 <div>
     <h1>Welcome Professor</h1>
-    <p th:text=" 'You are currently logged in as ' + ${user.username}"><br></p>
+    <p th:text=" '&nbsp;You are currently logged in as ' + ${user.username}"><br></p>
 </div>
 <div>
     <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Create Deliverable______________________________</span></h1>
@@ -28,7 +28,7 @@
 
 <div>
         <h2 class="text-dark">&nbsp;Create a deliverable:&nbsp;</h2><br>
-        <label for="courses">Choose your course:</label>
+        <label for="courses">&nbsp;Choose your course:</label>
         <select name="courses" id="courses">
             <option th:each="assignedCourse : ${assignedCourses}" th:value="${assignedCourse}" th:text="${assignedCourse}">
             </option>
@@ -46,8 +46,9 @@
         <label for="deliverable-description">Enter deliverable description below: </label><br>
         <textarea id="deliverable-description" name="deliverable-description" rows="10" cols="50"></textarea>
         <br>
+        <form action="dashboard" th:action="@{/dashboard}" method="get">
         <input type="Submit" onclick="submitDeliverable()" value="Submit" ></input>
-
+        </form>
 </div>
 
 <br><br>

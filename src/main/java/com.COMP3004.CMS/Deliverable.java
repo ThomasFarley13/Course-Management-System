@@ -20,7 +20,8 @@ public class Deliverable {
     protected String owner;
 
 
-    ArrayList<JSONObject> studentsubmissions; // this will be of form {username:{sbmission:submissionlink,grade:grade}}
+    ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>(); // this will be of form {username:{sbmission:submissionlink,grade:grade, submissionDate: Calendar.DATE}}
+    //Note, the date object is simply an attribute, the date and calendar class have methods that compare before/after for easy rejection of late assignments.
 
     //Default Constructor
     public Deliverable () {
@@ -38,6 +39,23 @@ public class Deliverable {
     public void setDueDate(int daysDue) {dueDate.add(Calendar.DATE, daysDue);}
     public void setName(String name) {this.name = name;}
     public void setOwner(String professor){this.owner = professor;}
+
+    public void addNewSubmission(String userName, String subLink){
+        System.out.println("Submitee Username: " + userName);
+        System.out.println("Submitee Link: " + subLink);
+
+        //Creating the submission as JSON object
+        JSONObject submission = new JSONObject();
+        submission.put("submissionLink", subLink);
+        submission.put("grade", 0);
+        submission.put("submissionDate", Calendar.DATE);
+
+        JSONObject subPackage = new JSONObject();
+        subPackage.put(userName, submission);
+                                                    //Added the json in the format commented above.
+        studentsubmissions.add(subPackage);
+
+    }
 
     public Deliverable(String courseID, String deliverableID) {
         this.courseCode = courseID;

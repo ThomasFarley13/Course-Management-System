@@ -137,7 +137,7 @@ public class Server implements CommandLineRunner {
 
         //Assigning course(s) to test prof
         ((User.Professor) professor1).assignCourse("3004B");
-        ((User.Professor) professor1).assignCourse("2419B");
+        ((User.Professor) professor1).assignCourse("COMP4308A");
 
         repository.save(professor1);
 

@@ -282,10 +282,23 @@ public class CourseManagementSystem {
 
 
     @GetMapping("/submitDeliverables")
-    public String submitDeliverables(Model model, HttpSession session) {
+    public String submitDeliverables(@RequestParam(name="CID") String CourseId, Model model, HttpSession session) {
         User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
         model.addAttribute("user", user);
         System.out.println("The student here is: " + user.getUsername());
+        System.out.println("The course in question here is: " + CourseId);
+
+        //Getting required deliverables
+        List <Deliverable> courseDeliverables = dRepository.findByCourseCode(CourseId);
+        List <String> deliverableNames = new ArrayList<String>();
+
+        for (Deliverable courseDeliverable : courseDeliverables){
+            deliverableNames.add(courseDeliverable.name);
+        }
+
+        model.addAttribute("deliverableNames", deliverableNames);
+        model.addAttribute("targetCourse", Courserepository.findByCourseCode(CourseId));
+        model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
 
         return "submit-deliverable";
     }
@@ -754,5 +767,20 @@ public class CourseManagementSystem {
         dRepository.save(targetD);
 
         System.out.println("Target update successful");
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value= "/deliverableStudentSubmission")
+    @ResponseBody
+    public void deliverableStudentSubmit(@RequestBody JSONObject dObject, Model model, HttpSession session){
+        System.out.println("Sending deliverable submission...");
+
+        //Finding the deliverable
+        Deliverable targetDeliverable = dRepository.findByCourseCodeAndName(dObject.get("targetCourse").toString(), dObject.get("dName").toString());
+
+        //Updating deliverable submissions
+        targetDeliverable.addNewSubmission(session.getAttribute("username").toString(), dObject.get("subLink").toString());
+        dRepository.save(targetDeliverable);
+
+        System.out.println("Submission complete");
     }
 }

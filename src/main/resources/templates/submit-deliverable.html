@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <head>
     <meta charset="utf-8">
@@ -8,6 +12,8 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
+<script src="http://localhost:8080/DeliverableSend.js"></script>
 
 <body style="background: rgb(200,200,200);">
 <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
@@ -21,28 +27,30 @@
     <h1 style="text-align: justify;width: 1920;height: 1080;"><span style="text-decoration: underline;">______________________________Submit Deliverable______________________________</span></h1>
 </div>
 
-<!--
-TODO: Grab course (and deliverable?) name
--->
-
-<!--
-For Submit Deliverable -
-GET: The respective course's posted deliverables that were POSTed from the professors' actions. (Whatever the information of the deliverable is. Such as name, deadline, weighting, etc.)
-
-POST: The deliverable submission whatever format it may be. (Whether we accept .txt or .pdfs etc... But submission option unavailable if the deliverable is beyong the deadline. )
--->
 
 <div>
-    <form action="#">
-        <h2 class="text-dark">&nbsp;Submit a deliverable for the course: &nbsp;</h2><br>
-        <label for="submit-box">Enter the URL link below: </label><br>
+
+    <br>
+    <h2 class="text-dark">&nbsp;Submit a deliverable for the course: &nbsp;</h2><br>
+    <select name="course" id="courseCode">
+        <option th:value="${targetCourse.courseCode}" th:text="${targetCourse.courseCode}">
+        </option>
+    </select>
+    <br><br>
+    <label for="deliverables">&nbsp;Choose the deliverable:<br></label>
+    <select name="deliverables" id="deliverables">
+        <option th:each="deliverableName : ${deliverableNames}" th:value="${deliverableName}" th:text="${deliverableName}">
+        </option>
+    </select>
+        <br><label for="submit-box">Enter the URL link below: </label><br>
         <input type="text" id="submit-box" name="submit-box" value="URL here"><br>
-        <input type="submit" value="Submit">
+    <br>
+    <form action="dashboard" th:action="@{/dashboard}" method="get">
+        <input type="Submit" onclick="sendDeliverable()" value="Submit" ></input>
     </form>
+
 </div>
-
 <br><br>
-
 <div>
     <form action="/dashboard" th:action="@{/dashboard}" method="get" >
         <input type="submit" value="Return to home" />

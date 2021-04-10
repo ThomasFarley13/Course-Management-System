@@ -94,6 +94,7 @@ public class Course {
     public void addstudent(String StuUName) { students.add(StuUName); }
 
     public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID);}
+    public void removeDeliverable(String deliverableID){this.deliverables.remove(deliverableID);}
 
     public String getDeliverable(String deliverableId){
         for (int x = 0; x < deliverables.size(); x++){

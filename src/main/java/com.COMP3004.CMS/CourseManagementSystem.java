@@ -616,7 +616,6 @@ public class CourseManagementSystem {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
-    @ResponseBody
     public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) throws ParseException {
         System.out.println("We are registering the student");
         Object [] keys = courses.keySet().toArray();
@@ -652,7 +651,7 @@ public class CourseManagementSystem {
 
         System.out.println("Courses registered");
 //        return "Registered in courses: " + tempList.toString();
-        return "course-registration-successful";
+        return "course-register-successful";
     }
 
     @GetMapping("/dropCourse")
@@ -738,7 +737,8 @@ public class CourseManagementSystem {
 
         //Finding deliverable to delete
         String dName = dObject.get("dName").toString();
-        dRepository.delete(dRepository.findByownerAndName(session.getAttribute("username").toString(),dName));
+        Deliverable d = dRepository.findByownerAndName(session.getAttribute("username").toString(),dName);
+        handler.remove_deliverable("Professor",d.courseCode,d.deliverableID);
 
         System.out.println("Deleted.");
     }

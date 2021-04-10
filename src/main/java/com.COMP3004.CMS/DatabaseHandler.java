@@ -82,6 +82,7 @@ public class DatabaseHandler  {
         return false;
     }
 
+
     public boolean update_courseinfo(String agent, String CourseID,String DID) {
         notifyObservers("UpdateCourseDetails","Course",agent,CourseID,DID);
         return false;
@@ -251,6 +252,9 @@ class courseDetails extends observer {
             Courserepository.save(c);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
             //Same as above but for deletion
+            Course c = Courserepository.findByCourseCode(CourseID);
+            c.removeDeliverable(Extra);
+            Courserepository.save(c);
         }
     }
 }

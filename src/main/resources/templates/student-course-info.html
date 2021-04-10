@@ -29,7 +29,7 @@
     <h2> Course Deliverables: </h2></div>
 <div>
     <ul th:each="deliverable : ${deliverables}">
-        <li><a th:href="@{/submitDeliverables?DID={DID}(DID=${deliverable})}" th:text="'Deliverable: '${deliverable})}">Assignment 1</a></li>
+        <li><a th:href="@{/submitDeliverables?CID={CID}(CID=${course.courseCode})}" th:text="'Deliverable:'+ ${deliverable}">Assignment 1</a></li>
     </ul>
 </div>
 

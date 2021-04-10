@@ -184,9 +184,8 @@ class profDetails extends observer {
             d.setOwner(Agent);
             Deliverablerepository.save(d);
         } else if (action.equals("Delete") && ObjChanged.equals("Deliverable")) {
-
-            //Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
-            //Deliverablerepository.delete(t);
+            Deliverable t = Deliverablerepository.findDeliverableByDeliverableID(Extra);
+            Deliverablerepository.delete(t);
         } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
             String profUser = Courserepository.findByCourseCode(CourseID).getProfessor();
             if(profUser != null) {

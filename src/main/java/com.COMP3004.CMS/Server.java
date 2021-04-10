@@ -124,6 +124,16 @@ public class Server implements CommandLineRunner {
         handler.assign_prof(testProfessor.getUsername(), "BIOC3101A");
         Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
 
+        //populating withdrawal and registration dates for testing purposes
+        Course c = Courserepository.findByCourseCode("BIOL2600A");
+        c.setRegisterByDate("2021-04-7");
+        c.setWithdrawByDate("2021-04-8");
+        Courserepository.save(c);
+
+        c = Courserepository.findByCourseCode("CGSC1001B");
+        c.setWithdrawByDate("2021-04-8");
+        Courserepository.save(c);
+
         handler.assign_prof(testProfessor.getUsername(), "COMP4308A");
 
 
@@ -133,7 +143,7 @@ public class Server implements CommandLineRunner {
 
         handler.register_student("Abdul","3004B");
         handler.register_student("Abdul","COMP4308A");
-
+        handler.register_student("Abdul","CGSC1001B");
 
         //Assigning course(s) to test prof
         ((User.Professor) professor1).assignCourse("3004B");

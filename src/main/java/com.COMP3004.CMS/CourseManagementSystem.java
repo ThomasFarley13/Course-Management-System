@@ -617,6 +617,7 @@ public class CourseManagementSystem {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
+    @ResponseBody
     public String CourseRegistration(@RequestBody JSONObject courses, Model model, HttpSession session) throws ParseException {
         System.out.println("We are registering the student");
         Object [] keys = courses.keySet().toArray();
@@ -629,26 +630,27 @@ public class CourseManagementSystem {
         //empty course list for tempUser to keep track of denied registrations
         tempUser.setCourseList(new ArrayList<>());
 
-        List<String> tempList = new ArrayList<String>();
-        for (int i = 0; i < keys.length; ++i) {
-            String courseID = (String)courses.get(keys[i]);
-            String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
-            courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
-            if(now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
-                    !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
-                System.out.println(courseID + " added, valid registration");
-                tempList.add(courseID);
-                handler.register_student(currentUsername,courseID);
-            } else {
-                System.out.println(courseID + " is invalid registration");
-                tempUser.courseList.add(("test"));
+        try {
+            List<String> tempList = new ArrayList<String>();
+            for (int i = 0; i < keys.length; ++i) {
+                String courseID = (String) courses.get(keys[i]);
+                String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
+                courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
+                if (now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
+                        !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                    System.out.println(courseID + " added, valid registration");
+                    tempList.add(courseID);
+                    handler.register_student(currentUsername, courseID);
+                } else {
+                    System.out.println(courseID + " is invalid registration");
+                    tempUser.courseList.add(("test"));
+                }
+                if (tempUser.getCourseList().size() > 0) {
+                    deniedRegistrations.add(tempUser);
+                    return "invalid-course-registrations";
+                }
             }
-            if(tempUser.getCourseList().size() > 0) {
-                deniedRegistrations.add(tempUser);
-                return "invalid-course-registrations";
-            }
-        }
-
+        }catch (NullPointerException e){}
 
         System.out.println("Courses registered");
 //        return "Registered in courses: " + tempList.toString();
@@ -733,15 +735,19 @@ public class CourseManagementSystem {
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableDeletion")
     @ResponseBody
-    public void deliverableDelete(@RequestBody JSONObject dObject, Model model, HttpSession session){
+    public String deliverableDelete(@RequestBody JSONObject dObject, Model model, HttpSession session){
         System.out.println("Deleting the target deliverable...");
 
         //Finding deliverable to delete
-        String dName = dObject.get("dName").toString();
-        Deliverable d = dRepository.findByownerAndName(session.getAttribute("username").toString(),dName);
-        handler.remove_deliverable("Professor",d.courseCode,d.deliverableID);
-
+        try {
+            String dName = dObject.get("dName").toString();
+            Deliverable d = dRepository.findByownerAndName(session.getAttribute("username").toString(), dName);
+            handler.remove_deliverable("Professor", d.courseCode, d.deliverableID);
+        }catch (NullPointerException e) {
+            return "That professor is not authorized to change that deliverable";
+        }
         System.out.println("Deleted.");
+        return "sucsessfully deleted deliverable";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableModification")
@@ -749,25 +755,30 @@ public class CourseManagementSystem {
     public void deliverableModify(@RequestBody JSONObject dObject, Model model, HttpSession session){
         System.out.println("Editing the target deliverable...");
 
-        //Finding target deliverable
-        String oldName = dObject.get("oldName").toString();
-        Deliverable targetD = dRepository.findByownerAndName(session.getAttribute("username").toString(), oldName);
+        try {
+            //Finding target deliverable
+            String oldName = dObject.get("oldName").toString();
+            Deliverable targetD = dRepository.findByownerAndName(session.getAttribute("username").toString(), oldName);
 
-        //Parsing post and updating deliverable
-        String newName = dObject.get("newName").toString();
-        String newDescription = dObject.get("newDescription").toString();
-        int newWeight = Integer.parseInt(dObject.get("newWeight").toString());
-        int newDueDate = Integer.parseInt(dObject.get("newDueDate").toString());
+            //Parsing post and updating deliverable
+            String newName = dObject.get("newName").toString();
+            String newDescription = dObject.get("newDescription").toString();
+            int newWeight = Integer.parseInt(dObject.get("newWeight").toString());
+            int newDueDate = Integer.parseInt(dObject.get("newDueDate").toString());
 
-        targetD.setName(newName);
-        targetD.setDetails(newDescription);
-        targetD.setWeighting(newWeight);
-        targetD.setDueDate(newDueDate);
+            targetD.setName(newName);
+            targetD.setDetails(newDescription);
+            targetD.setWeighting(newWeight);
+            targetD.setDueDate(newDueDate);
 
-        //Saving instance to server
-        dRepository.save(targetD);
+            //Saving instance to server
+            dRepository.save(targetD);
 
-        System.out.println("Target update successful");
+            System.out.println("Target update successful");
+        }
+        catch(NullPointerException e) {
+            System.out.println("Target update unsuccessful");
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value= "/deliverableStudentSubmission")

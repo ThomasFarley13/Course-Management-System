@@ -117,6 +117,24 @@ public class Course {
         professor = null;
     }
 
+    public String getTerm () {
+        String term="";
+        String [] withdrawaldates = this.withdrawByDate.split("-");
+
+        if (Integer.parseInt(withdrawaldates[1]) <=4){
+            term+="W";
+        }
+        else if (Integer.parseInt(withdrawaldates[1]) <=9){
+            term+="F";
+        }else {
+            term+="W";
+        }
+
+
+        term+=withdrawaldates[0];
+        return term;
+    }
+
 }
 
 

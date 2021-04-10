@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -782,5 +783,87 @@ public class CourseManagementSystem {
         dRepository.save(targetDeliverable);
 
         System.out.println("Submission complete");
+    }
+
+    @GetMapping("/studentAudit")
+    public String getAudit (Model model, HttpSession session) {
+
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in"))) {
+
+            //initilizing table values
+            ArrayList<String> courseLables  = new ArrayList<String>();
+            ArrayList<String> courses  = new ArrayList<String>();
+            ArrayList<String> terms  = new ArrayList<String>();
+            ArrayList<String> courseGrades  = new ArrayList<String>();
+            ArrayList<String> CreditValues  = new ArrayList<String>();
+            ArrayList<String> comments   = new ArrayList<String>();
+
+            //fetching user information
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
+            Hashtable<String,String> grades = user.getGrades();
+            courses.addAll(user.getCourseList()); // gets list of current courses
+            courses.addAll(user.getPrevCourses()); // gets list of previously taken courses
+
+            //populating the values of the table
+            for (int i = 0;i<courses.size();i++) {
+                if (grades.containsKey(courses.get(i))) {
+                    Course c = Courserepository.findByCourseCode(courses.get(i));
+                    courseLables.add(c.courseName +":  "+c.courseName);
+                    CreditValues.add("0.5");
+                    comments.add(" ");
+                    terms.add(c.getTerm());
+                    courseGrades.add(grades.get(courses.get(i)));
+                }
+                else {
+                    Course c = Courserepository.findByCourseCode(courses.get(i));
+                    courseLables.add(c.courseDept +":  "+c.courseName);
+                    CreditValues.add("0.5");
+                    comments.add(" ");
+                    terms.add(c.getTerm());
+                    courseGrades.add("CUR");
+                }
+            }
+            //populating table with courses that were not linked properly
+            if (courses.size() ==0 && grades.size() != 0) {
+                Iterator it = grades.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry mapElement = (Map.Entry)it.next();
+                    courses.add((String) mapElement.getKey());
+                    try {
+                        Course c = Courserepository.findByCourseCode((String) mapElement.getKey());
+                        terms.add(c.getTerm());
+                        courseLables.add(c.courseName + ":  " + c.courseName);
+                    }
+                    catch(NullPointerException e){
+                        terms.add("unknown to database");
+                        courseLables.add("unknown to database");
+                    }
+                    CreditValues.add("0.5");
+                    comments.add(" ");
+                    courseGrades.add((String) mapElement.getValue());
+                }
+            }
+
+            /*
+            Placeholder for testing purposes
+            courseLables.add("Earth Science: The origin of planets");
+            courses.add("ERTH2419");
+            terms.add("W2021");
+            CreditValues.add("0.5");
+            courseGrades.add("A+");
+            comments.add("good job");*/
+
+
+            //adding attributes for thymleaf
+            model.addAttribute("courses",courses.toArray());
+            model.addAttribute("Terms",terms.toArray());
+            model.addAttribute("Titles",courseLables.toArray());
+            model.addAttribute("Creditvalues",CreditValues.toArray());
+            model.addAttribute("Grades",courseGrades.toArray());
+            model.addAttribute("Comments",comments.toArray());
+            return "audit";
+        }else {
+            return "error";
+        }
     }
 }

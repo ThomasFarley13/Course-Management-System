@@ -78,11 +78,18 @@ public class Server implements CommandLineRunner {
 
 
         //course test Data
+        Course tempCourse;
 
-        Courserepository.save(new Course("Object Oriented Software Programming","3004B",3000,3004,"Computer Science"));
+        tempCourse = new Course("Object Oriented Software Programming","3004B",3000,3004,"Computer Science");
+        tempCourse.setWithdrawByDate("2020-12-31");
+        Courserepository.save(tempCourse);
         handler.assign_prof(professor1.getUsername(), "3004B");
-        Courserepository.save(new Course("The origin of Planets","2419B",2000,2419,"Earth Science"));
-        Courserepository.save(new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts"));
+        tempCourse = new Course("The origin of Planets","2419B",2000,2419,"Earth Science");
+        tempCourse.setRegisterByDate("2020-12-31");
+        Courserepository.save(tempCourse);
+        tempCourse = new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts");
+        tempCourse.setRegisterByDate("2020-12-31");
+        Courserepository.save(tempCourse);
         Courserepository.save(new Course("Programming Paradigms","COMP3007B",3000,3007,"Computer Science"));
         handler.assign_prof(testProfessor.getUsername(), "COMP3007B");
         Courserepository.save(new Course("Applied Cryptography","COMP4109A",4000,4109,"Computer Science"));
@@ -122,7 +129,9 @@ public class Server implements CommandLineRunner {
         handler.assign_prof(testProfessor.getUsername(), "BIOL3609A");
         Courserepository.save(new Course("General Biochemistry I","BIOC3101A",3000,3101,"Biochemistry"));
         handler.assign_prof(testProfessor.getUsername(), "BIOC3101A");
-        Courserepository.save(new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science"));
+        tempCourse = new Course("Computational Systems Biology","COMP4308A",4000,4308,"Computer Science");
+        tempCourse.setWithdrawByDate("2020-12-31");
+        Courserepository.save(tempCourse);
 
         //populating withdrawal and registration dates for testing purposes
         Course c = Courserepository.findByCourseCode("BIOL2600A");

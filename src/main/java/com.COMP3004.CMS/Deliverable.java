@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Deliverable {
 
@@ -20,8 +21,9 @@ public class Deliverable {
     protected String owner;
 
 
-    ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>(); // this will be of form {username:{sbmission:submissionlink,grade:grade, submissionDate: Calendar.DATE}}
-    //Note, the date object is simply an attribute, the date and calendar class have methods that compare before/after for easy rejection of late assignments.
+    HashMap<String, HashMap> submissions = new HashMap<String, HashMap>(); // this will be of form ('username'=> hashMap)
+                                                                            //Where the inner hashmap contains: ('submissionLink'=> 'link', 'grade'=> 'number', 'overdue'=>'boolean')
+
 
     //Default Constructor
     public Deliverable () {
@@ -31,7 +33,7 @@ public class Deliverable {
         this.courseCode = null;
         this.name = null;
         this.owner = null;
-        ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>();
+        HashMap<String, HashMap> submissions = new HashMap<String, HashMap>();
     }
 
     public void setDetails(String details) {this.details = details;}
@@ -44,16 +46,25 @@ public class Deliverable {
         System.out.println("Submitee Username: " + userName);
         System.out.println("Submitee Link: " + subLink);
 
-        //Creating the submission as JSON object
-        JSONObject submission = new JSONObject();
-        submission.put("submissionLink", subLink);
-        submission.put("grade", 0);
-        submission.put("submissionDate", Calendar.DATE);
+        //Checking to see previously existing submission to overwrite
+        submissions.remove(userName); //Does nothing if there is no such submission
 
-        JSONObject subPackage = new JSONObject();
-        subPackage.put(userName, submission);
-                                                    //Added the json in the format commented above.
-        studentsubmissions.add(subPackage);
+
+        //Creating the inner hash data
+        HashMap<String,String> innerHash = new HashMap<String, String>();
+        innerHash.put("submissionLink", subLink);
+        innerHash.put("grade", "0");
+        innerHash.put("overdue", "false");
+
+        //Finding out if submission is overdue
+        Calendar currentTime = Calendar.getInstance();
+        if (dueDate.before(currentTime)){
+            innerHash.remove("overdue");
+            innerHash.put("overdue", "true");
+        }
+
+        //Adding to the main hash
+        submissions.put(userName, innerHash);
 
     }
 
@@ -64,7 +75,7 @@ public class Deliverable {
         this.weighting = 0;
         this.name = null;
         this.owner = null;
-        ArrayList<JSONObject> studentsubmissions = new ArrayList<JSONObject>();
+        HashMap<String, HashMap> submissions = new HashMap<String, HashMap>();
     }
 }
 

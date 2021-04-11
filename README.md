@@ -20,12 +20,13 @@ COMP3004 Repository for the Group Project
 ---------------------
 
 method 1: 
-1. navigate to where jmeter was installed
-2. run the file `jmeter.bat`
-3. Using the gui open the test file stored in `src/test/jmeter`
-4. `run` the file using the Gui and check the results 
+1.  Make sure the server is running before performing any testing
+2.  navigate to where jmeter was installed
+3. run the file `jmeter.bat`
+4. Using the gui open the test file stored in `src/test/jmeter`
+5. `run` the file using the Gui and check the results 
 
 method 2: 
-1. reload maven dependecies
+1. Make sure the server is running before performing any testing
 2. run the command `mvn verify`
 3. you will see the results of the test in a csv file stored in `target\jmeter\results`

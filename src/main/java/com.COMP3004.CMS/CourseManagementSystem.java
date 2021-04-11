@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -62,7 +61,6 @@ public class CourseManagementSystem {
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in"))) {
-            //redirectAttributes.addFlashAttribute("User",(User)session.getAttribute("user"));
             return "forward:/dashboard";
 
         } else {
@@ -130,6 +128,25 @@ public class CourseManagementSystem {
         model.addAttribute("submissions",submissions);
         return "grades/submit-all-del";
     }
+    public String submitAllDel(String del, String student, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        Deliverable deliverable = dRepository.findByownerAndName(username, del);
+        Hashtable<String, Hashtable<Integer, Hashtable<String, Integer>>> submissions = new Hashtable<>();
+        Hashtable<Integer, Hashtable<String, Integer>> users = new Hashtable<>();
+        Course course = Courserepository.findByCourseCode(deliverable.courseCode);
+        Hashtable<String, Integer> subs = new Hashtable<String, Integer>();
+        if(deliverable.submissions.containsKey(student)) {
+            String grade = (String) deliverable.submissions.get(student).get("grade");
+            subs.put((String) deliverable.submissions.get(student).get("submissionLink"),Integer.parseInt(grade));
+        }
+        else{
+            subs.put("No submission exists",0);
+        }
+        users.put(repository.findByUsername(student).id, subs );
+        submissions.put(deliverable.name, users);
+        model.addAttribute("submissions",submissions);
+        return "grades/submit-all-del";
+    }
 
     @PostMapping("/submitAllDel")
     public String approveAllDel(@RequestParam int[] quantity, @RequestParam String[] usernum, @RequestParam String[] del, @RequestParam String[] subs, HttpSession session) {
@@ -151,6 +168,8 @@ public class CourseManagementSystem {
         return "grades/submit-successful";
     }
 
+
+
     @GetMapping("/selectDel")
     public String selectDel(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
@@ -165,6 +184,37 @@ public class CourseManagementSystem {
     @PostMapping("/selectDel")
     public String selectedDel(@RequestParam String deliverable,Model model, HttpSession session) {
        return submitAllDel(deliverable,model,session);
+    }
+
+    @GetMapping("/selectOneDel")
+    public String selectOneDel(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        List<String> deliverables = new ArrayList<String>();
+        for(Deliverable del : dRepository.findByowner(username)){
+            deliverables.add(del.name);
+        }
+        model.addAttribute("deliverables", deliverables);
+        return "grades/select-del-one";
+    }
+
+    @PostMapping("/selectOneDel")
+    public String selectedOneDel(@RequestParam String deliverable,Model model, HttpSession session) {
+        return selectUserDel(deliverable,model,session);
+    }
+
+    @GetMapping("/selectUserDel")
+    public String selectUserDel(String deliverable,Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+
+        List<String> students = Courserepository.findByCourseCode(dRepository.findByownerAndName(username,deliverable).courseCode).getStudents();
+        model.addAttribute("deliverable",deliverable);
+        model.addAttribute("users", students);
+        return "grades/select-del-user";
+    }
+
+    @PostMapping("/selectUserDel")
+    public String selectedUSerDel(@RequestParam String deliverable, @RequestParam String user, Model model, HttpSession session) {
+        return submitAllDel(deliverable,user,model,session);
     }
 
     @GetMapping("/submitAllCourse")
@@ -198,6 +248,34 @@ public class CourseManagementSystem {
         model.addAttribute("courses",courses);
         return "grades/submit-all-course";
     }
+    public String submitAllCourse(String crs, String student, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        Hashtable<String, Hashtable<Integer, Hashtable<Integer, Integer>>> courses = new Hashtable<>();
+        Hashtable<Integer, Hashtable<Integer, Integer>> users = new Hashtable<>();
+        Course course = Courserepository.findByCourseCode(crs);
+        List<Deliverable> deliverable = dRepository.findByCourseCode(crs);
+        Hashtable<Integer, Integer> subs = new Hashtable<Integer, Integer>();
+        int grade = 0;
+        for(Deliverable del: deliverable) {
+            if (del.submissions.containsKey(student)) {
+                String grd = (String) del.submissions.get(student).get("grade");
+                int weight = del.weighting;
+                grade +=(Integer.parseInt(grd) * weight)/100;
+            }
+            User user = repository.findByUsername(student);
+            if(user.getGrades().containsKey(crs)){
+                subs.put(grade, Integer.parseInt(user.getGrades().get(crs)));
+            }
+            else{
+                subs.put(grade, 0);
+            }
+        }
+        users.put(repository.findByUsername(student).id, subs );
+
+        courses.put(crs, users);
+        model.addAttribute("courses",courses);
+        return "grades/submit-all-course";
+    }
 
     @PostMapping("/submitAllCourse")
     public String approveAllCourse(@RequestParam int[] quantity, @RequestParam String[] usernum, @RequestParam String[] crs, @RequestParam String[] subs, HttpSession session) {
@@ -217,6 +295,7 @@ public class CourseManagementSystem {
         return "grades/submit-successful";
     }
 
+
     @GetMapping("/selectCourse")
     public String selectCourse(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
@@ -233,6 +312,36 @@ public class CourseManagementSystem {
         return submitAllCourse(course,model,session);
     }
 
+    @GetMapping("/selectOneCourse")
+    public String selectOneCourse(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        List<String> courses = new ArrayList<String>();
+        for(Course course : Courserepository.findByProfessor(username)){
+            courses.add(course.courseCode);
+        }
+        model.addAttribute("courses", courses);
+        return "grades/select-course-one";
+    }
+
+    @PostMapping("/selectOneCourse")
+    public String selectedOneCourse(@RequestParam String course,Model model, HttpSession session) {
+        return selectUserCourse(course,model,session);
+    }
+
+    @GetMapping("/selectUserCourse")
+    public String selectUserCourse(String course,Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+
+        List<String> students = Courserepository.findByCourseCode(course).getStudents();
+        model.addAttribute("course",course);
+        model.addAttribute("users", students);
+        return "grades/select-course-user";
+    }
+
+    @PostMapping("/selectUserCourse")
+    public String selectedUSerCourse(@RequestParam String course, @RequestParam String user, Model model, HttpSession session) {
+        return submitAllCourse(course,user,model,session);
+    }
 
 
 
@@ -815,7 +924,6 @@ public class CourseManagementSystem {
 
 
         System.out.println("Courses registered");
-//        return "Registered in courses: " + tempList.toString();
         return "redirect:/Cregister";
     }
 
@@ -1115,16 +1223,6 @@ public class CourseManagementSystem {
                     courseGrades.add((String) mapElement.getValue());
                 }
             }
-
-            /*
-            Placeholder for testing purposes
-            courseLables.add("Earth Science: The origin of planets");
-            courses.add("ERTH2419");
-            terms.add("W2021");
-            CreditValues.add("0.5");
-            courseGrades.add("A+");
-            comments.add("good job");*/
-
 
             //adding attributes for thymleaf
             model.addAttribute("courses",courses.toArray());

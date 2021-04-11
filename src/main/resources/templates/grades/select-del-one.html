@@ -8,20 +8,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Select Course</title>
+    <title>Select Deliverable</title>
 </head>
 <body>
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <!-- Login Form -->
-        <form action="/selectCourse" th:action="@{/selectCourse}" method="post">
-            <h3 class="text-dark">&nbsp;Choose the course to grade: &nbsp;</h3><br>
-            <label for="course">Choose the course below:</label><br>
-            <select name="course" id="course">
-                <option th:each="course: ${courses}" th:text="${course}" ></option>
+        <form action="/selectOneDel" th:action="@{/selectOneDel}" method="post">
+            <h3 class="text-dark">&nbsp;Choose the deliverable you would like to grade: &nbsp;</h3><br>
+            <label for="deliverable">Choose the deliverable below:</label><br>
+            <select name="deliverable" id="deliverable">
+                <option th:each="deliverable: ${deliverables}" th:text="${deliverable}" ></option>
             </select><br><br>
-
-            <input type="submit" value="Select Course">
+            <input type="submit" value="Select Deliverable">
         </form>
     </div>
 </div>

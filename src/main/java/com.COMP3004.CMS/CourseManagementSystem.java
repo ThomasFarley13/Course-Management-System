@@ -661,8 +661,9 @@ public class CourseManagementSystem {
             String courseID = (String)courses.get(keys[i]);
             String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
             courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
-            if(now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
-                    !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+            if(repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                System.out.println(courseID + "is already in student's courseList");
+            } else if(now.after(courseRegisterStart) && now.before(courseRegisterEnd)) {
                 System.out.println(courseID + " added, valid registration");
                 tempList.add(courseID);
                 handler.register_student(currentUsername,courseID);
@@ -671,12 +672,8 @@ public class CourseManagementSystem {
                 tempUser = repository.findByUsername(currentUsername);
                 //empty course list for tempUser to keep track of denied registrations
                 tempUser.setCourseList(new ArrayList<>());
-                tempUser.courseList.add((courseID));
-            }
-            if(tempUser.getCourseList().size() > 0) {
+                tempUser.courseList.add(courseID);
                 deniedRegistrations.add(tempUser);
-//                tempUser.courseList.remove(0);
-//                return "invalid-course-registrations";
             }
         }
 
@@ -714,6 +711,7 @@ public class CourseManagementSystem {
 
         if(now.after(withdrawByDate)){
             System.out.println("Past withdrawal period");
+            tempUser.courseList.add(courseCode);
             deniedWithdrawals.add(tempUser);
             return "invalid-withdraw-request";
         }
@@ -754,6 +752,33 @@ public class CourseManagementSystem {
         return "redirect:/lateRegistrationRequests";
     }
 
+    @GetMapping("/lateWithdrawalRequests")
+    public String lateWithdrawalRequests(Model model) {
+        if(deniedWithdrawals.isEmpty())
+            return "denied-withdrawals-empty";
+        else
+            model.addAttribute("users", deniedWithdrawals);
+        return "late-withdrawals";
+    }
+
+    @PostMapping("/lateWithdrawalRequests")
+    public String lateWithdrawalRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+        if(users!=null) {
+            for (String user : users) {
+                if(!deniedWithdrawals.isEmpty()) {
+                    for (User searchTerm : deniedWithdrawals) {
+                        if (searchTerm.getUsername().equals(user)) {
+                            deniedWithdrawals.remove(searchTerm);
+                            if (deniedWithdrawals.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/lateWithdrawalRequests";
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableSubmission")
     @ResponseBody

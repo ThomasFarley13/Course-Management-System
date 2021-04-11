@@ -151,6 +151,7 @@ public class Server implements CommandLineRunner {
         Courserepository.save(temp);
 
         handler.register_student("Abdul","3004B");
+        handler.register_student("Abdul","COMP3000B");
         handler.register_student("Abdul","COMP4308A");
         handler.register_student("Abdul","CGSC1001B");
 

@@ -99,62 +99,77 @@ public class CourseManagementSystem {
     }
 
     @GetMapping("/approveUser")
-    public String approveUser(Model model) {
-        List<User> users = repository.findByActiveIsFalse();
-        model.addAttribute("users",users);
-        return "user-approve";
+    public String approveUser(Model model,HttpSession session) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            List<User> users = repository.findByActiveIsFalse();
+            model.addAttribute("users", users);
+            return "user-approve";
+        }
+        return "error";
 
     }
 
     @PostMapping("/approveUser")
-    public String approveUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
-        if(users!=null) {
-            for (String user : users) {
-                User x = repository.findByUsername(user);
-                x.setActive(true);
-                repository.save(x);
+    public String approveUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users,HttpSession session) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            if (users != null) {
+                for (String user : users) {
+                    User x = repository.findByUsername(user);
+                    x.setActive(true);
+                    repository.save(x);
+                }
             }
+            return "redirect:/approveUser";
         }
-        return "redirect:/approveUser";
+        return "error";
     }
 
     @GetMapping(value ="/getStats")
     //@ResponseBody
-    public String getStats(HttpServletResponse response) throws IOException {
-        Stats s = new Stats(repository);
-        XSSFWorkbook file = s.getStats();
-        String filename = "Export.xlsx";
-        String filetype = "xlsx";
+    public String getStats(HttpServletResponse response,HttpSession session) throws IOException {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            Stats s = new Stats(repository);
+            XSSFWorkbook file = s.getStats();
+            String filename = "Export.xlsx";
+            String filetype = "xlsx";
 
-        response.addHeader("Content-disposition", "attachment;filename=" + filename);
-        response.setContentType(filetype);
-        file.write(response.getOutputStream());
-        response.flushBuffer();
-        return null;
+            response.addHeader("Content-disposition", "attachment;filename=" + filename);
+            response.setContentType(filetype);
+            file.write(response.getOutputStream());
+            response.flushBuffer();
+            return null;
+        }
+        return "error";
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(Model model) {
-        List<User> users = repository.findAll();
-        model.addAttribute("users",users);
-        return "user-delete";
+    public String deleteUser(Model model,HttpSession session) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            List<User> users = repository.findAll();
+            model.addAttribute("users", users);
+            return "user-delete";
+        }
+        return "error";
     }
 
     @PostMapping("/deleteUser")
-    public String deleteUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
-        if(users!=null) {
-            for (String user : users) {
-                User x = repository.findByUsername(user);
-                ArrayList<String> courses = x.getCourseList();
-                for (String courseID : courses) {
-                    if(courseID != null) {
-                        handler.deregister_student(user, courseID);
+    public String deleteUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users,HttpSession session) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            if (users != null) {
+                for (String user : users) {
+                    User x = repository.findByUsername(user);
+                    ArrayList<String> courses = x.getCourseList();
+                    for (String courseID : courses) {
+                        if (courseID != null) {
+                            handler.deregister_student(user, courseID);
+                        }
                     }
+                    repository.deleteByUsername(user);
                 }
-                repository.deleteByUsername(user);
             }
+            return "redirect:/deleteUser";
         }
-        return "redirect:/deleteUser";
+        return"error";
     }
 
     @PostMapping("/createUserRequest")
@@ -285,45 +300,51 @@ public class CourseManagementSystem {
 
     @GetMapping("/submitDeliverables")
     public String submitDeliverables(@RequestParam(name="CID") String CourseId, Model model, HttpSession session) {
-        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-        model.addAttribute("user", user);
-        System.out.println("The student here is: " + user.getUsername());
-        System.out.println("The course in question here is: " + CourseId);
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))) {
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+            System.out.println("The student here is: " + user.getUsername());
+            System.out.println("The course in question here is: " + CourseId);
 
-        //Getting required deliverables
-        List <Deliverable> courseDeliverables = dRepository.findByCourseCode(CourseId);
-        List <String> deliverableNames = new ArrayList<String>();
+            //Getting required deliverables
+            List<Deliverable> courseDeliverables = dRepository.findByCourseCode(CourseId);
+            List<String> deliverableNames = new ArrayList<String>();
 
-        for (Deliverable courseDeliverable : courseDeliverables){
-            deliverableNames.add(courseDeliverable.name);
+            for (Deliverable courseDeliverable : courseDeliverables) {
+                deliverableNames.add(courseDeliverable.name);
+            }
+
+            model.addAttribute("deliverableNames", deliverableNames);
+            model.addAttribute("targetCourse", Courserepository.findByCourseCode(CourseId));
+            model.addAttribute("user", repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role")));
+
+            return "submit-deliverable";
         }
-
-        model.addAttribute("deliverableNames", deliverableNames);
-        model.addAttribute("targetCourse", Courserepository.findByCourseCode(CourseId));
-        model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
-
-        return "submit-deliverable";
+        return "error";
     }
 
 
     @GetMapping("/courseInformation")
     public String courseInformation(@RequestParam(name="CourseID") String CourseId, Model model, HttpSession session) {
 
-        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-        model.addAttribute("user", user);
-        Course c = Courserepository.findByCourseCode(CourseId);
-        ArrayList<String> tempDeliverables = c.getDeliverables();
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))) {
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+            Course c = Courserepository.findByCourseCode(CourseId);
+            ArrayList<String> tempDeliverables = c.getDeliverables();
 
 
-        model.addAttribute("deliverables", tempDeliverables);
-        model.addAttribute("course", c);
-        return "student-course-info";
+            model.addAttribute("deliverables", tempDeliverables);
+            model.addAttribute("course", c);
+            return "student-course-info";
+        }
+        return "error";
     }
 
     @GetMapping("/createDeliverable")
     public String createDeliverable(Model model, HttpSession session) {
 
-        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) ) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")&& session.getAttribute("role").equals("Professor")) ) {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
 
@@ -348,7 +369,7 @@ public class CourseManagementSystem {
     @GetMapping("/deleteDeliverable")
     public String deleteDeliverable(Model model, HttpSession session) {
 
-       if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))){
+       if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Professor")){
            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
            model.addAttribute("user", user);
            System.out.println("REACHED DELIVERABLE DELETION PAGE");
@@ -374,7 +395,7 @@ public class CourseManagementSystem {
 
     @GetMapping("/modifyDeliverable")
     public String modifyDeliverable(Model model, HttpSession session) {
-        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))){
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Professor")){
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
             System.out.println("REACHED DELIVERABLE MODIFICATION PAGE");
@@ -433,13 +454,18 @@ public class CourseManagementSystem {
 
     @GetMapping("/createCourse")
     public String createCourse(Model model, HttpSession session) {
-        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-        model.addAttribute("user", user);
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Professor")) {
 
-        List<User> professors = repository.findByRole("Professor");
-        model.addAttribute("professors", professors);
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
 
-        return "create-course";
+            List<User> professors = repository.findByRole("Professor");
+            model.addAttribute("professors", professors);
+
+            return "create-course";
+        }else {
+            return "error";
+        }
     }
 
     @PostMapping("/createCourseRequest")
@@ -451,67 +477,76 @@ public class CourseManagementSystem {
                                       @RequestParam String courseDept,
                                       @RequestParam String courseInfo,
                                       @RequestParam int startTerm,
-                                      @RequestParam int endTerm){
-        System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
-        if(Courserepository.findByCourseCode(courseCode) != null){
-            System.out.println("Submitted course code exists");
-            return "create-course-exists";
+                                      @RequestParam int endTerm,HttpSession session){
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            System.out.println("Received new course's data, Code: " + courseCode + ", Name: " + courseName);
+            if (Courserepository.findByCourseCode(courseCode) != null) {
+                System.out.println("Submitted course code exists");
+                return "create-course-exists";
+            }
+
+            System.out.println("Saving new course " + courseName);
+            if (courseLevel != 0 || courseNumber != 0 || courseDept != null) {
+                String registerBy, withdrawBy;
+                if (startTerm == 1)
+                    registerBy = registrationTerm1;
+                else if (startTerm == 2)
+                    registerBy = registrationTerm2;
+                else
+                    registerBy = registrationTerm3;
+
+                if (endTerm == 1)
+                    withdrawBy = withdrawByDateTerm1;
+                else if (endTerm == 2)
+                    withdrawBy = withdrawByDateTerm2;
+                else
+                    withdrawBy = withdrawByDateTerm3;
+
+                Course tempCourse = new Course(courseName, courseCode, courseLevel, courseNumber, courseDept);
+                tempCourse.setRegisterByDate(registerBy);
+                tempCourse.setWithdrawByDate(withdrawBy);
+                tempCourse.setCourseInfo(courseInfo);
+                Courserepository.save(tempCourse);
+
+                System.out.println("Assigning professor with username " + professor);
+                handler.assign_prof(professor, courseCode);
+            } else
+                handler.add_course("Admin", courseCode);
+
+            return "course-create-successful";
         }
-
-        System.out.println("Saving new course " + courseName);
-        if (courseLevel != 0 || courseNumber != 0 || courseDept != null) {
-            String registerBy, withdrawBy;
-            if(startTerm == 1)
-                registerBy = registrationTerm1;
-            else if(startTerm == 2)
-                registerBy = registrationTerm2;
-            else
-                registerBy = registrationTerm3;
-
-            if(endTerm == 1)
-                withdrawBy = withdrawByDateTerm1;
-            else if(endTerm == 2)
-                withdrawBy = withdrawByDateTerm2;
-            else
-                withdrawBy = withdrawByDateTerm3;
-
-            Course tempCourse = new Course(courseName, courseCode, courseLevel, courseNumber, courseDept);
-            tempCourse.setRegisterByDate(registerBy);
-            tempCourse.setWithdrawByDate(withdrawBy);
-            tempCourse.setCourseInfo(courseInfo);
-            Courserepository.save(tempCourse);
-
-            System.out.println("Assigning professor with username " + professor);
-            handler.assign_prof(professor, courseCode);
-        }
-        else
-            handler.add_course("Admin", courseCode);
-
-        return "course-create-successful";
+        return "error";
     }
 
 
     @GetMapping("/deleteCourse")
     public String deleteCourse(Model model, HttpSession session) {
-        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-        model.addAttribute("user", user);
-        List<Course> courses = Courserepository.findAll();
-        model.addAttribute("courses", courses);
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+            List<Course> courses = Courserepository.findAll();
+            model.addAttribute("courses", courses);
 
-        return "delete-course";
+            return "delete-course";
+        }else {
+            return "error";
+        }
     }
 
     @PostMapping("/deleteCourseRequest")
-    public String deleteCourseRequest(@RequestParam String courseCode){
-        if(Courserepository.findByCourseCode(courseCode) == null){
-            System.out.println("Trying to delete course that does not exist");
-            return "delete-course-error";
+    public String deleteCourseRequest(@RequestParam String courseCode,HttpSession session){
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Admin")) {
+            if (Courserepository.findByCourseCode(courseCode) == null) {
+                System.out.println("Trying to delete course that does not exist");
+                return "delete-course-error";
+            }
+
+            System.out.println("Deleting " + courseCode);
+            handler.delete_course("Admin", courseCode);
+
+            return "course-delete-successful";
         }
-
-        System.out.println("Deleting " + courseCode);
-        handler.delete_course("Admin", courseCode);
-
-        return "course-delete-successful";
+        return "error";
     }
 
     /*
@@ -564,56 +599,56 @@ public class CourseManagementSystem {
 
     @GetMapping("/Cregister")
     public String CourseRegisterPage (Model model,HttpSession session) {
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Student")) {
+            System.out.println("REACHED COURSE REGISTER PAGE");
 
-        System.out.println("REACHED COURSE REGISTER PAGE");
+            List<String> Depts = mongoTemplate.findDistinct("courseDept", Course.class, String.class);
+            List<Integer> levels = mongoTemplate.findDistinct("courselevel", Course.class, Integer.class);
 
-        List<String> Depts = mongoTemplate.findDistinct("courseDept", Course.class, String.class);
-        List<Integer> levels = mongoTemplate.findDistinct("courselevel", Course.class, Integer.class);
+            System.out.println("Depts: " + Depts.toString());
+            System.out.println("levels: " + levels.toString());
 
-        System.out.println("Depts: " + Depts.toString());
-        System.out.println("levels: " + levels.toString());
+            model.addAttribute("Depts", Depts);
+            model.addAttribute("levels", levels);
 
-        model.addAttribute("Depts", Depts);
-        model.addAttribute("levels", levels);
+            model.addAttribute("user", repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role")));
 
-        model.addAttribute("user",repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role")));
-
-        return "CourseReg";
+            return "CourseReg";
+        }else {
+            return "error";
+        }
     }
 
     @GetMapping("/getCourses")
     @ResponseBody
-    public List<Course> FindCourses(@RequestParam Map<String,String> allParams)
+    public List<Course> FindCourses(@RequestParam Map<String,String> allParams,HttpSession session)
     {
-        System.out.println("Parameters are " + allParams.entrySet());
-        System.out.println("We are in the get course function");
-        List<Course> courses = new ArrayList<Course>();
-        if (allParams.containsKey("CourseID")) {
-            courses.add(Courserepository.findByCourseCode(allParams.get("CourseID")));
-        }
-        else if (allParams.containsKey("CourseLevel") && allParams.containsKey("Subject")) {
-            courses.addAll(Courserepository.findByCourselevelAndCourseDept(Integer.parseInt(allParams.get("CourseLevel")),allParams.get("Subject")));
-        }
-        else if (allParams.containsKey("CourseNum") && allParams.containsKey("Subject")){
-            courses.addAll(Courserepository.findByCoursenumberAndCourseDept(Integer.parseInt(allParams.get("CourseNum")),allParams.get("Subject")));
-        }
-        else if (allParams.containsKey("CourseNum")) {
-            courses.addAll(Courserepository.findBycoursenumber(Integer.parseInt(allParams.get("CourseNum"))));
-        }
-        else if (allParams.containsKey("Subject")){
-            courses.addAll(Courserepository.findByCourseDept(allParams.get("Subject")));
-        }
-        else if (allParams.containsKey("CourseLevel")){
-            courses.addAll(Courserepository.findByCourselevel(Integer.parseInt(allParams.get("CourseLevel"))));
-        }
-        else {
-            courses.addAll(Courserepository.findAll());
-        }
-        //handler.register_student("Abdul","3004B");
-        //courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in"))) {
+            System.out.println("Parameters are " + allParams.entrySet());
+            System.out.println("We are in the get course function");
+            List<Course> courses = new ArrayList<Course>();
+            if (allParams.containsKey("CourseID")) {
+                courses.add(Courserepository.findByCourseCode(allParams.get("CourseID")));
+            } else if (allParams.containsKey("CourseLevel") && allParams.containsKey("Subject")) {
+                courses.addAll(Courserepository.findByCourselevelAndCourseDept(Integer.parseInt(allParams.get("CourseLevel")), allParams.get("Subject")));
+            } else if (allParams.containsKey("CourseNum") && allParams.containsKey("Subject")) {
+                courses.addAll(Courserepository.findByCoursenumberAndCourseDept(Integer.parseInt(allParams.get("CourseNum")), allParams.get("Subject")));
+            } else if (allParams.containsKey("CourseNum")) {
+                courses.addAll(Courserepository.findBycoursenumber(Integer.parseInt(allParams.get("CourseNum"))));
+            } else if (allParams.containsKey("Subject")) {
+                courses.addAll(Courserepository.findByCourseDept(allParams.get("Subject")));
+            } else if (allParams.containsKey("CourseLevel")) {
+                courses.addAll(Courserepository.findByCourselevel(Integer.parseInt(allParams.get("CourseLevel"))));
+            } else {
+                courses.addAll(Courserepository.findAll());
+            }
+            //handler.register_student("Abdul","3004B");
+            //courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
 
-        System.out.println(courses);
-        return courses;
+            System.out.println(courses);
+            return courses;
+        }
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/Courseregistration")
@@ -660,99 +695,125 @@ public class CourseManagementSystem {
 
     @GetMapping("/dropCourse")
     public String dropCourse (Model model,HttpSession session) {
-        User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
-        model.addAttribute("user", user);
 
-        User.Student tempUser;
-        if(user.getRole().equals("Student"))
-            tempUser = (User.Student) user;
-        else
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Student")) {
+            User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
+            model.addAttribute("user", user);
+
+            User.Student tempUser;
+            if (user.getRole().equals("Student"))
+                tempUser = (User.Student) user;
+            else
+                return "error";
+
+            List<String> courses = tempUser.retrieveCourses();
+            model.addAttribute("courses", courses);
+
+            return "student-drop-course";
+        }else {
             return "error";
-
-        List<String> courses = tempUser.retrieveCourses();
-        model.addAttribute("courses", courses);
-
-        return "student-drop-course";
+        }
     }
 
     @PostMapping("/dropCourseRequest")
     public String dropCourseRequest(HttpSession session, @RequestParam String courseCode) throws ParseException {
-        String currentUsername = (String) session.getAttribute("username");
-        User tempUser = repository.findByUsername(currentUsername);
-        tempUser.setCourseList(new ArrayList<>());
-        String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
-        Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
-        Date now = new Date();
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in"))&& session.getAttribute("role").equals("Student")) {
+            String currentUsername = (String) session.getAttribute("username");
+            User tempUser = repository.findByUsername(currentUsername);
+            tempUser.setCourseList(new ArrayList<>());
+            String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
+            Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
+            Date now = new Date();
 
-        if(now.after(withdrawByDate)){
-            System.out.println("Past withdrawal period");
-            tempUser.courseList.add(courseCode);
-            deniedWithdrawals.add(tempUser);
-            return "invalid-withdraw-request";
+            if (now.after(withdrawByDate)) {
+                System.out.println("Past withdrawal period");
+                tempUser.courseList.add(courseCode);
+                deniedWithdrawals.add(tempUser);
+                return "invalid-withdraw-request";
+            }
+
+            System.out.println("Dropping " + courseCode + " for student");
+
+            handler.deregister_student(currentUsername, courseCode);
+            return "course-withdraw-successful";
         }
-
-        System.out.println("Dropping " + courseCode + " for student");
-
-        handler.deregister_student(currentUsername, courseCode);
-        return "course-withdraw-successful";
+        return "error";
     }
 
     @GetMapping("/lateRegistrationRequests")
-    public String lateRegistrationRequests(Model model) {
-        if(deniedRegistrations.isEmpty())
+    public String lateRegistrationRequests(Model model,HttpSession session) {
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
+            if (deniedRegistrations.isEmpty())
 //            model.addAttribute("users", new ArrayList<User>());
-            return "denied-registrations-empty";
-        else
-            model.addAttribute("users", deniedRegistrations);
-        return "late-registrations";
+                return "denied-registrations-empty";
+            else
+                model.addAttribute("users", deniedRegistrations);
+            return "late-registrations";
+        }
+        return "error";
     }
 
     @PostMapping("/lateRegistrationRequests")
-    public String lateRegistrationRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+    public String lateRegistrationRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users,HttpSession session) {
 //        System.out.println("Denied registrations list =============> " + deniedRegistrations);
-        if(users!=null) {
-            for (String user : users) {
-                if(!deniedRegistrations.isEmpty()) {
-                    for (User searchTerm : deniedRegistrations) {
-                        if (searchTerm.getUsername().equals(user)) {
-                            deniedRegistrations.remove(searchTerm);
-                            if (deniedRegistrations.isEmpty()) {
-                                break;
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
+            if (users != null) {
+                for (String user : users) {
+                    if (!deniedRegistrations.isEmpty()) {
+                        for (User searchTerm : deniedRegistrations) {
+                            if (searchTerm.getUsername().equals(user)) {
+                                deniedRegistrations.remove(searchTerm);
+                                if (deniedRegistrations.isEmpty()) {
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            return "redirect:/lateRegistrationRequests";
         }
-        return "redirect:/lateRegistrationRequests";
+        else {
+            return "admin";
+        }
     }
 
     @GetMapping("/lateWithdrawalRequests")
-    public String lateWithdrawalRequests(Model model) {
-        if(deniedWithdrawals.isEmpty())
-            return "denied-withdrawals-empty";
-        else
-            model.addAttribute("users", deniedWithdrawals);
-        return "late-withdrawals";
+    public String lateWithdrawalRequests(Model model,HttpSession session) {
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
+            if (deniedWithdrawals.isEmpty())
+                return "denied-withdrawals-empty";
+            else
+                model.addAttribute("users", deniedWithdrawals);
+            return "late-withdrawals";
+        }
+        else {
+            return "error";
+        }
     }
 
     @PostMapping("/lateWithdrawalRequests")
-    public String lateWithdrawalRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
-        if(users!=null) {
-            for (String user : users) {
-                if(!deniedWithdrawals.isEmpty()) {
-                    for (User searchTerm : deniedWithdrawals) {
-                        if (searchTerm.getUsername().equals(user)) {
-                            deniedWithdrawals.remove(searchTerm);
-                            if (deniedWithdrawals.isEmpty()) {
-                                break;
+    public String lateWithdrawalRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users,HttpSession session) {
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
+            if (users != null) {
+                for (String user : users) {
+                    if (!deniedWithdrawals.isEmpty()) {
+                        for (User searchTerm : deniedWithdrawals) {
+                            if (searchTerm.getUsername().equals(user)) {
+                                deniedWithdrawals.remove(searchTerm);
+                                if (deniedWithdrawals.isEmpty()) {
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            return "redirect:/lateWithdrawalRequests";
         }
-        return "redirect:/lateWithdrawalRequests";
+        else {
+            return "error";
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableSubmission")
@@ -760,103 +821,112 @@ public class CourseManagementSystem {
     public void deliverableSubmit(@RequestBody JSONObject dObject, Model model, HttpSession session){
         System.out.println("Adding the new deliverable entry...");
 
-        //Creating new deliverable
-        //Getting required parameters
-        String dID = UUID.randomUUID().toString().replace("-", "");
-        String course =  dObject.get("course").toString();
-        String name =  dObject.get("name").toString();
-        String description = dObject.get("desc").toString();
-        int weight = Integer.parseInt(dObject.get("weighting").toString());
-        int daysDue = Integer.parseInt(dObject.get("daysDue").toString());
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Professor")) {
+            //Creating new deliverable
+            //Getting required parameters
+            String dID = UUID.randomUUID().toString().replace("-", "");
+            String course = dObject.get("course").toString();
+            String name = dObject.get("name").toString();
+            String description = dObject.get("desc").toString();
+            int weight = Integer.parseInt(dObject.get("weighting").toString());
+            int daysDue = Integer.parseInt(dObject.get("daysDue").toString());
 
-        System.out.println("Deliverable details: ");
-        System.out.println("DID: " + dID);
-        System.out.println("Course: " + course);
-        System.out.println("Name: " + name);
-        System.out.println("Description: " + description);
-        System.out.println("Weight: " + weight);
-        System.out.println("Days due: " + daysDue);
+            System.out.println("Deliverable details: ");
+            System.out.println("DID: " + dID);
+            System.out.println("Course: " + course);
+            System.out.println("Name: " + name);
+            System.out.println("Description: " + description);
+            System.out.println("Weight: " + weight);
+            System.out.println("Days due: " + daysDue);
 
-        handler.Add_deliverable(session.getAttribute("username").toString(), course, dID);
+            handler.Add_deliverable(session.getAttribute("username").toString(), course, dID);
 
 
-        //Retrieving newly created deliverable then passing params
-        Deliverable d = dRepository.findDeliverableByDeliverableID(dID);
-        d.setName(name);
-        d.setDetails(description);
-        d.setWeighting(weight);
-        d.setDueDate(daysDue);
+            //Retrieving newly created deliverable then passing params
+            Deliverable d = dRepository.findDeliverableByDeliverableID(dID);
+            d.setName(name);
+            d.setDetails(description);
+            d.setWeighting(weight);
+            d.setDueDate(daysDue);
 
-        //Saving instance to server
-        dRepository.save(d);
+            //Saving instance to server
+            dRepository.save(d);
 
-        System.out.print("Deliverable Entry Added - \nName of Deliverable: ");
-        System.out.println(dRepository.findDeliverableByDeliverableID(dID).name);
-        System.out.println("Owner (Username): " + d.owner);
+            System.out.print("Deliverable Entry Added - \nName of Deliverable: ");
+            System.out.println(dRepository.findDeliverableByDeliverableID(dID).name);
+            System.out.println("Owner (Username): " + d.owner);
+        }
 
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableDeletion")
     @ResponseBody
     public String deliverableDelete(@RequestBody JSONObject dObject, Model model, HttpSession session){
-        System.out.println("Deleting the target deliverable...");
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Professor")) {
+            System.out.println("Deleting the target deliverable...");
 
-        //Finding deliverable to delete
-        try {
-            String dName = dObject.get("dName").toString();
-            Deliverable d = dRepository.findByownerAndName(session.getAttribute("username").toString(), dName);
-            handler.remove_deliverable("Professor", d.courseCode, d.deliverableID);
-        }catch (NullPointerException e) {
-            return "That professor is not authorized to change that deliverable";
+            //Finding deliverable to delete
+            try {
+                String dName = dObject.get("dName").toString();
+                Deliverable d = dRepository.findByownerAndName(session.getAttribute("username").toString(), dName);
+                handler.remove_deliverable("Professor", d.courseCode, d.deliverableID);
+            } catch (NullPointerException e) {
+                return "That professor is not authorized to change that deliverable";
+            }
+            System.out.println("Deleted.");
+            return "sucsessfully deleted deliverable";
         }
-        System.out.println("Deleted.");
-        return "sucsessfully deleted deliverable";
+        else {
+            return "error";
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableModification")
     @ResponseBody
     public void deliverableModify(@RequestBody JSONObject dObject, Model model, HttpSession session){
         System.out.println("Editing the target deliverable...");
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Professor")) {
+            try {
+                //Finding target deliverable
+                String oldName = dObject.get("oldName").toString();
+                Deliverable targetD = dRepository.findByownerAndName(session.getAttribute("username").toString(), oldName);
 
-        try {
-            //Finding target deliverable
-            String oldName = dObject.get("oldName").toString();
-            Deliverable targetD = dRepository.findByownerAndName(session.getAttribute("username").toString(), oldName);
+                //Parsing post and updating deliverable
+                String newName = dObject.get("newName").toString();
+                String newDescription = dObject.get("newDescription").toString();
+                int newWeight = Integer.parseInt(dObject.get("newWeight").toString());
+                int newDueDate = Integer.parseInt(dObject.get("newDueDate").toString());
 
-            //Parsing post and updating deliverable
-            String newName = dObject.get("newName").toString();
-            String newDescription = dObject.get("newDescription").toString();
-            int newWeight = Integer.parseInt(dObject.get("newWeight").toString());
-            int newDueDate = Integer.parseInt(dObject.get("newDueDate").toString());
+                targetD.setName(newName);
+                targetD.setDetails(newDescription);
+                targetD.setWeighting(newWeight);
+                targetD.setDueDate(newDueDate);
 
-            targetD.setName(newName);
-            targetD.setDetails(newDescription);
-            targetD.setWeighting(newWeight);
-            targetD.setDueDate(newDueDate);
+                //Saving instance to server
+                dRepository.save(targetD);
 
-            //Saving instance to server
-            dRepository.save(targetD);
-
-            System.out.println("Target update successful");
-        }
-        catch(NullPointerException e) {
-            System.out.println("Target update unsuccessful");
+                System.out.println("Target update successful");
+            } catch (NullPointerException e) {
+                System.out.println("Target update unsuccessful");
+            }
         }
     }
 
     @RequestMapping(method = RequestMethod.POST, value= "/deliverableStudentSubmission")
     @ResponseBody
     public void deliverableStudentSubmit(@RequestBody JSONObject dObject, Model model, HttpSession session){
-        System.out.println("Sending deliverable submission...");
+        if (session.getAttribute("logged_in")!= null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Student")) {
+            System.out.println("Sending deliverable submission...");
 
-        //Finding the deliverable
-        Deliverable targetDeliverable = dRepository.findByCourseCodeAndName(dObject.get("targetCourse").toString(), dObject.get("dName").toString());
+            //Finding the deliverable
+            Deliverable targetDeliverable = dRepository.findByCourseCodeAndName(dObject.get("targetCourse").toString(), dObject.get("dName").toString());
 
-        //Updating deliverable submissions
-        targetDeliverable.addNewSubmission(session.getAttribute("username").toString(), dObject.get("subLink").toString());
-        dRepository.save(targetDeliverable);
+            //Updating deliverable submissions
+            targetDeliverable.addNewSubmission(session.getAttribute("username").toString(), dObject.get("subLink").toString());
+            dRepository.save(targetDeliverable);
 
-        System.out.println("Submission complete");
+            System.out.println("Submission complete");
+        }
     }
 
     @GetMapping("/studentAudit")

@@ -55,10 +55,10 @@ public class Server implements CommandLineRunner {
         //user test data
 
 
-        thomas.grading("3004B","B");
-        thomas.grading("3007A","A-");
-        thomas.grading("2003C","D-");
-        anita.grading("2003C","B+");
+        thomas.grading("3004B","75");
+        thomas.grading("3007A","23");
+        thomas.grading("2003C","12");
+        anita.grading("2003C","0");
 
 
         abdul.setActive(true);
@@ -143,7 +143,7 @@ public class Server implements CommandLineRunner {
         c.setWithdrawByDate("2021-04-8");
         Courserepository.save(c);
 
-        handler.assign_prof(testProfessor.getUsername(), "COMP4308A");
+        handler.assign_prof(professor1.getUsername(), "COMP4308A");
 
 
         Course temp = Courserepository.findByCourseCode("COMP4308A");
@@ -151,7 +151,7 @@ public class Server implements CommandLineRunner {
         Courserepository.save(temp);
 
         handler.register_student("Abdul","3004B");
-        handler.register_student("Abdul","COMP3000B");
+        handler.register_student("Thomas","3004B");
         handler.register_student("Abdul","COMP4308A");
         handler.register_student("Abdul","CGSC1001B");
 
@@ -168,7 +168,17 @@ public class Server implements CommandLineRunner {
         testD.setDetails("What's 1+1 (100 marks): ");
         testD.setName("The Syllabus Test");
         testD.setWeighting(30);
+        testD.addNewSubmission("Abdul", "www.google.ca");
         dRepository.save(testD);
+
+        handler.Add_deliverable("Professor1", "COMP4308A", "96");
+        Deliverable testD2 = dRepository.findDeliverableByDeliverableID("96");
+        testD2.setDueDate(10);
+        testD2.setDetails("What's 1+1 (100 marks): ");
+        testD2.setName("Difficult Computer Project");
+        testD2.setWeighting(30);
+        testD2.addNewSubmission("Abdul", "www.bing.ca");
+        dRepository.save(testD2);
 
 //        dRepository.findDeliverableByDeliverableID("95").setDueDate(10);
 //        dRepository.findDeliverableByDeliverableID("95").setWeighting(30);

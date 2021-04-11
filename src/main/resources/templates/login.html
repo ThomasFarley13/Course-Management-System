@@ -23,7 +23,7 @@
         <!-- Login Form -->
         <form action="/login" th:action="@{/login}" th:object="${user}" method="post">
             <input type="text" id="username" class="fadeIn second"  placeholder="login" th:field="*{username}">
-            <input type="text" id="password" class="fadeIn third" placeholder="password" th:field="*{password}">
+            <input type="password" id="password" class="fadeIn third" placeholder="password" th:field="*{password}">
             <input type="submit" class="fadeIn fourth" value="Log In">
         </form>
 

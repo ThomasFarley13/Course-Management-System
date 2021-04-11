@@ -23,6 +23,7 @@ public class User extends UserCreateFactory{
     @Getter @Setter protected String gender;
     @Getter protected ArrayList<String> courseList;
     @Getter protected Hashtable<String, String> grades;
+    @Getter ArrayList<String> prevCourses;
 
     public boolean getActive() { return active; }
 
@@ -79,11 +80,10 @@ public class User extends UserCreateFactory{
 
     public class Student extends User{
 
-
-
         public Student(String username, String password, String role, int id, String birthdate, String gender, String firstname, String lastname) {
             super(username, password, role, id, firstname, lastname);
             courseList = new ArrayList<String>();
+            prevCourses = new ArrayList<String>();
             grades = new Hashtable<String, String>();
             setBirthdate(birthdate);
             setGender(gender);
@@ -110,6 +110,8 @@ public class User extends UserCreateFactory{
         public Course createRegistrationRequest(){
             return new Course(null, null);
         }
+
+        public void addPrevCourse (String c) {prevCourses.add(c);}
     }
 
     public class Professor extends User{

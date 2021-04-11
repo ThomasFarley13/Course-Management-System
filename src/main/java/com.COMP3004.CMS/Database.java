@@ -39,5 +39,6 @@ interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
     public List<Deliverable> findByCourseCode (String courseCode);
     public List<Deliverable> findByowner (String owner);
     public Deliverable findByownerAndName(String owner, String Name);
+    public Deliverable findByCourseCodeAndName(String courseCode, String Name);
 }
 

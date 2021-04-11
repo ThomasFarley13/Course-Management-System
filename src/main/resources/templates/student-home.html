@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
+
+
 <body style="background: rgb(200,200,200);">
     <form action="/logout" th:action="@{/logout}" th:object="${user}" method="post" >
         <input type="submit" class="btn btn-primary" value="Logout" style="float:right; right: 5;"/>
@@ -28,8 +30,8 @@
         <a th:href="@{/Cregister}">Register in a course</a></li>
             <li><!--GET: Student.enrolledCourses to display options-->
 <!--DELETE: The respective course from student's attribute-->
-<a href="/dropCourse">Drop a Course (WDN)</a></li>
-            <li><a href="/Cdrop">Drop a Course (Non-WDN)</a></li>
+            <a href="/dropCourse">Drop a Course (WDN)</a></li>
+            <li><a href="/studentAudit">Generate Audit</a></li>
         </ul>
     </div>
     <div><!--GET: Student.enrolledCourses to courses as headers-->
@@ -40,7 +42,7 @@ For Course Info - GET: Course description and any other relevant and public info
 For Submit Deliverable - 
 GET: The respective course's posted deliverables that were POSTed from the professors' actions. (Whatever the information of the deliverable is. Such as name, deadline, weighting, etc.)
 
-POST: The deliverable submission whatever format it may be. (Whether we accept .txt or .pdfs etc... But submission option unavailable if the deliverable is beyong the deadline. ) 
+POST: The deliverable submission whatever format it may be. (Whether we accept .txt or .pdfs etc... But submission option unavailable if the deliverable is beyond the deadline. )
 -->
 <h2> Courses</h2></div>
     <div th:each="course,iterstat : ${courses}">
@@ -48,7 +50,7 @@ POST: The deliverable submission whatever format it may be. (Whether we accept .
             <h5 class="text-dark" th:text="${course.courseCode + '  -  ' + course.courseName}"></h5>
             <ul>
                 <li><a th:href="@{/courseInformation?CourseID={CID}(CID=${course.courseCode})}">Course Info</a></li>
-                <li><a href="/submitDeliverables">Submit Deliverables</a></li>
+                <li><a th:href="@{/submitDeliverables?CID={CID}(CID=${course.courseCode})}">Submit Deliverables</a></li>
             </ul>
         </div>
     </div>

@@ -20,51 +20,17 @@ public class Course {
 
     @Id
     @Getter @Setter protected String courseCode;
-    @Getter @Setter  protected int courselevel;
+    @Getter @Setter protected int courselevel;
     @Getter @Setter protected int coursenumber;
     @Getter @Setter protected String courseDept;
     @Getter @Setter protected String courseInfo;
     @Getter @Setter protected int capacity;
     @Getter @Setter protected String professor;
-    @Getter @Setter  protected ArrayList<String> students;
+    @Getter @Setter protected ArrayList<String> students;
     @Getter @Setter protected String registerByDate;
     @Getter @Setter protected String withdrawByDate;
 
 
-
-
-
-    //Deliverable methods
-    /*public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
-=======
-    //Deliverable methods -- NEED TO BE READJUSTED AS SEPHER'S METHOD
-    public void createDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
->>>>>>> c3606ad00acc3f9e30b9a828e113556b0076e1d8
-        deliverables.add(new Deliverable(assignmentName,description,daysUntilDue,weighting));
-    }
-
-    public void editDeliverable(String assignmentName, String description, int daysUntilDue, int weighting){
-        int targetIndex = 0;
-
-        for (int index = 0; index < deliverables.size()-1; index++){
-            if (deliverables.get(index).assignmentName.equals(assignmentName)){
-                targetIndex = index;
-            }
-        }
-
-        deliverables.get(targetIndex).setDescription(description);
-        deliverables.get(targetIndex).setDueDate(daysUntilDue);
-        deliverables.get(targetIndex).setWeighting(weighting);
-    }
-
-    public void deleteDeliverable(String targetName){
-        for (int index = 0; index < deliverables.size()-1; index++){
-            if (deliverables.get(index).assignmentName.equals(targetName)){
-                deliverables.remove(index);
-                break;
-            }
-        }
-    }*/
 
     public ArrayList<Student> retrieveStudents() {
         ArrayList<Student> retrieved = new ArrayList<Student>();
@@ -128,6 +94,7 @@ public class Course {
     public void addstudent(String StuUName) { students.add(StuUName); }
 
     public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID);}
+    public void removeDeliverable(String deliverableID){this.deliverables.remove(deliverableID);}
 
     public String getDeliverable(String deliverableId){
         for (int x = 0; x < deliverables.size(); x++){
@@ -150,30 +117,25 @@ public class Course {
         professor = null;
     }
 
+    public String getTerm () {
+        String term="";
+        String [] withdrawaldates = this.withdrawByDate.split("-");
+
+        if (Integer.parseInt(withdrawaldates[1]) <=4){
+            term+="W";
+        }
+        else if (Integer.parseInt(withdrawaldates[1]) <=9){
+            term+="F";
+        }else {
+            term+="W";
+        }
+
+
+        term+=withdrawaldates[0];
+        return term;
+    }
+
 }
 
 
-     /*class Deliverable {
-         @Getter @Setter  protected String assignmentName;
-         @Getter @Setter private String description;
-         @Getter  final Calendar dueDate = Calendar.getInstance();
-         @Getter @Setter private int weighting;
-
-        //public String getAssignmentName() { return assignmentName; } Assignment name should not be changeable imo
-        public void setDueDate (int daysFromNow) { dueDate.add(Calendar.DATE, daysFromNow); }
-
-
-         public Deliverable(){
-             this.assignmentName = null;
-             this.description = null;
-             this.weighting = 0;
-         }
-
-        public Deliverable(String assignmentName, String description, int daysUntilDue, int weighting){
-            this.assignmentName = assignmentName;
-            this.description = description;
-            dueDate.add(Calendar.DATE, daysUntilDue);
-            this.weighting = weighting;
-        }
-    }*/
 

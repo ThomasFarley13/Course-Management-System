@@ -98,7 +98,7 @@ public class User extends UserCreateFactory{
 
         public void register (String CourseID) {
             courseList.add(CourseID);
-            System.out.println("Added the folloiwng course: " + CourseID);
+            System.out.println("Added the following course: " + CourseID);
         }
         public void deregister (String CourseID) {
             grading(CourseID, "WDN");

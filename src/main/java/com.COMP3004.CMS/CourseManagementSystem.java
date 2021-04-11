@@ -59,6 +59,7 @@ public class CourseManagementSystem {
 
     //just need user(name) and denied courses temporarily stored
     ArrayList<User> deniedRegistrations = new ArrayList<User>();
+    ArrayList<User> deniedWithdrawals = new ArrayList<User>();
 
     @GetMapping("/")
     public String home(HttpSession session) {
@@ -513,7 +514,6 @@ public class CourseManagementSystem {
         return "course-delete-successful";
     }
 
-
     /*
     This is a function to test Login using jmeter.
     It exists because ajax does not send json in a way that @requestBody will parse
@@ -626,35 +626,36 @@ public class CourseManagementSystem {
         Date courseRegisterEnd;
         Date now = new Date();
         String currentUsername = (String) session.getAttribute("username");
-        User tempUser = repository.findByUsername(currentUsername);
-        //empty course list for tempUser to keep track of denied registrations
-        tempUser.setCourseList(new ArrayList<>());
 
         try {
             List<String> tempList = new ArrayList<String>();
             for (int i = 0; i < keys.length; ++i) {
-                String courseID = (String) courses.get(keys[i]);
+                User tempUser = new User();
+                String courseID = (String)courses.get(keys[i]);
                 String registerByDate = Courserepository.findByCourseCode(courseID).getRegisterByDate();
                 courseRegisterEnd = new SimpleDateFormat("yyyy-MM-dd").parse(registerByDate);
-                if (now.after(courseRegisterStart) && now.before(courseRegisterEnd) &&
-                        !repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                if(repository.findByUsername(currentUsername).getCourseList().contains(courseID)) {
+                    System.out.println(courseID + "is already in student's courseList");
+                } else if(now.after(courseRegisterStart) && now.before(courseRegisterEnd)) {
                     System.out.println(courseID + " added, valid registration");
                     tempList.add(courseID);
-                    handler.register_student(currentUsername, courseID);
+                    handler.register_student(currentUsername,courseID);
                 } else {
                     System.out.println(courseID + " is invalid registration");
-                    tempUser.courseList.add(("test"));
-                }
-                if (tempUser.getCourseList().size() > 0) {
+                    tempUser = repository.findByUsername(currentUsername);
+                    //empty course list for tempUser to keep track of denied registrations
+                    tempUser.setCourseList(new ArrayList<>());
+                    tempUser.courseList.add(courseID);
                     deniedRegistrations.add(tempUser);
-                    return "invalid-course-registrations";
                 }
             }
         }catch (NullPointerException e){}
 
+
+
         System.out.println("Courses registered");
 //        return "Registered in courses: " + tempList.toString();
-        return "course-register-successful";
+        return "redirect:/Cregister";
     }
 
     @GetMapping("/dropCourse")
@@ -677,12 +678,16 @@ public class CourseManagementSystem {
     @PostMapping("/dropCourseRequest")
     public String dropCourseRequest(HttpSession session, @RequestParam String courseCode) throws ParseException {
         String currentUsername = (String) session.getAttribute("username");
+        User tempUser = repository.findByUsername(currentUsername);
+        tempUser.setCourseList(new ArrayList<>());
         String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
         Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
         Date now = new Date();
 
         if(now.after(withdrawByDate)){
             System.out.println("Past withdrawal period");
+            tempUser.courseList.add(courseCode);
+            deniedWithdrawals.add(tempUser);
             return "invalid-withdraw-request";
         }
 
@@ -690,6 +695,64 @@ public class CourseManagementSystem {
 
         handler.deregister_student(currentUsername, courseCode);
         return "course-withdraw-successful";
+    }
+
+    @GetMapping("/lateRegistrationRequests")
+    public String lateRegistrationRequests(Model model) {
+        if(deniedRegistrations.isEmpty())
+//            model.addAttribute("users", new ArrayList<User>());
+            return "denied-registrations-empty";
+        else
+            model.addAttribute("users", deniedRegistrations);
+        return "late-registrations";
+    }
+
+    @PostMapping("/lateRegistrationRequests")
+    public String lateRegistrationRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+//        System.out.println("Denied registrations list =============> " + deniedRegistrations);
+        if(users!=null) {
+            for (String user : users) {
+                if(!deniedRegistrations.isEmpty()) {
+                    for (User searchTerm : deniedRegistrations) {
+                        if (searchTerm.getUsername().equals(user)) {
+                            deniedRegistrations.remove(searchTerm);
+                            if (deniedRegistrations.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/lateRegistrationRequests";
+    }
+
+    @GetMapping("/lateWithdrawalRequests")
+    public String lateWithdrawalRequests(Model model) {
+        if(deniedWithdrawals.isEmpty())
+            return "denied-withdrawals-empty";
+        else
+            model.addAttribute("users", deniedWithdrawals);
+        return "late-withdrawals";
+    }
+
+    @PostMapping("/lateWithdrawalRequests")
+    public String lateWithdrawalRequestsHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users) {
+        if(users!=null) {
+            for (String user : users) {
+                if(!deniedWithdrawals.isEmpty()) {
+                    for (User searchTerm : deniedWithdrawals) {
+                        if (searchTerm.getUsername().equals(user)) {
+                            deniedWithdrawals.remove(searchTerm);
+                            if (deniedWithdrawals.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/lateWithdrawalRequests";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deliverableSubmission")

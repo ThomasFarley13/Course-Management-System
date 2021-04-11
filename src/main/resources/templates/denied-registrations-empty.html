@@ -8,17 +8,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Invalid Course Withdraw Request</title>
+    <title>Process late registration request</title>
 </head>
 <body>
 <div class="wrapper fadeInDown">
     <div id="formContent">
 
-        <p>You cannot drop this course at this time </p>
-        <!-- Login Form -->
-        <form action="/" th:action="@{/}"  method="get">
-            <input type="submit" class="fadeIn fourth" value="Return to home">
-        </form>
+        <p>There are no late registration requests</p>
+        <div>
+            <form action="/dashboard" th:action="@{/dashboard}" method="get">
+                <input type="submit" value="Return to home"/>
+            </form>
+        </div>
 
 
     </div>

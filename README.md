@@ -28,3 +28,4 @@ method 1:
 method 2: 
 1. reload maven dependecies
 2. run the command `mvn verify`
+3. you will see the results of the test in a csv file stored in `target\jmeter\results`

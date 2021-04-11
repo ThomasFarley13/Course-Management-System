@@ -5,10 +5,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 
-
 interface UserDatabase extends MongoRepository<User,String> {
 
     public User findByUsername(String username);
+    public User findByid(int id);
     public User deleteByUsername(String username);
     public User findByUsernameAndRole(String username, String role);
     public User findByUsernameAndPassword(String username, String password);
@@ -29,6 +29,7 @@ interface CourseDatabase extends MongoRepository<Course,String> {
     public List<Course> findByCoursenumberAndCourselevelAndCourseDept (int coursenum, int courselevel,String courseDept);
     public List<Course> findByCourselevel (int Courselevel);
     public List<Course> findByCourseDept (String CourseDept);
+    public List<Course> findByProfessor(String name);
     public List<Course> findAll();
 
 }

@@ -4,10 +4,10 @@ import com.COMP3004.CMS.User.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import java.util.Calendar;
+
 
 import java.util.ArrayList;
-import java.util.Date;
+
 @Getter @Setter
 public class Course {
 

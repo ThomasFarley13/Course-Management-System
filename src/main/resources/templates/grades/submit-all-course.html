@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<link rel ="stylesheet" href="login.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grade Course Submission</title>
+</head>
+<body>
+<form action="/dashboard" th:action="@{/dashboard}"  method="get" >
+    <input type="submit" value="Homepage" style="float:right; right: 5;"/>
+</form>
+<div id="outPopUp"  >
+    <form action="/submitAllCourse" th:action="@{/submitAllCourse}"   method="post" >
+        <tr th:each="element : ${courses}" >
+            <table style="width:100%">
+                <tr>
+                    <th>Student Number</th>
+                    <th>Course Name</th>
+                    <th>Total Grade From Deliverables</th>
+                    <th>Current grade</th>
+                </tr>
+                <tr th:each="user : ${element.value}">
+                    <td th:text="${user.key}" >Some name</td>
+                    <td th:text="${element.key}">keyvalue</td>
+                    <td th:each= "key : ${user.value}" th:text="${key.key}" ></td>
+                    <td > <input type="number" id="quantity" name="quantity" min="0" max="100" th:name="quantity" th:each = "key : ${user.value}" th:value="${key.value}" /> </td>
+                    <td> <input type="text" id="usernum" name="usernum"  th:name="usernum" th:value="${user.key}" hidden /> </td>
+                    <td> <input type="text" id="crs" name="crs"  th:name="crs" th:value="${element.key}" hidden /> </td>
+                    <td> <input type="text" id="subs" name="subs"  th:name="subs"  th:each= "key : ${user.value}" th:value="${user.key}" hidden /> </td>
+                </tr>
+            </table>
+        </tr>
+        <input type="submit"  value="Submit All Course Grades">
+    </form>
+</div>
+</body>
+
+</html>

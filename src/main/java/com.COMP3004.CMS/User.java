@@ -37,7 +37,6 @@ public class User extends UserCreateFactory{
         setUsername(newUsername);
     }
 
-//    protected abstract void createPermissions();
 
     public User() {
         this.username = null;

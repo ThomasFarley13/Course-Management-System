@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +26,6 @@ import java.util.List;
 public class CourseManagementSystem {
 
     User userLoggedIn;
-    boolean logged_in = false;
     String userHash;
     UserCreateFactory factory = new User();
 
@@ -77,6 +75,7 @@ public class CourseManagementSystem {
         return "login";
     }
 
+
     @GetMapping("/createAccount")
     public String createAccount() {
         return "create-account";
@@ -108,6 +107,135 @@ public class CourseManagementSystem {
         return "error";
 
     }
+
+    @GetMapping("/submitAllDel")
+    public String submitAllDel(String del, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        Deliverable deliverable = dRepository.findByownerAndName(username, del);
+        Hashtable<String, Hashtable<Integer, Hashtable<String, Integer>>> submissions = new Hashtable<>();
+        Hashtable<Integer, Hashtable<String, Integer>> users = new Hashtable<>();
+        Course course = Courserepository.findByCourseCode(deliverable.courseCode);
+        for (String student : course.students){
+            Hashtable<String, Integer> subs = new Hashtable<String, Integer>();
+            if(deliverable.submissions.containsKey(student)) {
+                String grade = (String) deliverable.submissions.get(student).get("grade");
+                subs.put((String) deliverable.submissions.get(student).get("submissionLink"),Integer.parseInt(grade));
+            }
+            else{
+                subs.put("No submission exists",0);
+            }
+            users.put(repository.findByUsername(student).id, subs );
+        }
+        submissions.put(deliverable.name, users);
+        model.addAttribute("submissions",submissions);
+        return "grades/submit-all-del";
+    }
+
+    @PostMapping("/submitAllDel")
+    public String approveAllDel(@RequestParam int[] quantity, @RequestParam String[] usernum, @RequestParam String[] del, @RequestParam String[] subs, HttpSession session) {
+        HashMap<String, HashMap> submissions = new HashMap<String, HashMap>();
+        String username = (String) session.getAttribute("username");
+        String deliv = del[0];
+        Integer[] usernumbers=new Integer[usernum.length];
+        int i=0;
+        for(String str:usernum){
+            usernumbers[i]=Integer.parseInt(str);//Exception in this line
+            i++;
+        }
+        Deliverable deliverable = dRepository.findByownerAndName(username, deliv);
+        for(int j=0; j< usernum.length; j+=1){
+            User user = repository.findByid(usernumbers[j]);
+            deliverable.updateSubmission(user.username,subs[j],Integer.toString(quantity[j]));
+        }
+        dRepository.save(deliverable);
+        return "grades/submit-successful";
+    }
+
+    @GetMapping("/selectDel")
+    public String selectDel(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        List<String> deliverables = new ArrayList<String>();
+        for(Deliverable del : dRepository.findByowner(username)){
+            deliverables.add(del.name);
+        }
+        model.addAttribute("deliverables", deliverables);
+        return "grades/select-del-all";
+    }
+
+    @PostMapping("/selectDel")
+    public String selectedDel(@RequestParam String deliverable,Model model, HttpSession session) {
+       return submitAllDel(deliverable,model,session);
+    }
+
+    @GetMapping("/submitAllCourse")
+    public String submitAllCourse(String crs, Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        Hashtable<String, Hashtable<Integer, Hashtable<Integer, Integer>>> courses = new Hashtable<>();
+        Hashtable<Integer, Hashtable<Integer, Integer>> users = new Hashtable<>();
+        Course course = Courserepository.findByCourseCode(crs);
+        List<Deliverable> deliverable = dRepository.findByCourseCode(crs);
+        for (String student : course.students){
+            Hashtable<Integer, Integer> subs = new Hashtable<Integer, Integer>();
+            int grade = 0;
+            for(Deliverable del: deliverable) {
+                if (del.submissions.containsKey(student)) {
+                    String grd = (String) del.submissions.get(student).get("grade");
+                    int weight = del.weighting;
+                    grade +=(Integer.parseInt(grd) * weight)/100;
+                }
+                User user = repository.findByUsername(student);
+                if(user.getGrades().containsKey(crs)){
+                    subs.put(grade, Integer.parseInt(user.getGrades().get(crs)));
+                }
+                else{
+                    subs.put(grade, 0);
+                }
+
+            }
+            users.put(repository.findByUsername(student).id, subs );
+        }
+        courses.put(crs, users);
+        model.addAttribute("courses",courses);
+        return "grades/submit-all-course";
+    }
+
+    @PostMapping("/submitAllCourse")
+    public String approveAllCourse(@RequestParam int[] quantity, @RequestParam String[] usernum, @RequestParam String[] crs, @RequestParam String[] subs, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String course = crs[0];
+        Integer[] usernumbers=new Integer[usernum.length];
+        int i=0;
+        for(String str:usernum){
+            usernumbers[i]=Integer.parseInt(str);//Exception in this line
+            i++;
+        }
+        for(int j=0; j< usernum.length; j+=1){
+            User.Student user = (User.Student) repository.findByid(usernumbers[j]);
+            user.grading(course,Integer.toString(quantity[j]));
+            repository.save(user);
+        }
+        return "grades/submit-successful";
+    }
+
+    @GetMapping("/selectCourse")
+    public String selectCourse(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        List<String> courses = new ArrayList<String>();
+        for(Course course : Courserepository.findByProfessor(username)){
+            courses.add(course.courseCode);
+        }
+        model.addAttribute("courses", courses);
+        return "grades/select-course-all";
+    }
+
+    @PostMapping("/selectCourse")
+    public String selectedCourse(@RequestParam String course,Model model, HttpSession session) {
+        return submitAllCourse(course,model,session);
+    }
+
+
+
+
 
     @PostMapping("/approveUser")
     public String approveUserHandling(@RequestParam(value = "usernameChecked", required = false) List<String> users,HttpSession session) {
@@ -240,8 +368,7 @@ public class CourseManagementSystem {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"),(String) session.getAttribute("role"));
             //System.out.println("We got to the dashboard Function Login 3");
             model.addAttribute("user",user);
-            //System.out.println("We got to the dashboard Function Login 1");
-            //System.out.println(user.getRole());
+
 
             if(user.getRole().equals("Admin")) {
                 return "admin-home";
@@ -267,6 +394,8 @@ public class CourseManagementSystem {
             return "login";
         }
     }
+
+
 
 
 
@@ -574,9 +703,7 @@ public class CourseManagementSystem {
 
     @PostMapping("/logout")
     public String logouthandler(@ModelAttribute User user, Model model,HttpSession session) {
-        /*model.addAttribute("user", new User());
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());*/
+
         session.setAttribute("logged_in",false);
         return "login";
     }
@@ -642,8 +769,7 @@ public class CourseManagementSystem {
             } else {
                 courses.addAll(Courserepository.findAll());
             }
-            //handler.register_student("Abdul","3004B");
-            //courses.add(new Course("The Test Course","2400B",2000,2400,"Testing Dept"));
+
 
             System.out.println(courses);
             return courses;
@@ -949,18 +1075,20 @@ public class CourseManagementSystem {
             courses.addAll(user.getPrevCourses()); // gets list of previously taken courses
 
             //populating the values of the table
-            for (int i = 0;i<courses.size();i++) {
-                if (grades.containsKey(courses.get(i))) {
-                    Course c = Courserepository.findByCourseCode(courses.get(i));
-                    courseLables.add(c.courseName +":  "+c.courseName);
+            for (String cours : courses) {
+                Course c = Courserepository.findByCourseCode(cours);
+                if (grades.containsKey(cours)) {
+                    courseLables.add(c.courseName + ":  " + c.courseName);
                     CreditValues.add("0.5");
                     comments.add(" ");
                     terms.add(c.getTerm());
-                    courseGrades.add(grades.get(courses.get(i)));
-                }
-                else {
-                    Course c = Courserepository.findByCourseCode(courses.get(i));
-                    courseLables.add(c.courseDept +":  "+c.courseName);
+                    if (!(grades.get(cours).equals("WDN"))) {
+                        courseGrades.add(GradeVisitor.visit(grades.get(cours)));
+                    } else {
+                        courseGrades.add(grades.get(cours));
+                    }
+                } else {
+                    courseLables.add(c.courseDept + ":  " + c.courseName);
                     CreditValues.add("0.5");
                     comments.add(" ");
                     terms.add(c.getTerm());

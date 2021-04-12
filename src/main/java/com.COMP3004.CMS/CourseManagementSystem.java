@@ -572,8 +572,12 @@ public class CourseManagementSystem {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
             Course c = Courserepository.findByCourseCode(CourseId);
-            ArrayList<String> tempDeliverables = c.getDeliverables();
+            ArrayList<String> tempDeliverablesIDs = c.getDeliverables();
+            ArrayList<String> tempDeliverables = new ArrayList<String>();
 
+            for (String id : tempDeliverablesIDs) {
+                tempDeliverables.add(Deliverablerepository.findDeliverableByDeliverableID(id).name);
+            }
 
             model.addAttribute("deliverables", tempDeliverables);
             model.addAttribute("course", c);

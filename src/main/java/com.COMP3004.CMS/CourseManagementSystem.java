@@ -491,8 +491,9 @@ public class CourseManagementSystem {
             else if(user.getRole().equals("Student")){
                 ArrayList<String> coursecodes = user.getCourseList();
                 ArrayList<Course> courses = new ArrayList<Course>();
-                for (int i =0;i<coursecodes.size();i++) {
-                    courses.add(Courserepository.findByCourseCode((String)coursecodes.get(i)));
+                ArrayList<String> wdnCourses = user.getPrevCourses();
+                for (String coursecode : coursecodes) {
+                    courses.add(Courserepository.findByCourseCode((String) coursecode));
                 }
                 model.addAttribute("courses", courses);
                 return "student-home";

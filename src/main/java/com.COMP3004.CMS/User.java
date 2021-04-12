@@ -101,6 +101,7 @@ public class User extends UserCreateFactory{
         }
         public void deregister (String CourseID) {
             grading(CourseID, "WDN");
+            prevCourses.add(CourseID);
             courseList.remove(CourseID);
         }
 

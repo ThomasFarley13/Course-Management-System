@@ -7,39 +7,37 @@ import java.util.List;
 
 interface UserDatabase extends MongoRepository<User,String> {
 
-    public User findByUsername(String username);
-    public User findByid(int id);
-    public User deleteByUsername(String username);
-    public User findByUsernameAndRole(String username, String role);
-    public User findByUsernameAndPassword(String username, String password);
-    public User findTopByOrderByIdDesc();
-    public List<User> findByActiveIsFalse();
-    public List<User> findAll();
-    public List<User> findByRole(String role);
-    public List<User> findByGender(String gender);
-    public List<User> findByBirthdateIsNotNull();
+    User findByUsername(String username);
+    User findByid(int id);
+    User deleteByUsername(String username);
+    User findByUsernameAndRole(String username, String role);
+    User findByUsernameAndPassword(String username, String password);
+    User findTopByOrderByIdDesc();
+    List<User> findByActiveIsFalse();
+    List<User> findAll();
+    List<User> findByRole(String role);
+    List<User> findByGender(String gender);
+    List<User> findByBirthdateIsNotNull();
 }
 
 
 interface CourseDatabase extends MongoRepository<Course,String> {
-    public Course findByCourseCode(String courseCode);
-    public List<Course> findBycoursenumber (int coursenum);
-    public List<Course> findByCoursenumberAndCourseDept (int coursenum,String courseDept);
-    public List<Course> findByCourselevelAndCourseDept (int courselevel,String courseDept);
-    public List<Course> findByCoursenumberAndCourselevelAndCourseDept (int coursenum, int courselevel,String courseDept);
-    public List<Course> findByCourselevel (int Courselevel);
-    public List<Course> findByCourseDept (String CourseDept);
-    public List<Course> findByProfessor(String name);
-    public List<Course> findAll();
-
+    Course findByCourseCode(String courseCode);
+    List<Course> findBycoursenumber (int coursenum);
+    List<Course> findByCoursenumberAndCourseDept (int coursenum,String courseDept);
+    List<Course> findByCourselevelAndCourseDept (int courselevel,String courseDept);
+    List<Course> findByCourselevel (int Courselevel);
+    List<Course> findByCourseDept (String CourseDept);
+    List<Course> findByProfessor(String name);
+    List<Course> findAll();
 }
 
 
 interface DeliverableDatabase extends MongoRepository<Deliverable,String> {
-    public Deliverable findDeliverableByDeliverableID (String deliverableID);
-    public List<Deliverable> findByCourseCode (String courseCode);
-    public List<Deliverable> findByowner (String owner);
-    public Deliverable findByownerAndName(String owner, String Name);
-    public Deliverable findByCourseCodeAndName(String courseCode, String Name);
+    Deliverable findDeliverableByDeliverableID (String deliverableID);
+    List<Deliverable> findByCourseCode (String courseCode);
+    List<Deliverable> findByowner (String owner);
+    Deliverable findByownerAndName(String owner, String Name);
+    Deliverable findByCourseCodeAndName(String courseCode, String Name);
 }
 

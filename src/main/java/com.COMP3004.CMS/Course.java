@@ -32,7 +32,6 @@ public class Course {
     @Getter @Setter protected String withdrawByDate;
 
 
-
     public ArrayList<Student> retrieveStudents() {
         ArrayList<Student> retrieved = new ArrayList<Student>();
         System.out.println("retrieving students from Mongo");
@@ -72,13 +71,14 @@ public class Course {
         this.coursenumber = coursenumber;
         this.courseDept = courseDept;
         this.courseInfo = "";
-        capacity =80; // default capacity
+        capacity = 80; // default capacity
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
         this.WDNgradeStartDate = "2021-08-31";
         this.withdrawByDate = "2022-08-31";
         deliverables = new ArrayList<String>();
     }
+
     public Course(String courseName, String courseCode, int courselevel, int coursenumber, String courseDept, int capacity) {
         this.courseName = courseName;
         this.courseCode = courseCode;
@@ -94,14 +94,21 @@ public class Course {
         deliverables = new ArrayList<String>();
     }
 
-    public void addstudent(String StuUName) { students.add(StuUName); }
+    public void addstudent(String StuUName) {
+        students.add(StuUName);
+    }
 
-    public void addDeliverable(String deliverableID){this.deliverables.add(deliverableID);}
-    public void removeDeliverable(String deliverableID){this.deliverables.remove(deliverableID);}
+    public void addDeliverable(String deliverableID) {
+        this.deliverables.add(deliverableID);
+    }
 
-    public String getDeliverable(String deliverableId){
-        for (int x = 0; x < deliverables.size(); x++){
-            if (deliverables.get(x).equals(deliverableId)){
+    public void removeDeliverable(String deliverableID) {
+        this.deliverables.remove(deliverableID);
+    }
+
+    public String getDeliverable(String deliverableId) {
+        for (int x = 0; x < deliverables.size(); x++) {
+            if (deliverables.get(x).equals(deliverableId)) {
                 return deliverables.get(x);
             }
         }
@@ -112,29 +119,28 @@ public class Course {
         students.remove(StuUName);
     }
 
-    public void assignProf (String profUName){
+    public void assignProf(String profUName) {
         professor = profUName;
     }
 
-    public void deassignProf (String profUName){
+    public void deassignProf(String profUName) {
         professor = null;
     }
 
-    public String getTerm () {
-        String term="";
-        String [] withdrawaldates = this.withdrawByDate.split("-");
+    public String getTerm() {
+        String term = "";
+        String[] withdrawaldates = this.withdrawByDate.split("-");
 
-        if (Integer.parseInt(withdrawaldates[1]) <=4){
-            term+="W";
+        if (Integer.parseInt(withdrawaldates[1]) <= 4) {
+            term += "W";
+        } else if (Integer.parseInt(withdrawaldates[1]) <= 9) {
+            term += "F";
+        } else {
+            term += "W";
         }
-        else if (Integer.parseInt(withdrawaldates[1]) <=9){
-            term+="F";
-        }else {
-            term+="W";
-        }
 
 
-        term+=withdrawaldates[0];
+        term += withdrawaldates[0];
         return term;
     }
 

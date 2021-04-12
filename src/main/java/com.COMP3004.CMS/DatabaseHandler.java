@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.stereotype.Service;
 
 @Service
-public class DatabaseHandler  {
+public class DatabaseHandler {
     ArrayList<observer> Observers;
 
     @Autowired
@@ -26,9 +26,6 @@ public class DatabaseHandler  {
 
     public DatabaseHandler() {
         ArrayList<observer> Observers = new ArrayList<observer>();
-        /*Observers.add(stu);
-        Observers.add(prof);
-        Observers.add(c);*/
     }
 
     public void attach(observer o) {
@@ -39,68 +36,65 @@ public class DatabaseHandler  {
         Observers.remove(o);
     }
 
-    public void notifyObservers (String actionTaken, String ObjChanged,String Agent, String CourseID, String Extra) {
-        /*for (int i = 0; i<Observers.size();i++){
-            Observers.get(i).updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra );
-        }*/
-        stu.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
-        prof.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
-        cou.updateRecords(actionTaken,ObjChanged,Agent,CourseID,Extra);
+    public void notifyObservers(String actionTaken, String ObjChanged, String Agent, String CourseID, String Extra) {
+        stu.updateRecords(actionTaken, ObjChanged, Agent, CourseID, Extra);
+        prof.updateRecords(actionTaken, ObjChanged, Agent, CourseID, Extra);
+        cou.updateRecords(actionTaken, ObjChanged, Agent, CourseID, Extra);
     }
 
     public boolean register_student(String agent, String CourseID) {
-        notifyObservers("Register","Course",agent,CourseID,null);
+        notifyObservers("Register", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean deregister_student_WDN(String agent, String CourseID) {
-        notifyObservers("Deregister_WDN","Course",agent,CourseID,null);
+        notifyObservers("Deregister_WDN", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean deregister_student(String agent, String CourseID) {
-        notifyObservers("Deregister","Course",agent,CourseID,null);
+        notifyObservers("Deregister", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean assign_prof(String agent, String CourseID) {
-        notifyObservers("Assign","Course",agent,CourseID,null);
+        notifyObservers("Assign", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean deassign_prof(String agent, String CourseID) {
-        notifyObservers("Deassign","Course",agent,CourseID,null);
+        notifyObservers("Deassign", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean add_course(String agent, String CourseID) {
-        notifyObservers("Add","Course",agent,CourseID,null);
+        notifyObservers("Add", "Course", agent, CourseID, null);
         return false;
     }
 
     public boolean delete_course(String agent, String CourseID) {
-        notifyObservers("Delete","Course",agent,CourseID,null);
+        notifyObservers("Delete", "Course", agent, CourseID, null);
         return false;
     }
 
-    public boolean Add_deliverable(String agent, String CourseID,String DID) {
-        notifyObservers("Add","Deliverable",agent,CourseID,DID);
+    public boolean Add_deliverable(String agent, String CourseID, String DID) {
+        notifyObservers("Add", "Deliverable", agent, CourseID, DID);
         return false;
     }
 
 
-    public boolean update_courseinfo(String agent, String CourseID,String DID) {
-        notifyObservers("UpdateCourseDetails","Course",agent,CourseID,DID);
+    public boolean update_courseinfo(String agent, String CourseID, String DID) {
+        notifyObservers("UpdateCourseDetails", "Course", agent, CourseID, DID);
         return false;
     }
 
-    public boolean remove_deliverable (String agent, String CourseID,String DID) {
-        notifyObservers("Delete","Deliverable",agent,CourseID,DID);
+    public boolean remove_deliverable(String agent, String CourseID, String DID) {
+        notifyObservers("Delete", "Deliverable", agent, CourseID, DID);
         return false;
     }
 
-    public boolean submit_deliverable (String agent, String DID,String sumbissionlink) {
-        notifyObservers("submit","Deliverable",agent,DID,sumbissionlink);
+    public boolean submit_deliverable(String agent, String DID, String sumbissionlink) {
+        notifyObservers("submit", "Deliverable", agent, DID, sumbissionlink);
         return false;
     }
 
@@ -120,7 +114,9 @@ abstract class observer {
     @Autowired
     protected DeliverableDatabase Deliverablerepository;
 
-    public observer(String type) {this.type = type; }
+    public observer(String type) {
+        this.type = type;
+    }
 
     public abstract void updateRecords(String action, String ObjChanged, String Agent, String CourseID, String Extra);
 
@@ -149,7 +145,7 @@ class studentDetails extends observer {
             Userrepository.save(temp);
         } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
             List<String> studentList = Courserepository.findByCourseCode(CourseID).getStudents();
-            if(studentList.size() > 0) {
+            if (studentList.size() > 0) {
                 User.Student tempUser;
                 for (String studentUsername : studentList) {
                     tempUser = (User.Student) Userrepository.findByUsername(studentUsername);
@@ -159,13 +155,13 @@ class studentDetails extends observer {
             }
         } else if (action.equals("Delete") && ObjChanged.equals("Course")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
-            if (temp != null){
+            if (temp != null) {
                 temp.deregister(CourseID);
                 Userrepository.save(temp);
             }
-        } else if (action.equals("Grade")){
+        } else if (action.equals("Grade")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
-            temp.grading(CourseID,Extra);
+            temp.grading(CourseID, Extra);
             Userrepository.save(temp);
         }
 
@@ -198,7 +194,7 @@ class profDetails extends observer {
             Deliverablerepository.delete(t);
         } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
             String profUser = Courserepository.findByCourseCode(CourseID).getProfessor();
-            if(profUser != null) {
+            if (profUser != null) {
                 User.Professor temp = (User.Professor) Userrepository.findByUsername(profUser);
                 temp.deregisterCourse(CourseID);
                 Userrepository.save(temp);

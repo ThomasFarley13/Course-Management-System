@@ -1,24 +1,23 @@
 package com.COMP3004.CMS;
 
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.Calendar;
 import java.util.HashMap;
 
 public class Deliverable {
 
-    protected String details;
-    protected int weighting;
-    protected String name;
+    @Setter protected String details;
+    @Setter protected int weighting;
+    @Setter protected String name;
     protected Calendar dueDate = Calendar.getInstance();
     @Id
     protected String deliverableID;
     protected String courseCode;
-    protected String owner;
+    @Setter protected String owner;
 
 
     HashMap<String, HashMap> submissions = new HashMap<String, HashMap>(); // this will be of form ('username'=> hashMap)
@@ -26,7 +25,7 @@ public class Deliverable {
 
 
     //Default Constructor
-    public Deliverable () {
+    public Deliverable() {
         this.details = null;
         this.weighting = 0;
         this.deliverableID = null;
@@ -36,13 +35,18 @@ public class Deliverable {
         HashMap<String, HashMap> submissions = new HashMap<String, HashMap>();
     }
 
+    /*
     public void setDetails(String details) {this.details = details;}
     public void setWeighting(int weighting) {this.weighting = weighting;}
-    public void setDueDate(int daysDue) {dueDate.add(Calendar.DATE, daysDue);}
     public void setName(String name) {this.name = name;}
     public void setOwner(String professor){this.owner = professor;}
+    */
+    public void setDueDate(int daysDue) {
+        dueDate.add(Calendar.DATE, daysDue);
+    }
 
-    public void addNewSubmission(String userName, String subLink){
+
+    public void addNewSubmission(String userName, String subLink) {
         System.out.println("Submitee Username: " + userName);
         System.out.println("Submitee Link: " + subLink);
 
@@ -51,14 +55,14 @@ public class Deliverable {
 
 
         //Creating the inner hash data
-        HashMap<String,String> innerHash = new HashMap<String, String>();
+        HashMap<String, String> innerHash = new HashMap<String, String>();
         innerHash.put("submissionLink", subLink);
         innerHash.put("grade", "0");
         innerHash.put("overdue", "false");
 
         //Finding out if submission is overdue
         Calendar currentTime = Calendar.getInstance();
-        if (dueDate.before(currentTime)){
+        if (dueDate.before(currentTime)) {
             innerHash.remove("overdue");
             innerHash.put("overdue", "true");
         }
@@ -68,7 +72,7 @@ public class Deliverable {
 
     }
 
-    public void updateSubmission(String userName, String subLink, String grade){
+    public void updateSubmission(String userName, String subLink, String grade) {
         System.out.println("Submitee Username: " + userName);
         System.out.println("Submitee Link: " + subLink);
 
@@ -77,14 +81,14 @@ public class Deliverable {
 
 
         //Creating the inner hash data
-        HashMap<String,String> innerHash = new HashMap<String, String>();
+        HashMap<String, String> innerHash = new HashMap<String, String>();
         innerHash.put("submissionLink", subLink);
         innerHash.put("grade", grade);
         innerHash.put("overdue", "false");
 
         //Finding out if submission is overdue
         Calendar currentTime = Calendar.getInstance();
-        if (dueDate.before(currentTime)){
+        if (dueDate.before(currentTime)) {
             innerHash.remove("overdue");
             innerHash.put("overdue", "true");
         }

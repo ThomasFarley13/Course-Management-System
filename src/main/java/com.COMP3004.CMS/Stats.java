@@ -33,51 +33,52 @@ public class Stats {
         return workbook;
 
     }
-    public void birthdayStats(XSSFWorkbook workbook){
+
+    public void birthdayStats(XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.createSheet("BirthdayStats");
         int[] months = new int[12];
-        for(int i=0; i< 11; i+=1){
+        for (int i = 0; i < 11; i += 1) {
             months[i] = 0;
         }
         for (User user : repository.findByBirthdateIsNotNull()) {
             String birthdate = user.getBirthdate();
             String[] birthdata = birthdate.split("-");
-            switch(birthdata[1]){
+            switch (birthdata[1]) {
                 case "01":
-                    months[0] +=1;
+                    months[0] += 1;
                     break;
                 case "02":
-                    months[1] +=1;
+                    months[1] += 1;
                     break;
                 case "03":
-                    months[2] +=1;
+                    months[2] += 1;
                     break;
                 case "04":
-                    months[3] +=1;
+                    months[3] += 1;
                     break;
                 case "05":
-                    months[4] +=1;
+                    months[4] += 1;
                     break;
                 case "06":
-                    months[5] +=1;
+                    months[5] += 1;
                     break;
                 case "07":
-                    months[6] +=1;
+                    months[6] += 1;
                     break;
                 case "08":
-                    months[7] +=1;
+                    months[7] += 1;
                     break;
                 case "09":
-                    months[8] +=1;
+                    months[8] += 1;
                     break;
                 case "10":
-                    months[9] +=1;
+                    months[9] += 1;
                     break;
                 case "11":
-                    months[10] +=1;
+                    months[10] += 1;
                     break;
                 case "12":
-                    months[11] +=1;
+                    months[11] += 1;
                     break;
             }
         }
@@ -116,7 +117,8 @@ public class Stats {
 
         }
     }
-    public void genderStats(XSSFWorkbook workbook){
+
+    public void genderStats(XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.createSheet("GenderStats");
         Object[][] genderData = {
                 {"Male", repository.findByGender("male").size()},

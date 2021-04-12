@@ -31,7 +31,7 @@
                         <td > <input type="number" id="quantity" name="quantity" min="0" max="100" th:name="quantity" th:each = "key : ${user.value}" th:value="${key.value}" /> </td>
                         <td> <input type="text" id="usernum" name="usernum"  th:name="usernum" th:value="${user.key}" hidden /> </td>
                         <td> <input type="text" id="del" name="del"  th:name="del" th:value="${element.key}" hidden /> </td>
-                        <td> <input type="text" id="subs" name="subs"  th:name="subs"  th:each= "key : ${user.value}" th:value="${user.key}" hidden /> </td>
+                        <td> <input type="text" id="subs" name="subs"  th:name="subs"  th:each= "key : ${user.value}" th:value="${key.key}" hidden /> </td>
                     </tr>
                 </table>
             </tr>

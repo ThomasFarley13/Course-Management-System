@@ -698,7 +698,7 @@ public class CourseManagementSystem {
     //brings up the page to help create a course
     @GetMapping("/createCourse")
     public String createCourse(Model model, HttpSession session) {
-        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Professor")) {
+        if (session.getAttribute("logged_in") != null && ((boolean) session.getAttribute("logged_in")) && session.getAttribute("role").equals("Admin")) {
 
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);

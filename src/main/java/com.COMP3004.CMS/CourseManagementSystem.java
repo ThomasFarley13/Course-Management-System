@@ -32,6 +32,9 @@ public class CourseManagementSystem {
     static String registrationTerm1 = "2021-09-20";
     static String registrationTerm2 = "2022-01-20";
     static String registrationTerm3 = "2022-05-20";
+    static String WDNgradeStartTerm1 = "2021-03-31";
+    static String WDNgradeStartTerm2 = "2022-01-31";
+    static String WDNgradeStartTerm3 = "2022-05-31";
     static String withdrawByDateTerm1 = "2021-12-10";
     static String withdrawByDateTerm2 = "2022-04-10";
     static String withdrawByDateTerm3 = "2022-08-10";
@@ -725,13 +728,19 @@ public class CourseManagementSystem {
 
             System.out.println("Saving new course " + courseName);
             if (courseLevel != 0 || courseNumber != 0 || courseDept != null) {
-                String registerBy, withdrawBy;
-                if (startTerm == 1)
+                String registerBy, wdnStart, withdrawBy;
+                if (startTerm == 1) {
                     registerBy = registrationTerm1;
-                else if (startTerm == 2)
+                    wdnStart = WDNgradeStartTerm1;
+                }
+                else if (startTerm == 2) {
                     registerBy = registrationTerm2;
-                else
+                    wdnStart = WDNgradeStartTerm2;
+                }
+                else {
                     registerBy = registrationTerm3;
+                    wdnStart = WDNgradeStartTerm3;
+                }
 
                 if (endTerm == 1)
                     withdrawBy = withdrawByDateTerm1;
@@ -742,6 +751,7 @@ public class CourseManagementSystem {
 
                 Course tempCourse = new Course(courseName, courseCode, courseLevel, courseNumber, courseDept);
                 tempCourse.setRegisterByDate(registerBy);
+                tempCourse.setWDNgradeStartDate(withdrawBy);
                 tempCourse.setWithdrawByDate(withdrawBy);
                 tempCourse.setCourseInfo(courseInfo);
                 Courserepository.save(tempCourse);
@@ -955,6 +965,8 @@ public class CourseManagementSystem {
             String currentUsername = (String) session.getAttribute("username");
             User tempUser = repository.findByUsername(currentUsername);
             tempUser.setCourseList(new ArrayList<>());
+            String wdnStartStr = Courserepository.findByCourseCode(courseCode).getWDNgradeStartDate();
+            Date wdnStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(wdnStartStr);
             String withdrawByStr = Courserepository.findByCourseCode(courseCode).getWithdrawByDate();
             Date withdrawByDate = new SimpleDateFormat("yyyy-MM-dd").parse(withdrawByStr);
             Date now = new Date();
@@ -964,12 +976,15 @@ public class CourseManagementSystem {
                 tempUser.courseList.add(courseCode);
                 deniedWithdrawals.add(tempUser);
                 return "invalid-withdraw-request";
+            } else if (now.after(wdnStartDate)) {
+                System.out.println("Dropping " + courseCode + " for student with WDN");
+                handler.deregister_student_WDN(currentUsername, courseCode);
+                return "course-withdraw-successful";
+            } else {
+                System.out.println("Dropping " + courseCode + " for student with no grade");
+                handler.deregister_student(currentUsername, courseCode);
+                return "course-withdraw-successful";
             }
-
-            System.out.println("Dropping " + courseCode + " for student");
-
-            handler.deregister_student(currentUsername, courseCode);
-            return "course-withdraw-successful";
         }
         return "error";
     }

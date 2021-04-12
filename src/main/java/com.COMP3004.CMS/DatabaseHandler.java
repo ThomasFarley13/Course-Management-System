@@ -53,10 +53,16 @@ public class DatabaseHandler  {
         return false;
     }
 
+    public boolean deregister_student_WDN(String agent, String CourseID) {
+        notifyObservers("Deregister_WDN","Course",agent,CourseID,null);
+        return false;
+    }
+
     public boolean deregister_student(String agent, String CourseID) {
         notifyObservers("Deregister","Course",agent,CourseID,null);
         return false;
     }
+
     public boolean assign_prof(String agent, String CourseID) {
         notifyObservers("Assign","Course",agent,CourseID,null);
         return false;
@@ -133,9 +139,13 @@ class studentDetails extends observer {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.register(CourseID);
             Userrepository.save(temp);
-        } else if (action.equals("Deregister")) {
+        } else if (action.equals("Deregister_WDN")) {
             User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
             temp.deregister(CourseID);
+            Userrepository.save(temp);
+        } else if (action.equals("Deregister")) {
+            User.Student temp = (User.Student) Userrepository.findByUsername(Agent);
+            temp.removeCourse(CourseID);
             Userrepository.save(temp);
         } else if (action.equals("Delete") && ObjChanged.equals("Course") && Agent.equals("Admin")) {
             List<String> studentList = Courserepository.findByCourseCode(CourseID).getStudents();
@@ -218,7 +228,7 @@ class courseDetails extends observer {
             Course c = Courserepository.findByCourseCode(CourseID);
             c.addstudent(Agent);
             Courserepository.save(c);
-        } else if (action.equals("Deregister")) {
+        } else if (action.equals("Deregister") || action.equals("Deregister_WDN")) {
             Course c = Courserepository.findByCourseCode(CourseID);
             c.removestudent(Agent);
             Courserepository.save(c);

@@ -28,6 +28,7 @@ public class Course {
     @Getter @Setter protected String professor;
     @Getter @Setter protected ArrayList<String> students;
     @Getter @Setter protected String registerByDate;
+    @Getter @Setter protected String WDNgradeStartDate;
     @Getter @Setter protected String withdrawByDate;
 
 
@@ -74,6 +75,7 @@ public class Course {
         capacity =80; // default capacity
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
+        this.WDNgradeStartDate = "2021-08-31";
         this.withdrawByDate = "2022-08-31";
         deliverables = new ArrayList<String>();
     }
@@ -87,6 +89,7 @@ public class Course {
         this.capacity = capacity;
         students = new ArrayList<String>();
         this.registerByDate = "2022-08-31";
+        this.WDNgradeStartDate = "2021-08-31";
         this.withdrawByDate = "2022-08-31";
         deliverables = new ArrayList<String>();
     }

@@ -88,7 +88,7 @@ public class Server implements CommandLineRunner {
         tempCourse.setRegisterByDate("2020-12-31");
         Courserepository.save(tempCourse);
         tempCourse = new Course("Pro Basket Weaving", "1002D", 1000, 1002, "Liberal Arts");
-        tempCourse.setRegisterByDate("2020-12-31");
+        tempCourse.setWDNgradeStartDate("2021-04-10");
         Courserepository.save(tempCourse);
         Courserepository.save(new Course("Programming Paradigms","COMP3007B",3000,3007,"Computer Science"));
         handler.assign_prof(testProfessor.getUsername(), "COMP3007B");

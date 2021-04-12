@@ -103,6 +103,11 @@ public class User extends UserCreateFactory{
             grading(CourseID, "WDN");
             courseList.remove(CourseID);
         }
+
+        public void removeCourse (String CourseID) {
+            courseList.remove(CourseID);
+        }
+
         public void grading(String CourseID,String grade) {
             grades.put(CourseID,grade);
         }

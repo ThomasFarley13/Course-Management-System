@@ -43,7 +43,7 @@ function modifyDeliverable(){
     let updatedDeliverable = {"oldName": oldName, "newName": newName, "newWeight" : newWeight,
     "newDueDate": newDeadLine, "newDescription": newDescription};
 
-    let confirmation = confirm("Delete this deliverable?");
+    let confirmation = confirm("Modify this deliverable?");
     if (confirmation){
         $.postJSON("http://localhost:8080/deliverableModification", updatedDeliverable, callback);
         console.log("Post request sent");

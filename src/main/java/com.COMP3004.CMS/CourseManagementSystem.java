@@ -572,8 +572,12 @@ public class CourseManagementSystem {
             User user = repository.findByUsernameAndRole((String) session.getAttribute("username"), (String) session.getAttribute("role"));
             model.addAttribute("user", user);
             Course c = Courserepository.findByCourseCode(CourseId);
-            ArrayList<String> tempDeliverables = c.getDeliverables();
+            ArrayList<String> tempDeliverablesIDs = c.getDeliverables();
+            ArrayList<String> tempDeliverables = new ArrayList<String>();
 
+            for (String id : tempDeliverablesIDs) {
+                tempDeliverables.add(Deliverablerepository.findDeliverableByDeliverableID(id).name);
+            }
 
             model.addAttribute("deliverables", tempDeliverables);
             model.addAttribute("course", c);
@@ -1210,22 +1214,30 @@ public class CourseManagementSystem {
             //populating the values of the table
             for (String cours : courses) {
                 Course c = Courserepository.findByCourseCode(cours);
-                if (grades.containsKey(cours)) {
-                    courseLables.add(c.courseName + ":  " + c.courseName);
-                    CreditValues.add("0.5");
-                    comments.add(" ");
-                    terms.add(c.getTerm());
-                    if (!(grades.get(cours).equals("WDN"))) {
-                        courseGrades.add(GradeVisitor.visit(grades.get(cours)));
+                try {
+                    if (grades.containsKey(cours)) {
+                        courseLables.add(c.courseName + ":  " + c.courseName);
+                        CreditValues.add("0.5");
+                        comments.add(" ");
+                        terms.add(c.getTerm());
+                        if (!(grades.get(cours).equals("WDN"))) {
+                            courseGrades.add(GradeVisitor.visit(grades.get(cours)));
+                        } else {
+                            courseGrades.add(grades.get(cours));
+                        }
                     } else {
-                        courseGrades.add(grades.get(cours));
+                        courseLables.add(c.courseDept + ":  " + c.courseName);
+                        CreditValues.add("0.5");
+                        comments.add(" ");
+                        terms.add(c.getTerm());
+                        courseGrades.add("CUR");
                     }
-                } else {
-                    courseLables.add(c.courseDept + ":  " + c.courseName);
+                }catch (NullPointerException e){
+                    courseLables.add(cours);
                     CreditValues.add("0.5");
-                    comments.add(" ");
-                    terms.add(c.getTerm());
-                    courseGrades.add("CUR");
+                    comments.add("NA");
+                    terms.add("unknown");
+                    courseGrades.add("Unknown");
                 }
             }
             //populating table with courses that were not linked properly
